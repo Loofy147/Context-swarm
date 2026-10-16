@@ -1,12 +1,12 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 4,
-  "reviewed_base_commit": "8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f",
+  "map_version": 5,
+  "reviewed_base_commit": "625797168fa27efe90e1d1b39828aca7a2636aea",
   "derived_from": [
-    "swarm/inventory.json",
-    "swarm/sources/github-repository-state.json",
-    "swarm/sources/recent-commit-history.json",
-    "repository tree at 8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f"
+    "swarm/registry.json",
+    "swarm/intake-policy.json",
+    "swarm/dependency-map.json",
+    "tests and source files at the stated base commit"
   ],
   "note": "Edges are typed and evidence-based. Explicit path references and test imports are stronger than semantic design relationships, which are labeled as contract relationships.",
   "edges": [
@@ -345,12 +345,55 @@
       "relationship": "verified_by_ci",
       "basis": "successful_GitHub_Actions_run",
       "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_cycle.py",
+      "target_path": "src/scs/cycle.py",
+      "relationship": "imports",
+      "basis": "direct_test_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "src/scs/cycle.py",
+      "target_path": "src/scs/intake.py",
+      "relationship": "uses",
+      "basis": "direct_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "src/scs/cycle.py",
+      "target_path": "src/scs/transitions.py",
+      "relationship": "uses",
+      "basis": "direct_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "src/scs/cycle.py",
+      "target_path": "swarm/registry.json",
+      "relationship": "reads_snapshot_contract",
+      "basis": "registry_shape_consumed_by_planner",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "src/scs/cycle.py",
+      "relationship": "documents_cycle_planner",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "tests/test_swarm_cycle.py",
+      "relationship": "work_item_test_evidence",
+      "basis": "work_item_SCS_MATURE_009",
+      "confidence": "high"
     }
   ],
   "limitations": [
     "This is a repository artifact dependency map, not a runtime call graph.",
     "Semantic relationships are hypotheses and must be revalidated when files change.",
     "Capability targets added in the current change set are verified against the resulting tree.",
-    "This map version is reconciled against commit 8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f; changes committed afterward may make it stale."
+    "This map version is reconciled against commit 8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f; changes committed afterward may make it stale.",
+    "Cycle planner and test edges added in v5; it generates proposals only and does not execute persistence or external side effects."
   ]
 }

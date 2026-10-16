@@ -22,6 +22,8 @@ The runtime criteria below are future implementation gates. They are not blocker
 - [x] A capability matrix explicitly separates scoped reads, task-scoped writes and consequential per-action authorization; it does not grant access.
 - [x] Nine related repository artifacts were grouped in commit `8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f`; [the resulting CI run succeeded](https://github.com/Loofy147/Context-swarm/actions/runs/38956067934).
 
+- [ ] Integrated bounded-cycle planning combines intake, registry reference validation, task transition checks, and context update proposals; mark PASS only after CI succeeds for the exact commit.
+
 These checks verify the repository-native reference logic and captured state. They do not establish autonomous continuous execution, durable runtime storage, authentication, external-action enforcement by a deployed service, or production readiness.
 
 ## Future runtime gates — not yet executed

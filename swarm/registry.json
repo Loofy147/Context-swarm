@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 5,
+  "registry_version": 6,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -36,7 +36,7 @@
       "title": "Input and task consumption protocol",
       "purpose": "Specify and test how information enters, is normalized, related, prioritized, processed, verified, and recorded.",
       "lifecycle_status": "accepted",
-      "version": 5,
+      "version": 6,
       "relationships": [
         {
           "type": "depends_on",
@@ -55,13 +55,15 @@
         "schemas/input-record.schema.json",
         "schemas/intake-policy.schema.json",
         "schemas/work-item.schema.json",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38955118809"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38955118809",
+        "src/scs/cycle.py",
+        "tests/test_swarm_cycle.py"
       ],
       "open_questions": [
         "Validate exact source/adapter capabilities as concrete tasks arise.",
         "Revisit schema consolidation only when real examples justify a shared core."
       ],
-      "change_note": "Version 5 records accepted intake and transition reference behavior, capability-boundary policy, and schema validation evidence. State proposals still require a caller to review and commit repository changes."
+      "change_note": "Version 6 adds an integrated cycle planner to combine input routing with task/context proposal preconditions. It remains pure logic: no persistence, commit, authentication, or external side effect."
     },
     {
       "context_id": "ctx-scs-repository-demo",
@@ -69,7 +71,7 @@
       "title": "Repository engineering swarm demonstrator",
       "purpose": "Use the repository's real source files, Git history, metadata, specs, and tests to exercise context-state workflows without a backend.",
       "lifecycle_status": "active",
-      "version": 5,
+      "version": 6,
       "relationships": [
         {
           "type": "depends_on",
@@ -94,13 +96,15 @@
         "README.md",
         "spec/architecture.md",
         "spec/swarm-operating-model.md",
-        "tests/"
+        "tests/",
+        "src/scs/cycle.py",
+        "tests/test_swarm_cycle.py"
       ],
       "open_questions": [
         "Verify CI and accept the grouped-change workflow only with exact evidence.",
         "Use new real inputs to improve prioritization, conflict handling, and downstream invalidation."
       ],
-      "change_note": "Version 5 records the source-backed repository inventory/dependency map, capability matrix, and successful grouped validation commit. Current phase remains repository-native."
+      "change_note": "Version 6 records the active implementation/test cycle for the repository-native planner using the committed registry as a caller-supplied snapshot."
     },
     {
       "context_id": "ctx-scs-backend-decision",
@@ -524,10 +528,10 @@
     },
     {
       "work_item_id": "SCS-MATURE-009",
-      "version": 1,
+      "version": 2,
       "kind": "cycle_orchestration",
       "title": "Integrate intake routing and state-transition planning into a bounded swarm-cycle planner",
-      "status": "ready",
+      "status": "in_progress",
       "requested_by": "swarm_operating_model",
       "source_refs": [
         "spec/swarm-operating-model.md",
@@ -565,8 +569,12 @@
         "tests/test_swarm_cycle.py",
         "GitHub Actions run for the exact resulting commit"
       ],
-      "attempts": 0,
-      "blocked_reason": null
+      "attempts": 1,
+      "blocked_reason": null,
+      "last_outcome": "The integrated pure cycle planner and tests are staged in the current change. It consumes a normalized input and registry snapshot, applies routing and preconditions, and returns an uncommitted proposal or blocker. CI is pending.",
+      "history_refs": [
+        "base-commit:625797168fa27efe90e1d1b39828aca7a2636aea"
+      ]
     }
   ],
   "policy_refs": [
@@ -576,6 +584,6 @@
     "spec/acceptance.md",
     "swarm/CYCLE.md"
   ],
-  "last_reconciled_commit": "8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f",
-  "change_note": "Registry v5 reconciles the successful grouped CI result: repository inventory/dependency evidence, state transition behavior, schema alignment, capability boundaries, and grouped commits. Next work focuses on an integrated bounded cycle planner."
+  "last_reconciled_commit": "625797168fa27efe90e1d1b39828aca7a2636aea",
+  "change_note": "Registry v6 begins the bounded-cycle planner task on top of the validated base tree. No backend or persistent runtime was introduced."
 }
