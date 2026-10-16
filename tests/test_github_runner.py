@@ -112,6 +112,57 @@ class GitHubSnapshotRunnerTests(unittest.TestCase):
         self.assertEqual(workflow_plan["proposals"], [])
         self.assertEqual(workflow_plan["input_record_proposal"]["input_record"]["normalized_claims"], [])
 
+    def test_captured_source_snapshot_runs_idempotently(self):
+        snapshot_record = json.loads((ROOT / "swarm/sources/github-snapshot-cycle-0006.json").read_text())
+        registry_record = json.loads((ROOT / "tests/fixtures/registry-source-cycle-0006.json").read_text())
+        self.assertEqual(snapshot_record["base_commit"], registry_record["source_commit"])
+        self.assertEqual(snapshot_record["base_registry_version"], registry_record["registry"]["registry_version"])
+        self.assertEqual(snapshot_record["source_snapshot"]["branch_head_sha"], snapshot_record["base_commit"])
+
+        snapshot_schema = json.loads((ROOT / "schemas/github-source-snapshot.schema.json").read_text())
+        snapshot_errors = list(Draft202012Validator(snapshot_schema, format_checker=FormatChecker()).iter_errors(snapshot_record))
+        self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in snapshot_errors])
+
+        prior_records = [json.loads((ROOT / "swarm/inputs/IN-SCS-0001-operating-phase.json").read_text())]
+        kwargs = {
+            "base_commit": snapshot_record["base_commit"],
+            "repo_full_name": snapshot_record["repo_full_name"],
+            "observed_at": snapshot_record["captured_at"][:10],
+            "source_snapshot": snapshot_record["source_snapshot"],
+            "registry_snapshot": registry_record["registry"],
+            "prior_input_records": prior_records,
+        }
+        batch = plan_github_observation_batch(cycle_id="SCS-CYCLE-0006-live-snapshot", **kwargs)
+        self.assertFalse(batch["committed"])
+        self.assertEqual(batch["input_count"], 4)
+        self.assertEqual(batch["summary"]["input_records_proposed"], 4)
+        self.assertEqual(batch["summary"]["state_change_proposals"], 1)
+        self.assertEqual(batch["summary"]["proposed"], 1)
+
+        input_schema = json.loads((ROOT / "schemas/input-record.schema.json").read_text())
+        new_records = []
+        for plan in batch["plans"]:
+            proposal = plan["input_record_proposal"]
+            self.assertIsNotNone(proposal)
+            record = proposal["input_record"]
+            errors = list(Draft202012Validator(input_schema, format_checker=FormatChecker()).iter_errors(record))
+            self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+            new_records.append(record)
+
+        issue_record = next(r for r in new_records if r["source_kind"] == "issue_or_pull_request")
+        self.assertIn("zero entries", " ".join(c["text"] for c in issue_record["normalized_claims"]))
+        workflow_plan = next(p for p in batch["plans"] if p["input_ref"]["source_kind"] == "test_or_workflow_result")
+        self.assertEqual(workflow_plan["plan_status"], "proposed")
+        self.assertEqual(workflow_plan["proposals"][0]["proposed_status"], "review")
+        self.assertTrue(all(p["external_actions"] == [] for p in batch["plans"]))
+
+        replay = plan_github_observation_batch(cycle_id="SCS-CYCLE-0006-replay", **{
+            **kwargs, "prior_input_records": prior_records + new_records
+        })
+        self.assertEqual(replay["summary"]["input_records_proposed"], 0)
+        self.assertEqual(replay["summary"]["duplicate_noop"], 4)
+        self.assertEqual(replay["summary"]["state_change_proposals"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

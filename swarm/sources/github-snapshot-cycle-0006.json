@@ -1,0 +1,59 @@
+{
+  "schema_version": "scs.github-source-snapshot.v1",
+  "snapshot_id": "SRC-GH-2026-10-16-0006",
+  "captured_at": "2026-10-16T20:12:59Z",
+  "base_commit": "de6df318372ed9a009053a23d747f229c4ec2d53",
+  "base_registry_version": 9,
+  "repo_full_name": "Loofy147/Context-swarm",
+  "source_locators": {
+    "repository_metadata": "https://api.github.com/repos/Loofy147/Context-swarm",
+    "branch": "https://api.github.com/repos/Loofy147/Context-swarm/branches/main",
+    "latest_commit": "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=1",
+    "issues_query": "https://api.github.com/repos/Loofy147/Context-swarm/issues?state=all&per_page=30",
+    "workflow_run": "https://api.github.com/repos/Loofy147/Context-swarm/actions/runs/38960554903"
+  },
+  "limitations": [
+    "Dated captured API snapshot, not a live query on every test run.",
+    "Empty issues list only describes the specified endpoint/query and does not establish that tasks do not exist elsewhere.",
+    "The main branch was unprotected at capture time.",
+    "Tool visibility and successful reads do not grant access or write permission to other resources."
+  ],
+  "source_snapshot": {
+    "repository": {
+      "full_name": "Loofy147/Context-swarm",
+      "html_url": "https://github.com/Loofy147/Context-swarm",
+      "private": false,
+      "archived": false,
+      "default_branch": "main",
+      "updated_at": "2026-10-16T20:12:33Z"
+    },
+    "branch_head_sha": "de6df318372ed9a009053a23d747f229c4ec2d53",
+    "latest_commit": {
+      "sha": "de6df318372ed9a009053a23d747f229c4ec2d53",
+      "html_url": "https://github.com/Loofy147/Context-swarm/commit/de6df318372ed9a009053a23d747f229c4ec2d53",
+      "commit": {
+        "author": {
+          "name": "Loofy",
+          "email": "ebh.ceo213@gmail.com",
+          "date": "2026-10-16T20:12:27Z"
+        },
+        "committer": {
+          "name": "Loofy",
+          "email": "ebh.ceo213@gmail.com",
+          "date": "2026-10-16T20:12:27Z"
+        },
+        "message": "Reconcile GitHub source adapters and define fresh-snapshot ingestion task"
+      }
+    },
+    "issues_query": "state=all&per_page=30",
+    "issues": [],
+    "workflow_run": {
+      "id": 38960554903,
+      "head_sha": "de6df318372ed9a009053a23d747f229c4ec2d53",
+      "status": "completed",
+      "conclusion": "success",
+      "updated_at": "2026-10-16T20:12:43Z",
+      "html_url": "https://github.com/Loofy147/Context-swarm/actions/runs/38960554903"
+    }
+  }
+}
