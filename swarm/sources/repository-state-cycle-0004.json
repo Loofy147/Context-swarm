@@ -1,0 +1,79 @@
+{
+  "schema_version": "scs.repository-state-observation.v1",
+  "observation_id": "OBS-GITHUB-CONTEXT-SWARM-0002",
+  "observed_on": "2026-10-16",
+  "source_repository": "https://github.com/Loofy147/Context-swarm",
+  "reviewed_commit": "c139044989dd16f8582db4e26b02d6e7fae389d0",
+  "facts": [
+    {
+      "fact_id": "GH-STATE-001",
+      "status": "observed",
+      "claim": "Repository metadata.",
+      "value": {
+        "full_name": "Loofy147/Context-swarm",
+        "visibility": "public",
+        "archived": false,
+        "default_branch": "main"
+      },
+      "source_url": "https://api.github.com/repos/Loofy147/Context-swarm"
+    },
+    {
+      "fact_id": "GH-STATE-002",
+      "status": "observed",
+      "claim": "Default branch state.",
+      "value": {
+        "branch": "main",
+        "head_sha": "c139044989dd16f8582db4e26b02d6e7fae389d0",
+        "protected": false
+      },
+      "source_url": "https://api.github.com/repos/Loofy147/Context-swarm/branches/main"
+    },
+    {
+      "fact_id": "GH-STATE-003",
+      "status": "observed",
+      "claim": "Issues/pull-request endpoint response for state=all, per_page=30.",
+      "value": {
+        "returned_entries": 0,
+        "endpoint": "issues?state=all&per_page=30"
+      },
+      "source_url": "https://api.github.com/repos/Loofy147/Context-swarm/issues?state=all&per_page=30"
+    },
+    {
+      "fact_id": "GH-STATE-004",
+      "status": "observed",
+      "claim": "Recent commit page at observation time.",
+      "value": {
+        "requested_page_size": 10,
+        "returned_entries": 10,
+        "latest_commit": "c139044989dd16f8582db4e26b02d6e7fae389d0",
+        "latest_subject": "Add durable input capture proposals and bounded batch consumption"
+      },
+      "source_url": "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=10"
+    },
+    {
+      "fact_id": "GH-STATE-005",
+      "status": "verified",
+      "claim": "The bounded cycle planner, capture proposal, batch deduplication and current reference tests passed.",
+      "value": {
+        "workflow_run_id": 38958604867,
+        "conclusion": "success",
+        "tests_reported": 50,
+        "commit": "c139044989dd16f8582db4e26b02d6e7fae389d0"
+      },
+      "source_url": "https://github.com/Loofy147/Context-swarm/actions/runs/38958604867"
+    },
+    {
+      "fact_id": "GH-STATE-006",
+      "status": "accepted",
+      "claim": "Current phase remains repository-native maturation; no backend or deployment is part of this cycle.",
+      "value": true,
+      "source_url": "README.md"
+    }
+  ],
+  "limitations": [
+    "An empty issue endpoint response only describes that query, not other task sources.",
+    "The main branch is unprotected; procedural review is not server-enforced.",
+    "Observations are dated snapshots and live repository state may advance.",
+    "Tool-surface availability does not imply authorization for unrelated resources."
+  ]
+}
