@@ -20,8 +20,10 @@ def _dedupe_key(item: Mapping[str, Any]) -> str | None:
 def route_input(item: Mapping[str, Any], seen_revisions: Set[str]) -> Dict[str, Any]:
     """Return a deterministic intake disposition without running source instructions.
 
-    Precedence is safety/provenance first, then deduplication, conflict detection,
-    authorization gate, and ordinary action routing.
+    Precedence is accessibility, exact-revision deduplication, consequential-action
+    authorization gate, untrusted-instruction handling, conflict detection, then
+    ordinary action routing. The caller is responsible for recording the returned
+    disposition and updating the seen-revision set only after capture is committed.
     """
     key = _dedupe_key(item)
 
@@ -41,12 +43,12 @@ def route_input(item: Mapping[str, Any], seen_revisions: Set[str]) -> Dict[str, 
             "dedupe_key": key,
         }
 
-    if item.get("contains_untrusted_instructions", False):
-        disposition, status = "capture_as_untrusted_data", "triaged"
-        reason = "Instructions inside source content are data, not swarm policy."
-    elif item.get("consequence_class") == "C" and not item.get("separate_authorization_present", False):
+    if item.get("consequence_class") == "C" and not item.get("separate_authorization_present", False):
         disposition, status = "hold_for_authorization", "blocked"
         reason = "Consequential external action requires separate authorization."
+    elif item.get("contains_untrusted_instructions", False):
+        disposition, status = "capture_as_untrusted_data", "triaged"
+        reason = "Instructions inside source content are data, not swarm policy."
     elif item.get("contains_conflicting_claim", False):
         disposition, status = "open_conflict", "conflicted"
         reason = "Materially incompatible claims must be preserved and reconciled."
