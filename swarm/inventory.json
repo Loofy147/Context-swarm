@@ -1,0 +1,230 @@
+{
+  "schema_version": "scs.repository-inventory.v1",
+  "inventory_version": 1,
+  "reviewed_branch": "main",
+  "reviewed_tree_commit": "481fe14acada05c55cf08166c895c4440725f359",
+  "reviewed_at": "2026-10-16",
+  "review_scope": "All tracked files in the repository tree at reviewed_tree_commit.",
+  "items": [
+    {
+      "path": ".github/workflows/tests.yml",
+      "blob_sha": "7c20a11f240b6aea21bfb18339a40b5f195a4a7d",
+      "role": "validation",
+      "disposition": "current",
+      "reason": "Runs dependency-free reference and repository-state tests."
+    },
+    {
+      "path": "README.md",
+      "blob_sha": "9fef75145bae3a30a3bd69511100418f9e2df78e",
+      "role": "project entrypoint",
+      "disposition": "current",
+      "reason": "Defines repository-native maturation phase and states that production backend/runtime are deferred."
+    },
+    {
+      "path": "migrations/001_initial_postgres.sql",
+      "blob_sha": "2f19da0ca59736ae3a340d0c06ae310ba322f2a5",
+      "role": "database schema",
+      "disposition": "reference_only_deferred",
+      "reason": "Do not apply during current phase; preserve as a future-runtime design artifact pending review."
+    },
+    {
+      "path": "schemas/context-state.schema.json",
+      "blob_sha": "d94dea44b0c7a3fa4656347f4220b1d32f418c0f",
+      "role": "repository-native context state schema",
+      "disposition": "current",
+      "reason": "Defines context states used to populate the repository registry."
+    },
+    {
+      "path": "schemas/context.schema.json",
+      "blob_sha": "5ab1f06be9c5dd4f2e2181488eb82e135651f4f0",
+      "role": "future runtime context envelope",
+      "disposition": "reference_only_deferred",
+      "reason": "Separate from the current repository-native registry representation; align after model consolidation."
+    },
+    {
+      "path": "schemas/event.schema.json",
+      "blob_sha": "95ec6b1503323746458d8e0fb244d21776f91c0b",
+      "role": "future runtime event envelope",
+      "disposition": "reference_only_deferred",
+      "reason": "Conceptual event contract; current repository operations are recorded by Git commits and input/task state."
+    },
+    {
+      "path": "schemas/work-item.schema.json",
+      "blob_sha": "3532f27e20c0f82d9fa8451ab384b8f315bf4d8a",
+      "role": "work item schema",
+      "disposition": "current",
+      "reason": "Defines the durable work queue contract."
+    },
+    {
+      "path": "spec/acceptance.md",
+      "blob_sha": "b0c124c865f4dc8bf4bd3b743cffc81511ddd68b",
+      "role": "runtime release criteria",
+      "disposition": "needs_alignment",
+      "reason": "Current-phase acceptance tests are in CI; deployed-service gates remain future gates and should be explicitly labeled."
+    },
+    {
+      "path": "spec/architecture.md",
+      "blob_sha": "1e9843d5d86a255eddf213d2513e96fe4c4676c0",
+      "role": "architecture and invariants",
+      "disposition": "current_with_future_sections",
+      "reason": "Top-level addendum establishes repo-native phase; database/API/worker sections describe future runtime only."
+    },
+    {
+      "path": "spec/backend-decision.md",
+      "blob_sha": "84af4a95ebc3bda78b1bab9ad34b589e0a221275",
+      "role": "deployment decision",
+      "disposition": "deferred",
+      "reason": "Explicitly says no backend selection or provisioning now."
+    },
+    {
+      "path": "spec/openapi.yaml",
+      "blob_sha": "7fe98ec6e8e43e41ebeaf2bc3e893eee3aa3a2cf",
+      "role": "future HTTP interface",
+      "disposition": "reference_only_deferred",
+      "reason": "No API server is being built in current phase."
+    },
+    {
+      "path": "spec/swarm-operating-model.md",
+      "blob_sha": "33e82e49edebc182f6055ba562981383e000ffc6",
+      "role": "swarm workflow contract",
+      "disposition": "current",
+      "reason": "Defines intake, task/context transitions, version changes, self-improvement, and implementation-readiness gate."
+    },
+    {
+      "path": "src/scs/__init__.py",
+      "blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "role": "package marker",
+      "disposition": "current",
+      "reason": "No runtime behavior."
+    },
+    {
+      "path": "src/scs/intake.py",
+      "blob_sha": "6c2cc70de90774c5a357982fddcb600c1317f12e",
+      "role": "intake rule reference",
+      "disposition": "current_reference_logic",
+      "reason": "Pure deterministic routing decisions; does not fetch, persist, authenticate, or execute external actions."
+    },
+    {
+      "path": "src/scs/reference_model.py",
+      "blob_sha": "6c2cc70de90774c5a357982fddcb600c1317f12e",
+      "role": "future runtime reference model",
+      "disposition": "reference_only",
+      "reason": "In-memory illustrative semantics; not persistent state or production authorization."
+    },
+    {
+      "path": "swarm/contexts/README.md",
+      "blob_sha": null,
+      "role": "context dossier convention",
+      "disposition": "current",
+      "reason": "Defines how detailed context dossiers should be recorded."
+    },
+    {
+      "path": "swarm/inputs/IN-SCS-0001-operating-phase.json",
+      "blob_sha": null,
+      "role": "captured input",
+      "disposition": "current",
+      "reason": "Stores user-directed operating requirements as normalized durable input."
+    },
+    {
+      "path": "swarm/inputs/README.md",
+      "blob_sha": null,
+      "role": "input capture convention",
+      "disposition": "current",
+      "reason": "Defines intake record storage and provenance rules."
+    },
+    {
+      "path": "swarm/intake-policy.json",
+      "blob_sha": "3651f658e3e2235824ab9af1a307ddfc701c4474",
+      "role": "intake policy",
+      "disposition": "current",
+      "reason": "Defines source kinds, steps, risk gates, and non-negotiable intake rules."
+    },
+    {
+      "path": "swarm/registry.json",
+      "blob_sha": "1f2d107db4c1ae2cf4b7e30ce829fdcaed807b4b",
+      "role": "context and work registry",
+      "disposition": "current_needs_state_update",
+      "reason": "Seed records exist; next update should record inventory evidence and accepted task outcomes."
+    },
+    {
+      "path": "tests/fixtures/intake-scenarios.json",
+      "blob_sha": null,
+      "role": "intake scenarios",
+      "disposition": "current",
+      "reason": "Replayable examples cover new task, duplicate, conflict, inaccessible source, untrusted instructions, verified derived update, and authorization gate."
+    },
+    {
+      "path": "tests/test_contract_files.py",
+      "blob_sha": "2cb4e672e1b5e027da03e14fd00245bee16efd5a",
+      "role": "contract structural tests",
+      "disposition": "current",
+      "reason": "Checks selected schema, SQL, and API file structure."
+    },
+    {
+      "path": "tests/test_reference_model.py",
+      "blob_sha": "13df52f25fc1c9b11b6ebcfb7ab28a9b24f18e7a",
+      "role": "reference model tests",
+      "disposition": "current_reference_tests",
+      "reason": "Exercises in-memory versioning and approval semantics only."
+    },
+    {
+      "path": "tests/test_swarm_intake.py",
+      "blob_sha": "13df52f25fc1c9b11b6ebcfb7ab28a9b24f18e7a",
+      "role": "intake behavior tests",
+      "disposition": "current",
+      "reason": "Tests deterministic routing fixtures and registry relationships."
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "INV-001",
+      "severity": "medium",
+      "paths": [
+        "migrations/001_initial_postgres.sql",
+        "spec/openapi.yaml",
+        "spec/backend-decision.md"
+      ],
+      "finding": "Earlier repository artifacts describe a future database/API architecture, while the user-directed current phase is repository-native and backend-free.",
+      "disposition": "Keep the database/API artifacts as deferred reference material and clearly label them; do not apply or deploy them now."
+    },
+    {
+      "finding_id": "INV-002",
+      "severity": "medium",
+      "paths": [
+        "schemas/context.schema.json",
+        "schemas/context-state.schema.json",
+        "swarm/registry.json"
+      ],
+      "finding": "The future runtime context envelope and the repository-native context-state registry serve related but non-identical purposes.",
+      "disposition": "Keep separate while the repository-native state model is exercised; consolidate only after concrete cases identify a stable shared core."
+    },
+    {
+      "finding_id": "INV-003",
+      "severity": "low",
+      "paths": [
+        "spec/acceptance.md",
+        "tests/test_swarm_intake.py"
+      ],
+      "finding": "Existing acceptance document emphasizes future runtime release gates; new intake tests validate only reference routing and structural relationships.",
+      "disposition": "Label future runtime gates separately from present repository-native acceptance tests."
+    },
+    {
+      "finding_id": "INV-004",
+      "severity": "low",
+      "paths": [
+        "src/scs/intake.py",
+        "src/scs/reference_model.py"
+      ],
+      "finding": "Reference logic is not a source-fetching, persistent, autonomous service.",
+      "disposition": "Accurately describe as callable decision logic; keep source adapters and state changes explicitly controlled."
+    }
+  ],
+  "test_evidence": [
+    {
+      "run_url": "https://github.com/Loofy147/Context-swarm/actions/runs/38954032510",
+      "commit": "481fe14acada05c55cf08166c895c4440725f359",
+      "result": "success",
+      "scope": "GitHub Actions dependency-free test workflow, including intake fixture tests."
+    }
+  ]
+}
