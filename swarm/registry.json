@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 7,
+  "registry_version": 8,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -36,7 +36,7 @@
       "title": "Input and task consumption protocol",
       "purpose": "Specify and test how information enters, is normalized, related, prioritized, processed, verified, and recorded.",
       "lifecycle_status": "accepted",
-      "version": 7,
+      "version": 8,
       "relationships": [
         {
           "type": "depends_on",
@@ -59,13 +59,15 @@
         "src/scs/cycle.py",
         "tests/test_swarm_cycle.py",
         "schemas/cycle-plan.schema.json",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056",
+        "schemas/batch-cycle-plan.schema.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38958604867"
       ],
       "open_questions": [
         "Validate exact source/adapter capabilities as concrete tasks arise.",
         "Revisit schema consolidation only when real examples justify a shared core."
       ],
-      "change_note": "Version 7 records the integrated cycle-plan contract. Its initial CI run found a test fixture mismatch; the failure remains recorded while the fixture and output schema are corrected."
+      "change_note": "Version 8 records durable input-capture proposals, batch consumption of up to 100 items, within-batch deduplication, and 50 passing tests. Plans remain uncommitted until caller review/commit."
     },
     {
       "context_id": "ctx-scs-repository-demo",
@@ -73,7 +75,7 @@
       "title": "Repository engineering swarm demonstrator",
       "purpose": "Use the repository's real source files, Git history, metadata, specs, and tests to exercise context-state workflows without a backend.",
       "lifecycle_status": "active",
-      "version": 7,
+      "version": 8,
       "relationships": [
         {
           "type": "depends_on",
@@ -102,13 +104,17 @@
         "src/scs/cycle.py",
         "tests/test_swarm_cycle.py",
         "schemas/cycle-plan.schema.json",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056",
+        "swarm/source-catalog.json",
+        "swarm/sources/connected-tool-surface.json",
+        "swarm/sources/repository-state-cycle-0004.json",
+        "swarm/cycles/0004-batch-input-capture-and-source-catalog.md"
       ],
       "open_questions": [
         "Verify CI and accept the grouped-change workflow only with exact evidence.",
         "Use new real inputs to improve prioritization, conflict handling, and downstream invalidation."
       ],
-      "change_note": "Version 7 records cycle planner implementation and first CI feedback; state remains in maturation and no backend is in scope."
+      "change_note": "Version 8 records the latest tested cycle planner, source catalog, session-bound tool surface and a refreshed tree inventory. No backend was introduced."
     },
     {
       "context_id": "ctx-scs-backend-decision",
@@ -137,7 +143,7 @@
       "title": "Observed GitHub state for Context-swarm",
       "purpose": "Preserve source-backed metadata about the repository's visibility, default branch, branch protection, issue listing, commit history, and CI run.",
       "lifecycle_status": "accepted",
-      "version": 4,
+      "version": 5,
       "relationships": [
         {
           "type": "derived_from",
@@ -152,13 +158,17 @@
         "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=30",
         "https://github.com/Loofy147/Context-swarm/actions/runs/38955118809",
         "https://github.com/Loofy147/Context-swarm/actions/runs/38956067934",
-        "https://github.com/Loofy147/Context-swarm/commit/8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f"
+        "https://github.com/Loofy147/Context-swarm/commit/8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f",
+        "swarm/sources/repository-state-cycle-0004.json",
+        "swarm/sources/connected-tool-surface.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38958604867",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38959142167"
       ],
       "open_questions": [
         "Refresh source observations on material revisions and mark old observations stale.",
         "The main branch is not protected; procedural review is not server-enforced."
       ],
-      "change_note": "Version 4 appends successful CI evidence for the grouped schema/capability/inventory update; metadata observations remain time-bounded."
+      "change_note": "Version 5 links current repository metadata, session-bound tool definitions, and verified workflow results; all observations remain time-bounded."
     },
     {
       "context_id": "ctx-scs-capabilities",
@@ -166,7 +176,7 @@
       "title": "Source and operation capability boundaries",
       "purpose": "Define which reads, repository writes, connected-service operations, and privileged actions may be considered in a specific operator run.",
       "lifecycle_status": "accepted",
-      "version": 2,
+      "version": 3,
       "relationships": [
         {
           "type": "depends_on",
@@ -181,12 +191,51 @@
         "swarm/capability-matrix.json",
         "schemas/capability-matrix.schema.json",
         "spec/swarm-operating-model.md",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38956067934"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956067934",
+        "swarm/source-catalog.json",
+        "swarm/sources/connected-tool-surface.json",
+        "schemas/source-catalog.schema.json",
+        "schemas/tool-surface-observation.schema.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38959142167"
       ],
       "open_questions": [
         "For each future non-repository source, verify its exact current tool action, resource scope and read/write permission before processing a task."
       ],
-      "change_note": "Version 2 accepted after the capability matrix schema and no-universal-access/read-write separation tests passed in GitHub Actions."
+      "change_note": "Version 3 records all tool definitions surfaced in this run, grouped by namespace, while explicitly stating that resource access/authorization is not confirmed."
+    },
+    {
+      "context_id": "ctx-scs-source-catalog",
+      "context_type": "source_catalog",
+      "title": "Source catalog and operator-visible integration surface",
+      "purpose": "Define the observed repository sources, revision strategies, routing, refresh rules, and the session-bound exposed tool surface without implying universal resource access.",
+      "lifecycle_status": "accepted",
+      "version": 1,
+      "relationships": [
+        {
+          "type": "depends_on",
+          "target_context_id": "ctx-scs-capabilities"
+        },
+        {
+          "type": "depends_on",
+          "target_context_id": "ctx-scs-intake"
+        },
+        {
+          "type": "references",
+          "target_context_id": "ctx-scs-repository-observation"
+        }
+      ],
+      "evidence_refs": [
+        "swarm/source-catalog.json",
+        "swarm/sources/connected-tool-surface.json",
+        "swarm/sources/repository-state-cycle-0004.json",
+        "schemas/source-catalog.schema.json",
+        "schemas/tool-surface-observation.schema.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38959142167"
+      ],
+      "open_questions": [
+        "Build pure source adapters for repository metadata, commit, issue/PR and Actions records so fetched source objects become normalized input envelopes."
+      ],
+      "change_note": "Initial source catalog accepted after schema validation and successful CI. Tool catalog is a dated action-surface observation only."
     }
   ],
   "work_items": [
@@ -510,7 +559,8 @@
         "ctx-scs-intake"
       ],
       "dependencies": [
-        "SCS-MATURE-007"
+        "SCS-MATURE-007",
+        "SCS-MATURE-010"
       ],
       "priority": {
         "level": "medium",
@@ -532,10 +582,10 @@
     },
     {
       "work_item_id": "SCS-MATURE-009",
-      "version": 3,
+      "version": 4,
       "kind": "cycle_orchestration",
       "title": "Integrate intake routing and state-transition planning into a bounded swarm-cycle planner",
-      "status": "in_progress",
+      "status": "accepted",
       "requested_by": "swarm_operating_model",
       "source_refs": [
         "spec/swarm-operating-model.md",
@@ -572,15 +622,101 @@
         "src/scs/cycle.py",
         "tests/test_swarm_cycle.py",
         "schemas/cycle-plan.schema.json",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056"
+        "schemas/batch-cycle-plan.schema.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38958604867"
       ],
-      "attempts": 2,
+      "attempts": 3,
       "blocked_reason": null,
-      "last_outcome": "Initial CI run 38956865056 ran 43 tests: 42 passed, one cycle task-transition test failed because it targeted SCS-MATURE-009, which the same registry had already advanced to in_progress. The fixture now targets SCS-MATURE-008 (ready), uses the exact registry snapshot commit, and adds output-schema validation. Follow-up CI is pending.",
+      "last_outcome": "Accepted: bounded cycle planning combines intake routing and versioned task/context proposals; each non-duplicate input also gets a schema-valid durable input-record proposal. Batch planner processes up to 100 inputs, detects duplicates against prior and earlier-in-batch records, and blocks multiple same-context updates instead of silently composing them. CI run 38958604867 passed all 50 tests.",
       "history_refs": [
         "base-commit:625797168fa27efe90e1d1b39828aca7a2636aea",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056",
+        "https://github.com/Loofy147/Context-swarm/commit/c139044989dd16f8582db4e26b02d6e7fae389d0",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38958604867"
       ]
+    },
+    {
+      "work_item_id": "SCS-MATURE-010",
+      "version": 1,
+      "kind": "source_catalog_population",
+      "title": "Catalog observed repository sources and the current operator-visible tool surface",
+      "status": "accepted",
+      "requested_by": "swarm_observed_gap",
+      "source_refs": [
+        "swarm/source-catalog.json",
+        "swarm/sources/connected-tool-surface.json",
+        "swarm/sources/repository-state-cycle-0004.json"
+      ],
+      "target_context_ids": [
+        "ctx-scs-source-catalog",
+        "ctx-scs-capabilities",
+        "ctx-scs-repository-observation"
+      ],
+      "dependencies": [
+        "SCS-MATURE-009"
+      ],
+      "priority": {
+        "level": "high",
+        "rationale": "The swarm needs a source registry and exact tool inventory to route new data while keeping availability distinct from permission."
+      },
+      "acceptance_criteria": [
+        "Known repository metadata/tree/commit/issues/Actions endpoints have explicit locators and revision strategies.",
+        "The currently surfaced action names are captured by namespace with date and limitations.",
+        "The catalog never equates tool visibility with resource access or approval.",
+        "Source catalog and tool-surface observations pass their JSON Schemas in CI."
+      ],
+      "required_evidence": [
+        "swarm/source-catalog.json",
+        "swarm/sources/connected-tool-surface.json",
+        "schemas/source-catalog.schema.json",
+        "schemas/tool-surface-observation.schema.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38959142167"
+      ],
+      "attempts": 1,
+      "blocked_reason": null,
+      "last_outcome": "Accepted: 1,098 tool definitions were captured across 27 integration namespaces plus 11 non-MCP tools; current source endpoints, revision strategy and permission boundaries are recorded. Schema/structure CI passed."
+    },
+    {
+      "work_item_id": "SCS-MATURE-011",
+      "version": 1,
+      "kind": "source_adapter",
+      "title": "Build pure GitHub observation adapters and consume live repository evidence through the batch planner",
+      "status": "ready",
+      "requested_by": "swarm_operating_model",
+      "source_refs": [
+        "swarm/source-catalog.json",
+        "swarm/sources/repository-state-cycle-0004.json",
+        "swarm/sources/connected-tool-surface.json",
+        "src/scs/cycle.py",
+        "schemas/input-record.schema.json"
+      ],
+      "target_context_ids": [
+        "ctx-scs-source-catalog",
+        "ctx-scs-intake",
+        "ctx-scs-repository-demo"
+      ],
+      "dependencies": [
+        "SCS-MATURE-009",
+        "SCS-MATURE-010"
+      ],
+      "priority": {
+        "level": "high",
+        "rationale": "The catalog identifies sources and the planner consumes normalized inputs; pure adapters are the missing link to turn actual repository/API results into task/context proposals reproducibly."
+      },
+      "acceptance_criteria": [
+        "Pure normalizers convert repository metadata, commits, issues/PRs, and workflow runs into input envelopes without claiming unsupported facts.",
+        "Every normalized record preserves exact source URL and revision/identity where available.",
+        "Empty issues response remains a scoped observation, not a claim that the swarm has no tasks.",
+        "Source-read errors become blocked records without fabricated source content.",
+        "Tests pass real-shaped fixture objects through adapters and plan_batch; no network fetches or side effects occur in adapter code."
+      ],
+      "required_evidence": [
+        "src/scs/adapters/github.py",
+        "tests/test_github_adapter.py",
+        "GitHub Actions run for the exact resulting commit"
+      ],
+      "attempts": 0,
+      "blocked_reason": null
     }
   ],
   "policy_refs": [
@@ -588,8 +724,11 @@
     "swarm/capability-matrix.json",
     "spec/swarm-operating-model.md",
     "spec/acceptance.md",
-    "swarm/CYCLE.md"
+    "swarm/CYCLE.md",
+    "swarm/source-catalog.json",
+    "schemas/source-catalog.schema.json",
+    "schemas/tool-surface-observation.schema.json"
   ],
-  "last_reconciled_commit": "beb01053051f9b4700acdadfc89970cc1b90f0a2",
-  "change_note": "Registry v7 retains the failed first CI result and records the fixture correction, exact snapshot binding, and cycle-plan output schema work. No test is marked complete until rerun evidence exists."
+  "last_reconciled_commit": "6229ddd03f5ced292c4271335f82f18080f5634a",
+  "change_note": "Registry v8 reconciles successful cycle-plan and source-catalog validation evidence; the backend remains deferred. Next high-priority work is pure GitHub source adaptation."
 }

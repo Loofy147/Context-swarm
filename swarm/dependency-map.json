@@ -1,12 +1,11 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 6,
-  "reviewed_base_commit": "beb01053051f9b4700acdadfc89970cc1b90f0a2",
+  "map_version": 7,
+  "reviewed_base_commit": "6229ddd03f5ced292c4271335f82f18080f5634a",
   "derived_from": [
-    "repository tree at beb01053051f9b4700acdadfc89970cc1b90f0a2",
-    "swarm/registry.json",
-    "swarm/intake-policy.json",
-    "tests and source files at the reviewed commit"
+    "exact tracked file tree at 6229ddd03f5ced292c4271335f82f18080f5634a",
+    "current source catalog and tool-surface observation",
+    "intake/cycle implementation and tests at reviewed commit"
   ],
   "note": "Edges are typed and evidence-based. Explicit path references and test imports are stronger than semantic design relationships, which are labeled as contract relationships.",
   "edges": [
@@ -415,6 +414,62 @@
       "relationship": "records_failed_test_evidence",
       "basis": "work_item_SCS_MATURE_009_history",
       "confidence": "high"
+    },
+    {
+      "source_path": "swarm/source-catalog.json",
+      "target_path": "schemas/source-catalog.schema.json",
+      "relationship": "validated_by_schema",
+      "basis": "source_catalog_test",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/sources/connected-tool-surface.json",
+      "target_path": "schemas/tool-surface-observation.schema.json",
+      "relationship": "validated_by_schema",
+      "basis": "tool_surface_test",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/source-catalog.json",
+      "relationship": "validates_source_catalog",
+      "basis": "explicit_test_read",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/sources/connected-tool-surface.json",
+      "relationship": "validates_tool_surface_observation",
+      "basis": "explicit_test_read",
+      "confidence": "high"
+    },
+    {
+      "source_path": "src/scs/cycle.py",
+      "target_path": "schemas/input-record.schema.json",
+      "relationship": "produces_input_record_proposal",
+      "basis": "schema_contract_test",
+      "confidence": "high"
+    },
+    {
+      "source_path": "src/scs/cycle.py",
+      "target_path": "schemas/batch-cycle-plan.schema.json",
+      "relationship": "batch_output_contract",
+      "basis": "schema_contract_test",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/source-catalog.json",
+      "relationship": "source_catalog_context_evidence",
+      "basis": "ctx_scs_source_catalog",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/cycles/0004-batch-input-capture-and-source-catalog.md",
+      "relationship": "cycle_evidence",
+      "basis": "registry_context_and_work_item_refs",
+      "confidence": "high"
     }
   ],
   "limitations": [
@@ -423,6 +478,7 @@
     "Capability targets added in the current change set are verified against the resulting tree.",
     "This map version is reconciled against commit 8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f; changes committed afterward may make it stale.",
     "Cycle planner and test edges added in v5; it generates proposals only and does not execute persistence or external side effects.",
-    "Map v6 includes the cycle-plan output contract; refresh after the corrected test run."
+    "Map v6 includes the cycle-plan output contract; refresh after the corrected test run.",
+    "Map v7 is reviewed at 6229ddd03f5ced292c4271335f82f18080f5634a and adds source-catalog, tool-surface, durable capture and batch-plan relationships. Files changed by the enclosing metadata commit require a fresh tree snapshot on the next cycle."
   ]
 }

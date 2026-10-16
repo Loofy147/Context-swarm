@@ -66,3 +66,12 @@ If the branch head or expected context version changes during work, stop before 
 ## Scope boundary
 
 This runbook coordinates work in the repository and through authorized connected tools. It does not create continuous background execution, universal integration access, production authentication, or transactional writes to external services. Consequential external mutations require a separate permission/approval check.
+
+
+## Input capture proposals and batch planning
+
+The planner now returns an `input_record_proposal` for every non-duplicate input with adequate provenance, including inputs whose source is inaccessible or whose requested action is blocked. The proposed record preserves the locator/access boundary and records zero claims when source content was not available. A duplicate returns a no-op and does not propose a second record.
+
+For multiple sources in one bounded cycle, use `plan_batch` with the same explicit base commit and registry snapshot. The batch limit is 100 items. It builds its duplicate index from existing captured records and from input records proposed earlier in the same batch. Batch plans remain uncommitted; the caller must validate and commit accepted proposals. Multiple context updates targeting the same context are not silently merged: later conflicting proposals are blocked for explicit merge/rebase.
+
+Each record must preserve source identity/revision, observed date, capture actor, trust status, access boundary, disposition, and affected context/task links. Missing provenance produces a `needs_information` result rather than a fabricated input record. The tool/source catalog guides discovery but never grants access.
