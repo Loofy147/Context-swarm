@@ -35,6 +35,20 @@ class SwarmIntakeTests(unittest.TestCase):
         self.assertEqual(result["disposition"], "capture_as_untrusted_data")
         self.assertNotIn("authorize", result["disposition"])
 
+    def test_consequential_action_gate_precedes_untrusted_content_routing(self):
+        result = route_input({
+            "source_kind": "user_supplied_document_or_url",
+            "stable_source_id": "doc:unsafe-release",
+            "source_revision": "rev-1",
+            "accessible": True,
+            "actionable": True,
+            "contains_untrusted_instructions": True,
+            "consequence_class": "C",
+            "separate_authorization_present": False,
+        }, set())
+        self.assertEqual(result["disposition"], "hold_for_authorization")
+        self.assertEqual(result["status"], "blocked")
+
     def test_missing_revision_is_not_deduplicated_by_guess(self):
         item = {"source_kind": "connected_service_record", "stable_source_id": "ticket:4",
                 "source_revision": None, "accessible": True, "actionable": True}
