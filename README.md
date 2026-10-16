@@ -23,13 +23,17 @@ The swarm is primarily a state-and-transition system. It consumes data and task 
 6. An accepted change updates the relevant repository records through a versioned Git commit. High-consequence external actions remain separately gated.
 7. Later inputs can stale, challenge, supersede, or improve earlier versions without erasing history.
 
-The protocol is specified in [spec/swarm-operating-model.md](spec/swarm-operating-model.md). Current repository state is in [swarm/registry.json](swarm/registry.json), and the intake policy is in [swarm/intake-policy.json](swarm/intake-policy.json).
+The protocol is specified in [spec/swarm-operating-model.md](spec/swarm-operating-model.md), with an operator-facing [cycle runbook](swarm/CYCLE.md). Current state is in [swarm/registry.json](swarm/registry.json), intake rules in [swarm/intake-policy.json](swarm/intake-policy.json), and the artifact audit in [swarm/inventory.json](swarm/inventory.json). Source observations are under [swarm/sources/](swarm/sources/); individual cycle records are under [swarm/cycles/](swarm/cycles/).
 
 ## Repository map
 
 - `spec/swarm-operating-model.md` — intake, routing, work-item lifecycle, context-state lifecycle, update rules, and promotion gates.
 - `swarm/registry.json` — seed registry and initial task queue for the repository-native phase.
 - `swarm/intake-policy.json` — deterministic intake and routing rules.
+- `swarm/CYCLE.md` — step-by-step operator runbook for each bounded swarm cycle.
+- `swarm/inventory.json` — source-backed repository inventory and recorded alignment findings.
+- `swarm/sources/` — source observations, with limits and provenance.
+- `swarm/cycles/` — durable reports of actual swarm cycles, inputs consumed, evidence, test results, and follow-up work.
 - `schemas/context.schema.json`, `schemas/event.schema.json`, `schemas/work-item.schema.json`, `schemas/context-state.schema.json` — state contracts.
 - `spec/architecture.md` — architecture and invariants; infrastructure-dependent sections are future-runtime design, not current work requirements.
 - `spec/openapi.yaml`, `migrations/`, and `src/scs/reference_model.py` — provisional reference artifacts only; they do not imply an API, database, or service should be built now.
