@@ -1,9 +1,10 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 1,
-  "reviewed_base_commit": "313cec308846ad4fa9172855ddf38b85ed56fb75",
+  "map_version": 2,
+  "reviewed_base_commit": "1b9dd436b4b9c1c66f1a0819a94ceda46442203c",
   "derived_from": [
     "swarm/inventory.json",
+    "swarm/sources/github-repository-state.json",
     "swarm/sources/recent-commit-history.json",
     "repository file contents at reviewed_base_commit"
   ],
@@ -197,11 +198,88 @@
       "relationship": "captured_from",
       "basis": "source_locator",
       "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/context-state.schema.json",
+      "relationship": "validates_registry_context_records",
+      "basis": "direct_schema_validation",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/work-item.schema.json",
+      "relationship": "validates_registry_work_items",
+      "basis": "direct_schema_validation",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/registry.schema.json",
+      "relationship": "validates_canonical_registry",
+      "basis": "direct_schema_validation",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/input-record.schema.json",
+      "relationship": "validates_captured_input",
+      "basis": "direct_schema_validation",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/intake-policy.schema.json",
+      "relationship": "validates_intake_policy",
+      "basis": "direct_schema_validation",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/dependency-map.json",
+      "relationship": "checks_dependency_map_targets",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": ".github/workflows/tests.yml",
+      "target_path": "requirements-dev.txt",
+      "relationship": "installs_JSON_Schema_validator",
+      "basis": "explicit_workflow_command",
+      "confidence": "high"
+    },
+    {
+      "source_path": "schemas/registry.schema.json",
+      "target_path": "schemas/context-state.schema.json",
+      "relationship": "references_context_schema",
+      "basis": "JSON_Schema_ref",
+      "confidence": "high"
+    },
+    {
+      "source_path": "schemas/registry.schema.json",
+      "target_path": "schemas/work-item.schema.json",
+      "relationship": "references_work_item_schema",
+      "basis": "JSON_Schema_ref",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/sources/recent-commit-history.json",
+      "relationship": "repository_history_evidence",
+      "basis": "planned_registry_link",
+      "confidence": "medium"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/dependency-map.json",
+      "relationship": "repository_dependency_evidence",
+      "basis": "planned_registry_link",
+      "confidence": "medium"
     }
   ],
   "limitations": [
     "This is a repository artifact dependency map, not a runtime call graph.",
     "Semantic relationships are hypotheses for impact analysis and must be revalidated when files change.",
-    "The map is a snapshot and can become stale after later commits."
+    "This map is a versioned snapshot; the reviewed_base_commit identifies the source tree from which the map was refreshed."
   ]
 }
