@@ -108,22 +108,22 @@ class SwarmIntakeTests(unittest.TestCase):
 
         registry_data = json.loads((ROOT / "swarm/registry.json").read_text())
         reg_schema = schemas["schemas/registry.schema.json"]
-        errors = list(Draft202012Validator(reg_schema, registry=registry, format_checker=format_checker).iter_errors(registry_data))
+        errors = list(Draft202012Validator(reg_schema, registry=registry, format_checker=FormatChecker()).iter_errors(registry_data))
         self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
 
         input_data = json.loads((ROOT / "swarm/inputs/IN-SCS-0001-operating-phase.json").read_text())
         input_schema = schemas["schemas/input-record.schema.json"]
-        errors = list(Draft202012Validator(input_schema, format_checker=format_checker).iter_errors(input_data))
+        errors = list(Draft202012Validator(input_schema, format_checker=FormatChecker()).iter_errors(input_data))
         self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
 
         policy = json.loads((ROOT / "swarm/intake-policy.json").read_text())
         policy_schema = schemas["schemas/intake-policy.schema.json"]
-        errors = list(Draft202012Validator(policy_schema, format_checker=format_checker).iter_errors(policy))
+        errors = list(Draft202012Validator(policy_schema, format_checker=FormatChecker()).iter_errors(policy))
         self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
 
         matrix = json.loads((ROOT / "swarm/capability-matrix.json").read_text())
         matrix_schema = schemas["schemas/capability-matrix.schema.json"]
-        errors = list(Draft202012Validator(matrix_schema, format_checker=format_checker).iter_errors(matrix))
+        errors = list(Draft202012Validator(matrix_schema, format_checker=FormatChecker()).iter_errors(matrix))
         self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
 
     def test_capability_matrix_separates_reads_writes_and_privileged_actions(self):
@@ -138,12 +138,12 @@ class SwarmIntakeTests(unittest.TestCase):
     def test_source_catalog_and_tool_surface_are_structured_and_scoped(self):
         catalog = json.loads((ROOT / "swarm/source-catalog.json").read_text())
         catalog_schema = json.loads((ROOT / "schemas/source-catalog.schema.json").read_text())
-        errors = list(Draft202012Validator(catalog_schema, format_checker=format_checker).iter_errors(catalog))
+        errors = list(Draft202012Validator(catalog_schema, format_checker=FormatChecker()).iter_errors(catalog))
         self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
 
         surface = json.loads((ROOT / "swarm/sources/connected-tool-surface.json").read_text())
         surface_schema = json.loads((ROOT / "schemas/tool-surface-observation.schema.json").read_text())
-        errors = list(Draft202012Validator(surface_schema, format_checker=format_checker).iter_errors(surface))
+        errors = list(Draft202012Validator(surface_schema, format_checker=FormatChecker()).iter_errors(surface))
         self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
         self.assertEqual(sum(group["tool_count"] for group in surface["namespaces"]) + len(surface["non_mcp_tool_names"]), surface["total_tool_definitions"])
         self.assertFalse(surface["resource_access_confirmed"])
