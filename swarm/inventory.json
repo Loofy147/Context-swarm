@@ -1,151 +1,158 @@
 {
   "schema_version": "scs.repository-inventory.v1",
-  "inventory_version": 4,
+  "inventory_version": 6,
   "reviewed_branch": "main",
-  "reviewed_tree_commit": "29d61ddce497bc8c1c814fa9a938a1e2b7b2e71b",
+  "reviewed_tree_commit": "d8482f02af7a7e11487491869948cad91037e1d7",
   "reviewed_at": "2026-10-16",
-  "review_scope": "All tracked blob paths and Git identities in the exact source tree at reviewed_tree_commit. Artifacts introduced/rewritten by the enclosing metadata commit are identified in follow_up_artifacts.",
-  "item_count": 59,
+  "review_scope": "All tracked blob paths and exact Git object identities at this base tree. The enclosing commit refreshes registry/evidence metadata and closes the cycle-0006 review item; those modified artifact versions are listed as follow-up artifacts.",
+  "item_count": 68,
   "items": [
     {
       "path": ".github/workflows/tests.yml",
       "blob_sha": "496c2852f32110ec65896efd5bf0ad9ff0ae1547",
       "role": "CI workflow",
       "disposition": "current",
-      "reason": "Runs repository-native schemas, intake, transition, adapter and runner tests."
+      "reason": "Runs repository-native contract and reference tests."
     },
     {
       "path": "README.md",
-      "blob_sha": "9d37cca7b7a84292d2128f1f0c29028bcd390519",
+      "blob_sha": "b86461fdd86da452164371496ef807a71adb3f14",
       "role": "project entrypoint",
       "disposition": "current",
-      "reason": "Defines repository-native maturation as the active phase."
+      "reason": "Defines repository-native maturation."
     },
     {
       "path": "migrations/001_initial_postgres.sql",
       "blob_sha": "2f19da0ca59736ae3a340d0c06ae310ba322f2a5",
       "role": "future database artifact",
       "disposition": "reference_only_deferred",
-      "reason": "Do not apply in the current phase."
+      "reason": "Do not apply in current phase."
     },
     {
       "path": "requirements-dev.txt",
       "blob_sha": "d1cfec3aeefd5dc8c157e12c27cc2468bc925b6e",
       "role": "repository artifact",
       "disposition": "current",
-      "reason": "Inspect content and dependency links before changing disposition."
+      "reason": "Review content before changing disposition."
     },
     {
       "path": "schemas/batch-cycle-plan.schema.json",
       "blob_sha": "6b816bd3a2b8012bae73bc283919d00166f05612",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/capability-matrix.schema.json",
       "blob_sha": "2900697ade259e41af1ae7779072ebf6bb78a7f7",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/context-state.schema.json",
       "blob_sha": "a1ce8558f33b9f2860564dd32326b7d0ec0e3abc",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/context.schema.json",
       "blob_sha": "5ab1f06be9c5dd4f2e2181488eb82e135651f4f0",
       "role": "future runtime schema",
       "disposition": "reference_only_deferred",
-      "reason": "Deferred until a concrete runtime is justified."
+      "reason": "Deferred runtime envelope."
     },
     {
       "path": "schemas/cycle-plan.schema.json",
       "blob_sha": "a5925513030a8576328467e6b189682978f06bad",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/event.schema.json",
       "blob_sha": "95ec6b1503323746458d8e0fb244d21776f91c0b",
       "role": "future runtime schema",
       "disposition": "reference_only_deferred",
-      "reason": "Deferred until a concrete runtime is justified."
+      "reason": "Deferred runtime envelope."
+    },
+    {
+      "path": "schemas/github-source-snapshot.schema.json",
+      "blob_sha": "65c3f974cd3d542b5a0241fc753bba35993433a9",
+      "role": "contract schema",
+      "disposition": "current",
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/input-record.schema.json",
       "blob_sha": "937ead91b49fc135e65051ddab405f9b44518dcb",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/intake-envelope.schema.json",
       "blob_sha": "31f7bcc0572e4b263c32e573db7f9ebe48e04269",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/intake-policy.schema.json",
       "blob_sha": "511f01c0f51a1078979a29fd571b8e3e07a9b2bf",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/registry.schema.json",
       "blob_sha": "484f30618988281cfb07f8c28a747af167b8ab3d",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/source-catalog.schema.json",
-      "blob_sha": "93d8d02f4e1f87a806699a4403d4e48f06be4509",
+      "blob_sha": "140cfe9b7cc81076f5569096496bdad4039d00fb",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/tool-surface-observation.schema.json",
       "blob_sha": "e47dc70e9e2b733a4dd1de6384156402710b1807",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "schemas/work-item.schema.json",
       "blob_sha": "560f0182ab1e79518b41ff86319e2e19444e75ec",
       "role": "contract schema",
       "disposition": "current",
-      "reason": "Defines current context, input, source, capability or cycle-plan contracts."
+      "reason": "Defines context/input/source/capability/cycle planning contracts."
     },
     {
       "path": "spec/acceptance.md",
-      "blob_sha": "54fe75f906569063f6bb7f2593aa854f5ac6110b",
+      "blob_sha": "06164a0d4dd72540895f5336c9911780f384800a",
       "role": "operating specification",
       "disposition": "current_with_future_sections",
-      "reason": "Repository-native rules are active; production-runtime gates remain future."
+      "reason": "Current rules are repository-native; production gates remain future."
     },
     {
       "path": "spec/architecture.md",
       "blob_sha": "1e9843d5d86a255eddf213d2513e96fe4c4676c0",
       "role": "operating specification",
       "disposition": "current_with_future_sections",
-      "reason": "Repository-native rules are active; production-runtime gates remain future."
+      "reason": "Current rules are repository-native; production gates remain future."
     },
     {
       "path": "spec/backend-decision.md",
       "blob_sha": "84af4a95ebc3bda78b1bab9ad34b589e0a221275",
       "role": "backend decision record",
       "disposition": "deferred",
-      "reason": "Backend selection/provisioning remains out of scope."
+      "reason": "Backend selection and provisioning remain out of scope."
     },
     {
       "path": "spec/openapi.yaml",
@@ -159,49 +166,49 @@
       "blob_sha": "a62e14522978f2b215343bbd6b62174a2f238748",
       "role": "operating specification",
       "disposition": "current_with_future_sections",
-      "reason": "Repository-native rules are active; production-runtime gates remain future."
+      "reason": "Current rules are repository-native; production gates remain future."
     },
     {
       "path": "spec/swarm-operating-model.md",
       "blob_sha": "33e82e49edebc182f6055ba562981383e000ffc6",
       "role": "operating specification",
       "disposition": "current_with_future_sections",
-      "reason": "Repository-native rules are active; production-runtime gates remain future."
+      "reason": "Current rules are repository-native; production gates remain future."
     },
     {
       "path": "src/scs/__init__.py",
       "blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
       "role": "pure reference logic",
       "disposition": "current_reference_logic",
-      "reason": "Produces routing/state/cycle proposals; does not persist or run external actions."
+      "reason": "Produces proposals; no persistence or external side effects."
     },
     {
       "path": "src/scs/adapters/__init__.py",
       "blob_sha": "49890b314a2f32c92db518383ef63ed22315c346",
       "role": "pure source normalizer",
       "disposition": "current_reference_logic",
-      "reason": "Normalizes caller-supplied API objects; performs no network reads."
+      "reason": "Normalizes supplied API objects without network calls."
     },
     {
       "path": "src/scs/adapters/github.py",
       "blob_sha": "a35be36b637a30cfb4c521e357b5bc0cb0880834",
       "role": "pure source normalizer",
       "disposition": "current_reference_logic",
-      "reason": "Normalizes caller-supplied API objects; performs no network reads."
+      "reason": "Normalizes supplied API objects without network calls."
     },
     {
       "path": "src/scs/cycle.py",
       "blob_sha": "d869e4440cc171102dec7ecde030d6e9d75b2add",
       "role": "pure reference logic",
       "disposition": "current_reference_logic",
-      "reason": "Produces routing/state/cycle proposals; does not persist or run external actions."
+      "reason": "Produces proposals; no persistence or external side effects."
     },
     {
       "path": "src/scs/intake.py",
       "blob_sha": "81358f4007db2f51bbcb03f8d9399ee143764466",
       "role": "pure reference logic",
       "disposition": "current_reference_logic",
-      "reason": "Produces routing/state/cycle proposals; does not persist or run external actions."
+      "reason": "Produces proposals; no persistence or external side effects."
     },
     {
       "path": "src/scs/reference_model.py",
@@ -213,125 +220,174 @@
     {
       "path": "src/scs/runner.py",
       "blob_sha": "56ab5c1f9405cb30ad7822d7346b4e4aa1ad2dc9",
-      "role": "snapshot cycle orchestrator",
+      "role": "snapshot orchestrator",
       "disposition": "current_reference_logic",
-      "reason": "Composes pure source normalizers with batch planning; no persistence."
+      "reason": "Composes pure normalizers with batch planner."
     },
     {
       "path": "src/scs/transitions.py",
       "blob_sha": "469d0c95136c29cc42027988cc5e122cb341698d",
       "role": "pure reference logic",
       "disposition": "current_reference_logic",
-      "reason": "Produces routing/state/cycle proposals; does not persist or run external actions."
+      "reason": "Produces proposals; no persistence or external side effects."
     },
     {
       "path": "swarm/CYCLE.md",
-      "blob_sha": "113f0fb07a9f060934ec06079501402bba7bb1de",
+      "blob_sha": "a84cb7c796e3eece79c10d6b83baf48fd3cc6363",
       "role": "cycle runbook",
       "disposition": "current",
-      "reason": "Operator instructions for source intake, proposal review and Git commit."
+      "reason": "Operator protocol."
     },
     {
       "path": "swarm/capability-matrix.json",
       "blob_sha": "24546b1ed86618321be98dc425b536ff4f9d9751",
       "role": "capability policy",
       "disposition": "current",
-      "reason": "Describes capabilities but does not grant resource permission."
+      "reason": "Describes but does not grant capabilities."
     },
     {
       "path": "swarm/contexts/README.md",
       "blob_sha": "7879de672f9f4fdab2174b550ae669c0872734d2",
-      "role": "context dossier convention",
+      "role": "context record convention",
       "disposition": "current",
-      "reason": "Guidance for detail records beyond registry summaries."
+      "reason": "Guidance for detail records."
     },
     {
       "path": "swarm/cycles/0001-bootstrap-and-intake.md",
       "blob_sha": "d1a72be97410291e4bc79f0783acb52a476d8904",
       "role": "cycle report",
       "disposition": "current",
-      "reason": "Describes processing work, evidence, tests and next steps."
+      "reason": "Documents consumed sources, changes, evidence and next steps."
     },
     {
       "path": "swarm/cycles/0002-state-machine-and-capability.md",
       "blob_sha": "eb11d3f0969571bbda8c91c281efd17b4a393ba3",
       "role": "cycle report",
       "disposition": "current",
-      "reason": "Describes processing work, evidence, tests and next steps."
+      "reason": "Documents consumed sources, changes, evidence and next steps."
     },
     {
       "path": "swarm/cycles/0003-bounded-cycle-planner.md",
       "blob_sha": "78727845ee5c24c176d6157d31fd6ae35f83d869",
       "role": "cycle report",
       "disposition": "current",
-      "reason": "Describes processing work, evidence, tests and next steps."
+      "reason": "Documents consumed sources, changes, evidence and next steps."
     },
     {
       "path": "swarm/cycles/0004-batch-input-capture-and-source-catalog.md",
       "blob_sha": "a7ec3b956f4e642bd5fdff8abb48639ef8b6295d",
       "role": "cycle report",
       "disposition": "current",
-      "reason": "Describes processing work, evidence, tests and next steps."
+      "reason": "Documents consumed sources, changes, evidence and next steps."
+    },
+    {
+      "path": "swarm/cycles/0005-github-source-adapters-and-runner.md",
+      "blob_sha": "8ff620bcb8eaa8da402fc5a20879d48eba5e6f8d",
+      "role": "cycle report",
+      "disposition": "current",
+      "reason": "Documents consumed sources, changes, evidence and next steps."
+    },
+    {
+      "path": "swarm/cycles/0006-fresh-github-source-ingestion.md",
+      "blob_sha": "e2aa8e3b7721dfdeed7e76ab779a32f37af55187",
+      "role": "cycle report",
+      "disposition": "current",
+      "reason": "Documents consumed sources, changes, evidence and next steps."
     },
     {
       "path": "swarm/dependency-map.json",
-      "blob_sha": "a741f501616877bcc15abb16f7303cf7f92bb6df",
+      "blob_sha": "aa42f97b737904f172e8221e00ad08cc913617d1",
       "role": "dependency map",
       "disposition": "current_snapshot",
-      "reason": "Typed file/test links; not a runtime call graph."
+      "reason": "Typed file/test relationships, not a runtime call graph."
+    },
+    {
+      "path": "swarm/inputs/IN-GH-123373305A1649EF-latest-commit.json",
+      "blob_sha": "687480c78858c4f36f8f09d00fb671081071e5b9",
+      "role": "normalized input record/convention",
+      "disposition": "current",
+      "reason": "Durable requirements or source observations with provenance."
+    },
+    {
+      "path": "swarm/inputs/IN-GH-9CEB8EBAC289D661-repository-metadata.json",
+      "blob_sha": "1fd2365e55ee1ee97194fe01dfae19362ae63782",
+      "role": "normalized input record/convention",
+      "disposition": "current",
+      "reason": "Durable requirements or source observations with provenance."
+    },
+    {
+      "path": "swarm/inputs/IN-GH-D8938724790ABB3A-empty-issues-page.json",
+      "blob_sha": "0796de5cba7f60a4b5ff000f2b18ffc82dd2388e",
+      "role": "normalized input record/convention",
+      "disposition": "current",
+      "reason": "Durable requirements or source observations with provenance."
+    },
+    {
+      "path": "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json",
+      "blob_sha": "f8a102cdebffbf5288201c689297c7db1029b940",
+      "role": "normalized input record/convention",
+      "disposition": "current",
+      "reason": "Durable requirements or source observations with provenance."
     },
     {
       "path": "swarm/inputs/IN-SCS-0001-operating-phase.json",
       "blob_sha": "c3c1d4e41d109364ba0f343f71df6ea3244c0043",
-      "role": "input record/convention",
+      "role": "normalized input record/convention",
       "disposition": "current",
-      "reason": "Normalized requirements with provenance guidance."
+      "reason": "Durable requirements or source observations with provenance."
     },
     {
       "path": "swarm/inputs/README.md",
       "blob_sha": "98382ab83d3993a83e881a3d8f0b6e696ca669ee",
-      "role": "input record/convention",
+      "role": "normalized input record/convention",
       "disposition": "current",
-      "reason": "Normalized requirements with provenance guidance."
+      "reason": "Durable requirements or source observations with provenance."
     },
     {
       "path": "swarm/intake-policy.json",
       "blob_sha": "3651f658e3e2235824ab9af1a307ddfc701c4474",
       "role": "intake policy",
       "disposition": "current",
-      "reason": "Defines source categories, intake stages and safeguards."
+      "reason": "Defines source categories and routing boundaries."
     },
     {
       "path": "swarm/inventory.json",
-      "blob_sha": "2db02b0c4b3ec2cc80fdde7bc813120f02061971",
+      "blob_sha": "fa22457b3a948a81fb7ae13c53b0836efc239b54",
       "role": "repository inventory",
       "disposition": "current_snapshot",
-      "reason": "Dated snapshot of paths/blob identities and design findings."
+      "reason": "Dated file/blob identity snapshot."
     },
     {
       "path": "swarm/registry.json",
-      "blob_sha": "f2cb59cf98eec92bbd239a09f3e6e516fdc14937",
-      "role": "canonical context/work registry",
+      "blob_sha": "c0753576c4f3815e4b3edbfa4acc3b8f79e82a00",
+      "role": "canonical registry",
       "disposition": "current",
-      "reason": "Contexts, work items, dependencies, evidence and statuses."
+      "reason": "Contexts, work items, evidence and lifecycle states."
     },
     {
       "path": "swarm/source-catalog.json",
-      "blob_sha": "8716da4a8684dd940fd204a454e2acae2bf6feaa",
+      "blob_sha": "2446c7b477c57018520ace8382d1d5bd61b50eca",
       "role": "source catalog",
       "disposition": "current",
-      "reason": "Source locators, revision strategies, adapter status and refresh rules."
+      "reason": "Source locators, revisions, adapter status and refresh policy."
     },
     {
       "path": "swarm/sources/connected-tool-surface.json",
       "blob_sha": "5436334d4544d1f5edb12224ac6052d0f6a94fd8",
       "role": "session-bound tool catalog",
       "disposition": "current_snapshot",
-      "reason": "Lists exposed action definitions; not proof of resource access."
+      "reason": "Visible tool definitions, not proof of access."
     },
     {
       "path": "swarm/sources/github-repository-state.json",
       "blob_sha": "8eaeed253b26e024a75d3a51cb58498afa90fed4",
+      "role": "source observation",
+      "disposition": "current_snapshot",
+      "reason": "Dated source facts with locators and limitations."
+    },
+    {
+      "path": "swarm/sources/github-snapshot-cycle-0006.json",
+      "blob_sha": "b167eaa322b9495246ab88d2e1eba72380f6a7d8",
       "role": "source observation",
       "disposition": "current_snapshot",
       "reason": "Dated source facts with locators and limitations."
@@ -355,70 +411,77 @@
       "blob_sha": "3a3bfcad98d094150c10c6a37b9ff4aed323ff52",
       "role": "test/fixture artifact",
       "disposition": "current",
-      "reason": "Executable tests or replayable input fixture."
+      "reason": "Executable tests or replayable fixtures."
     },
     {
       "path": "tests/fixtures/intake-scenarios.json",
       "blob_sha": "950d39047d305cc0c1d10ef7a4db99a86edd8112",
       "role": "test/fixture artifact",
       "disposition": "current",
-      "reason": "Executable tests or replayable input fixture."
+      "reason": "Executable tests or replayable fixtures."
     },
     {
       "path": "tests/fixtures/registry-cycle-base.json",
       "blob_sha": "a152ec52f3d6eeb453c24a33f4ad58083047b005",
       "role": "test/fixture artifact",
       "disposition": "current",
-      "reason": "Executable tests or replayable input fixture."
+      "reason": "Executable tests or replayable fixtures."
+    },
+    {
+      "path": "tests/fixtures/registry-source-cycle-0006.json",
+      "blob_sha": "a42cc565e3cd30b780c8cee7b046d5ade42a75fe",
+      "role": "test/fixture artifact",
+      "disposition": "current",
+      "reason": "Executable tests or replayable fixtures."
     },
     {
       "path": "tests/test_contract_files.py",
       "blob_sha": "2cb4e672e1b5e027da03e14fd00245bee16efd5a",
       "role": "test/fixture artifact",
       "disposition": "current",
-      "reason": "Executable tests or replayable input fixture."
+      "reason": "Executable tests or replayable fixtures."
     },
     {
       "path": "tests/test_github_adapter.py",
       "blob_sha": "85e51d92ed23c272714e416836286e3074116629",
       "role": "test/fixture artifact",
       "disposition": "current",
-      "reason": "Executable tests or replayable input fixture."
+      "reason": "Executable tests or replayable fixtures."
     },
     {
       "path": "tests/test_github_runner.py",
-      "blob_sha": "fa2c2be531d461b617db0215e2b5563900c8c39f",
+      "blob_sha": "62059a724a6688e6cfa0a33729ea9c7e33a40798",
       "role": "test/fixture artifact",
       "disposition": "current",
-      "reason": "Executable tests or replayable input fixture."
+      "reason": "Executable tests or replayable fixtures."
     },
     {
       "path": "tests/test_reference_model.py",
       "blob_sha": "13df52f25fc1c9b11b6ebcfb7ab28a9b24f18e7a",
       "role": "test/fixture artifact",
       "disposition": "current",
-      "reason": "Executable tests or replayable input fixture."
+      "reason": "Executable tests or replayable fixtures."
     },
     {
       "path": "tests/test_swarm_cycle.py",
       "blob_sha": "b7f69f40896e7c4aeef3f366d188061d1a8ac725",
       "role": "test/fixture artifact",
       "disposition": "current",
-      "reason": "Executable tests or replayable input fixture."
+      "reason": "Executable tests or replayable fixtures."
     },
     {
       "path": "tests/test_swarm_intake.py",
       "blob_sha": "5a28b7ec54ea01a0c66ce77a03f2af825c2f8797",
       "role": "test/fixture artifact",
       "disposition": "current",
-      "reason": "Executable tests or replayable input fixture."
+      "reason": "Executable tests or replayable fixtures."
     },
     {
       "path": "tests/test_swarm_transitions.py",
       "blob_sha": "02a63e062d0bd5bbe78b3a65bc819b36c56888a6",
       "role": "test/fixture artifact",
       "disposition": "current",
-      "reason": "Executable tests or replayable input fixture."
+      "reason": "Executable tests or replayable fixtures."
     }
   ],
   "findings": [
@@ -430,8 +493,8 @@
         "spec/openapi.yaml",
         "spec/backend-decision.md"
       ],
-      "finding": "Older artifacts describe a future database/API runtime; the current operating phase is repository-native.",
-      "disposition": "Keep those artifacts deferred. Do not provision backend, apply migration or deploy API now."
+      "finding": "Older artifacts describe a future database/API runtime; the current phase is repository-native.",
+      "disposition": "Keep those artifacts deferred; do not provision infrastructure or apply a database migration."
     },
     {
       "finding_id": "INV-002",
@@ -441,46 +504,37 @@
         "schemas/context-state.schema.json",
         "spec/schema-alignment.md"
       ],
-      "finding": "Repository-native state and future runtime envelopes differ in identity/version/ownership/digest/event semantics.",
-      "disposition": "Differences are documented; defer consolidation until real use cases prove a stable common contract."
+      "finding": "Current context-state contract and future runtime envelope differ in identity, version, ownership, digest and event semantics.",
+      "disposition": "Keep them separate until real use cases justify consolidation."
     },
     {
       "finding_id": "INV-003",
       "severity": "medium",
       "paths": [
-        "src/scs/adapters/github.py",
-        "src/scs/runner.py",
-        "src/scs/cycle.py"
+        "swarm/sources/connected-tool-surface.json",
+        "swarm/source-catalog.json"
       ],
-      "finding": "Adapter/runner functions consume caller-supplied objects and output proposals; they do not make network calls, persist records, authorize external actions or execute them.",
-      "disposition": "Keep source reads in the authorized operator layer and commit accepted proposals separately."
+      "finding": "Exposed tool definitions are not evidence of resource permissions.",
+      "disposition": "Resolve exact action and resource permissions per task."
     },
     {
       "finding_id": "INV-004",
       "severity": "medium",
       "paths": [
-        "swarm/sources/connected-tool-surface.json",
-        "swarm/source-catalog.json"
+        "swarm/sources/github-snapshot-cycle-0006.json",
+        "swarm/inputs/IN-GH-*.json",
+        "tests/test_github_runner.py"
       ],
-      "finding": "Visible tool definitions are a discovery hint, not evidence that every account/resource is accessible.",
-      "disposition": "Resolve exact action schema and target permission per task; refresh session-bound tool inventory."
-    },
-    {
-      "finding_id": "INV-005",
-      "severity": "medium",
-      "paths": [
-        "swarm/sources/repository-state-cycle-0004.json"
-      ],
-      "finding": "main is unprotected and one bounded issues query returned zero entries at that observation time.",
-      "disposition": "Treat branch protection as a known limitation and empty pages as scoped, time-bound evidence only."
+      "finding": "Cycle 0006 is the first fresh source snapshot whose normalized records are persisted and replay-tested against the pure runner.",
+      "disposition": "Accepted after 62 tests pass; the successful workflow claim remains a review proposal."
     }
   ],
   "test_evidence": [
     {
-      "run_url": "https://github.com/Loofy147/Context-swarm/actions/runs/38960068848",
-      "commit": "29d61ddce497bc8c1c814fa9a938a1e2b7b2e71b",
+      "run_url": "https://github.com/Loofy147/Context-swarm/actions/runs/38961446352",
+      "commit": "d8482f02af7a7e11487491869948cad91037e1d7",
       "result": "success",
-      "scope": "61 tests covering pure GitHub adapters, normalized envelope schema, snapshot runner integration, blocked-source handling, and batch planning."
+      "scope": "62 tests; persisted cycle-0006 input records match planner output and replay produces four duplicate no-ops."
     }
   ],
   "follow_up_artifacts": [
@@ -497,19 +551,7 @@
       "status": "updated_in_enclosing_commit"
     },
     {
-      "path": "swarm/source-catalog.json",
-      "status": "updated_in_enclosing_commit"
-    },
-    {
-      "path": "schemas/source-catalog.schema.json",
-      "status": "updated_in_enclosing_commit"
-    },
-    {
       "path": "spec/acceptance.md",
-      "status": "updated_in_enclosing_commit"
-    },
-    {
-      "path": "README.md",
       "status": "updated_in_enclosing_commit"
     },
     {
@@ -517,8 +559,8 @@
       "status": "updated_in_enclosing_commit"
     },
     {
-      "path": "swarm/cycles/0005-github-source-adapters-and-runner.md",
-      "status": "introduced_in_enclosing_commit"
+      "path": "swarm/cycles/0006-fresh-github-source-ingestion.md",
+      "status": "updated_in_enclosing_commit"
     }
   ]
 }

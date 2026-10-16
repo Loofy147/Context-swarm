@@ -5,7 +5,7 @@
 - **Source base commit:** `de6df318372ed9a009053a23d747f229c4ec2d53`
 - **Registry snapshot:** version 9, blob `fe9ee25a07388ba1aeb34fe3a009786d475e6f63`
 - **Planner baseline:** [CI run 38960866605 — success](https://github.com/Loofy147/Context-swarm/actions/runs/38960866605), 62 tests.
-- **Current record/output equality check:** pending CI for this commit; SCS-MATURE-012 remains in review until it passes.
+- **Current-cycle validation:** [CI run 38961446352 — success](https://github.com/Loofy147/Context-swarm/actions/runs/38961446352), 62 tests. SCS-MATURE-012 is accepted.
 
 ## Captured sources
 

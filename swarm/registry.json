@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 10,
+  "registry_version": 11,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -36,7 +36,7 @@
       "title": "Input and task consumption protocol",
       "purpose": "Specify and test how information enters, is normalized, related, prioritized, processed, verified, and recorded.",
       "lifecycle_status": "accepted",
-      "version": 10,
+      "version": 11,
       "relationships": [
         {
           "type": "depends_on",
@@ -73,13 +73,14 @@
         "swarm/inputs/IN-GH-9CEB8EBAC289D661-repository-metadata.json",
         "swarm/inputs/IN-GH-123373305A1649EF-latest-commit.json",
         "swarm/inputs/IN-GH-D8938724790ABB3A-empty-issues-page.json",
-        "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json"
+        "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38961446352"
       ],
       "open_questions": [
         "Validate exact source/adapter capabilities as concrete tasks arise.",
         "Revisit schema consolidation only when real examples justify a shared core."
       ],
-      "change_note": "This context version includes the captured GitHub source snapshot and four normalized input records from cycle 0006. The workflow-derived context claim remains proposed until reviewed."
+      "change_note": "Version 11 records cycle-0006 input capture/output equality and duplicate replay passing in CI run 38961446352 (62 tests). Durable records remain triaged/review based on source disposition."
     },
     {
       "context_id": "ctx-scs-repository-demo",
@@ -87,7 +88,7 @@
       "title": "Repository engineering swarm demonstrator",
       "purpose": "Use the repository's real source files, Git history, metadata, specs, and tests to exercise context-state workflows without a backend.",
       "lifecycle_status": "active",
-      "version": 10,
+      "version": 11,
       "relationships": [
         {
           "type": "depends_on",
@@ -131,13 +132,14 @@
         "swarm/inputs/IN-GH-123373305A1649EF-latest-commit.json",
         "swarm/inputs/IN-GH-D8938724790ABB3A-empty-issues-page.json",
         "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json",
-        "swarm/cycles/0006-fresh-github-source-ingestion.md"
+        "swarm/cycles/0006-fresh-github-source-ingestion.md",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38961446352"
       ],
       "open_questions": [
         "Verify CI and accept the grouped-change workflow only with exact evidence.",
         "Use new real inputs to improve prioritization, conflict handling, and downstream invalidation."
       ],
-      "change_note": "This context version includes the captured GitHub source snapshot and four normalized input records from cycle 0006. The workflow-derived context claim remains proposed until reviewed."
+      "change_note": "Version 11 records the successful cycle-0006 ingestion test. Workflow success remains a proposed context claim until a separate review."
     },
     {
       "context_id": "ctx-scs-backend-decision",
@@ -166,7 +168,7 @@
       "title": "Observed GitHub state for Context-swarm",
       "purpose": "Preserve source-backed metadata about the repository's visibility, default branch, branch protection, issue listing, commit history, and CI run.",
       "lifecycle_status": "accepted",
-      "version": 7,
+      "version": 8,
       "relationships": [
         {
           "type": "derived_from",
@@ -193,13 +195,14 @@
         "swarm/inputs/IN-GH-9CEB8EBAC289D661-repository-metadata.json",
         "swarm/inputs/IN-GH-123373305A1649EF-latest-commit.json",
         "swarm/inputs/IN-GH-D8938724790ABB3A-empty-issues-page.json",
-        "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json"
+        "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38961446352"
       ],
       "open_questions": [
         "Refresh source observations on material revisions and mark old observations stale.",
         "The main branch is not protected; procedural review is not server-enforced."
       ],
-      "change_note": "This context version includes the captured GitHub source snapshot and four normalized input records from cycle 0006. The workflow-derived context claim remains proposed until reviewed."
+      "change_note": "Version 8 links the four persisted GitHub input records and CI evidence verifying their exact match to planner output and idempotent replay."
     },
     {
       "context_id": "ctx-scs-capabilities",
@@ -244,7 +247,7 @@
       "title": "Source catalog and operator-visible integration surface",
       "purpose": "Define the observed repository sources, revision strategies, routing, refresh rules, and the session-bound exposed tool surface without implying universal resource access.",
       "lifecycle_status": "accepted",
-      "version": 3,
+      "version": 4,
       "relationships": [
         {
           "type": "depends_on",
@@ -277,10 +280,9 @@
         "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json"
       ],
       "open_questions": [
-        "Confirm the persisted normalized input records exactly match planner output and replay produces four duplicate no-ops; CI is pending.",
-        "Add pure adapters for other connected services only when a concrete task requires them."
+        "Add pure adapters for other connected services only when a concrete task and exact accessible resource require them."
       ],
-      "change_note": "This context version includes the captured GitHub source snapshot and four normalized input records from cycle 0006. The workflow-derived context claim remains proposed until reviewed."
+      "change_note": "Version 4 includes captured repository source batch and verified input-record equivalence/idempotent replay checks."
     }
   ],
   "work_items": [
@@ -776,10 +778,10 @@
     },
     {
       "work_item_id": "SCS-MATURE-012",
-      "version": 2,
+      "version": 3,
       "kind": "live_snapshot_ingestion",
       "title": "Run pure GitHub snapshot runner on a fresh scoped observation and reconcile normalized input proposals",
-      "status": "review",
+      "status": "accepted",
       "requested_by": "swarm_operating_model",
       "source_refs": [
         "swarm/source-catalog.json",
@@ -817,13 +819,16 @@
         "swarm/inputs/IN-GH-123373305A1649EF-latest-commit.json",
         "swarm/inputs/IN-GH-D8938724790ABB3A-empty-issues-page.json",
         "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json",
-        "tests/test_github_runner.py"
+        "tests/test_github_runner.py",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38961446352",
+        "tests/fixtures/registry-source-cycle-0006.json"
       ],
       "attempts": 1,
       "blocked_reason": null,
-      "last_outcome": "Four normalized GitHub input records have been staged from captured snapshot SRC-GH-2026-10-16-0006. Test now compares them field-for-field with planner output and replays the same revisions for four duplicate no-ops; acceptance awaits CI.",
+      "last_outcome": "Accepted: fresh snapshot SRC-GH-2026-10-16-0006 produced four persisted normalized input records. CI run 38961446352 passed 62 tests, including exact field-for-field comparison between each persisted record and the pure runner's proposal, schema validation for the records, and a replay yielding four duplicate no-ops with zero new state-change proposals. The successful workflow claim remains a proposed context update; it was not auto-accepted.",
       "history_refs": [
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38960866605"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38960866605",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38961446352"
       ]
     },
     {
@@ -883,6 +888,6 @@
     "src/scs/adapters/github.py",
     "src/scs/runner.py"
   ],
-  "last_reconciled_commit": "37b7a7442234458c490bf321356acb0c5f8744d0",
-  "change_note": "Registry v10 records the four captured GitHub input records and keeps SCS-MATURE-012 in review pending exact output comparison and duplicate-replay CI."
+  "last_reconciled_commit": "d8482f02af7a7e11487491869948cad91037e1d7",
+  "change_note": "Registry v11 accepts cycle-0006 ingestion after 62 tests passed: four source records match pure runner output and duplicate replay is idempotent. SCS-MATURE-013 is now the next ready work item for dependency freshness and stale-state impact planning."
 }
