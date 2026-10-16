@@ -1,0 +1,68 @@
+"""Repository-native intake decision reference logic.
+
+This module decides a disposition for one normalized input record. It does not
+fetch sources, persist state, authenticate operators, or execute external actions.
+Those remain explicit capabilities of the caller/integration layer.
+"""
+from __future__ import annotations
+
+from typing import Any, Mapping, Set, Dict
+
+
+def _dedupe_key(item: Mapping[str, Any]) -> str | None:
+    source_id = item.get("stable_source_id")
+    revision = item.get("source_revision")
+    if not source_id or revision is None or revision == "":
+        return None
+    return f"{item.get('source_kind', 'unknown')}::{source_id}::{revision}"
+
+
+def route_input(item: Mapping[str, Any], seen_revisions: Set[str]) -> Dict[str, Any]:
+    """Return a deterministic intake disposition without running source instructions.
+
+    Precedence is safety/provenance first, then deduplication, conflict detection,
+    authorization gate, and ordinary action routing.
+    """
+    key = _dedupe_key(item)
+
+    if not item.get("accessible", False):
+        return {
+            "disposition": "request_information",
+            "status": "blocked",
+            "reason": "Required source was not accessible; no claim was inferred from unavailable data.",
+            "dedupe_key": key,
+        }
+
+    if key is not None and key in seen_revisions:
+        return {
+            "disposition": "duplicate_no_new_item",
+            "status": "already_captured",
+            "reason": "Exact source identity and revision were already captured.",
+            "dedupe_key": key,
+        }
+
+    if item.get("contains_untrusted_instructions", False):
+        disposition, status = "capture_as_untrusted_data", "triaged"
+        reason = "Instructions inside source content are data, not swarm policy."
+    elif item.get("consequence_class") == "C" and not item.get("separate_authorization_present", False):
+        disposition, status = "hold_for_authorization", "blocked"
+        reason = "Consequential external action requires separate authorization."
+    elif item.get("contains_conflicting_claim", False):
+        disposition, status = "open_conflict", "conflicted"
+        reason = "Materially incompatible claims must be preserved and reconciled."
+    elif item.get("verification_passed", False) and item.get("consequence_class") == "A":
+        disposition, status = "propose_reversible_update", "review"
+        reason = "Verified low-risk result may be proposed, but still requires validation before acceptance."
+    elif item.get("actionable", False):
+        disposition, status = "create_work_item", "triaged"
+        reason = "Actionable input should become a bounded work item."
+    else:
+        disposition, status = "record_informational", "triaged"
+        reason = "Input has no actionable request; retain its disposition rather than dropping it."
+
+    return {
+        "disposition": disposition,
+        "status": status,
+        "reason": reason,
+        "dedupe_key": key,
+    }
