@@ -1,0 +1,207 @@
+{
+  "schema_version": "scs.dependency-map.v1",
+  "map_version": 1,
+  "reviewed_base_commit": "313cec308846ad4fa9172855ddf38b85ed56fb75",
+  "derived_from": [
+    "swarm/inventory.json",
+    "swarm/sources/recent-commit-history.json",
+    "repository file contents at reviewed_base_commit"
+  ],
+  "note": "Edges are typed and evidence-based. Explicit path references and test imports are stronger than semantic design relationships, which are labeled as contract relationships.",
+  "edges": [
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "src/scs/intake.py",
+      "relationship": "imports",
+      "basis": "direct_test_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "tests/fixtures/intake-scenarios.json",
+      "relationship": "loads_test_fixture",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/registry.json",
+      "relationship": "validates_registry_references",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/intake-policy.json",
+      "relationship": "checks_policy_contract",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/inputs/IN-SCS-0001-operating-phase.json",
+      "relationship": "checks_input_record",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_reference_model.py",
+      "target_path": "src/scs/reference_model.py",
+      "relationship": "imports",
+      "basis": "direct_test_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_contract_files.py",
+      "target_path": "schemas/context.schema.json",
+      "relationship": "checks_schema_structure",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_contract_files.py",
+      "target_path": "schemas/event.schema.json",
+      "relationship": "checks_schema_structure",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_contract_files.py",
+      "target_path": "migrations/001_initial_postgres.sql",
+      "relationship": "checks_reference_sql_structure",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_contract_files.py",
+      "target_path": "spec/openapi.yaml",
+      "relationship": "checks_api_contract_structure",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": ".github/workflows/tests.yml",
+      "target_path": "tests/test_swarm_intake.py",
+      "relationship": "executes_via_unittest_discovery",
+      "basis": "workflow_command_and_discovery",
+      "confidence": "high"
+    },
+    {
+      "source_path": ".github/workflows/tests.yml",
+      "target_path": "tests/test_contract_files.py",
+      "relationship": "executes_via_unittest_discovery",
+      "basis": "workflow_command_and_discovery",
+      "confidence": "high"
+    },
+    {
+      "source_path": ".github/workflows/tests.yml",
+      "target_path": "tests/test_reference_model.py",
+      "relationship": "executes_via_unittest_discovery",
+      "basis": "workflow_command_and_discovery",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "spec/swarm-operating-model.md",
+      "relationship": "documents_as_primary_protocol",
+      "basis": "explicit_markdown_link",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "swarm/registry.json",
+      "relationship": "documents_as_canonical_state",
+      "basis": "explicit_markdown_link",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "swarm/intake-policy.json",
+      "relationship": "documents_as_intake_policy",
+      "basis": "explicit_markdown_link",
+      "confidence": "high"
+    },
+    {
+      "source_path": "spec/swarm-operating-model.md",
+      "target_path": "swarm/registry.json",
+      "relationship": "defines_registry_consumption",
+      "basis": "operating_contract",
+      "confidence": "high"
+    },
+    {
+      "source_path": "spec/swarm-operating-model.md",
+      "target_path": "swarm/intake-policy.json",
+      "relationship": "defines_intake_steps",
+      "basis": "operating_contract",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "schemas/context-state.schema.json",
+      "relationship": "context_record_contract",
+      "basis": "schema_type_alignment",
+      "confidence": "medium"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "schemas/work-item.schema.json",
+      "relationship": "work_item_record_contract",
+      "basis": "schema_type_alignment",
+      "confidence": "medium"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/inventory.json",
+      "relationship": "evidence_reference",
+      "basis": "registry_evidence_refs",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/sources/github-repository-state.json",
+      "relationship": "evidence_reference",
+      "basis": "registry_evidence_refs",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/sources/recent-commit-history.json",
+      "relationship": "evidence_reference",
+      "basis": "planned_registry_link",
+      "confidence": "medium"
+    },
+    {
+      "source_path": "swarm/inventory.json",
+      "target_path": "spec/architecture.md",
+      "relationship": "classifies_artifact",
+      "basis": "explicit_inventory_item",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/inventory.json",
+      "target_path": "spec/openapi.yaml",
+      "relationship": "classifies_artifact",
+      "basis": "explicit_inventory_item",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/inventory.json",
+      "target_path": "migrations/001_initial_postgres.sql",
+      "relationship": "classifies_artifact",
+      "basis": "explicit_inventory_item",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/sources/recent-commit-history.json",
+      "target_path": "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=30",
+      "relationship": "captured_from",
+      "basis": "source_locator",
+      "confidence": "high"
+    }
+  ],
+  "limitations": [
+    "This is a repository artifact dependency map, not a runtime call graph.",
+    "Semantic relationships are hypotheses for impact analysis and must be revalidated when files change.",
+    "The map is a snapshot and can become stale after later commits."
+  ]
+}
