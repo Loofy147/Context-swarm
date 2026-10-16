@@ -92,7 +92,7 @@ class GitHubSnapshotRunnerTests(unittest.TestCase):
         record = issue_plan["input_record_proposal"]["input_record"]
         self.assertEqual(record["intake_status"], "blocked")
         self.assertEqual(record["normalized_claims"], [])
-        self.assertIn("not available", issue_plan["blockers"][0].lower())
+        self.assertIn("not accessible", issue_plan["blockers"][0].lower())
 
     def test_unavailable_workflow_run_does_not_create_context_update(self):
         fixture = load_fixture()
