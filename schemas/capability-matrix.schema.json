@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scs.invalid/schemas/capability-matrix.schema.json",
+  "title": "SCS Capability Matrix",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "policy_status",
+    "execution_mode",
+    "universal_access_claim",
+    "boundary",
+    "capabilities"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "scs.capability-matrix.v1"
+    },
+    "policy_status": {
+      "enum": [
+        "draft",
+        "active",
+        "deprecated"
+      ]
+    },
+    "execution_mode": {
+      "const": "repository_native"
+    },
+    "universal_access_claim": {
+      "const": false
+    },
+    "boundary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "capability_id",
+          "source_kind",
+          "description",
+          "available_when",
+          "read_operations",
+          "write_operations",
+          "default_consequence_class",
+          "explicit_scope_required",
+          "approval_gate",
+          "limitations"
+        ],
+        "properties": {
+          "capability_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9_.-]{3,120}$"
+          },
+          "source_kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "available_when": {
+            "type": "string",
+            "minLength": 1
+          },
+          "read_operations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "write_operations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "default_consequence_class": {
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ]
+          },
+          "explicit_scope_required": {
+            "type": "boolean"
+          },
+          "approval_gate": {
+            "enum": [
+              "none_for_read",
+              "scoped_task",
+              "explicit_per_action"
+            ]
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "execution_notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

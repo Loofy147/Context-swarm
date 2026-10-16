@@ -1,12 +1,12 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 2,
-  "reviewed_base_commit": "1b9dd436b4b9c1c66f1a0819a94ceda46442203c",
+  "map_version": 3,
+  "reviewed_base_commit": "28aac8b1b4a3d17527d378820edbcd0108ce6cf7",
   "derived_from": [
     "swarm/inventory.json",
     "swarm/sources/github-repository-state.json",
     "swarm/sources/recent-commit-history.json",
-    "repository file contents at reviewed_base_commit"
+    "base source tree plus current grouped change"
   ],
   "note": "Edges are typed and evidence-based. Explicit path references and test imports are stronger than semantic design relationships, which are labeled as contract relationships.",
   "edges": [
@@ -275,11 +275,74 @@
       "relationship": "repository_dependency_evidence",
       "basis": "planned_registry_link",
       "confidence": "medium"
+    },
+    {
+      "source_path": "tests/test_swarm_transitions.py",
+      "target_path": "src/scs/transitions.py",
+      "relationship": "imports",
+      "basis": "direct_test_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/capability-matrix.schema.json",
+      "relationship": "validates_capability_matrix_schema",
+      "basis": "direct_schema_validation",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/capability-matrix.json",
+      "relationship": "validates_capability_record",
+      "basis": "direct_schema_validation",
+      "confidence": "high"
+    },
+    {
+      "source_path": "spec/schema-alignment.md",
+      "target_path": "schemas/context-state.schema.json",
+      "relationship": "documents_current_context_contract",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "spec/schema-alignment.md",
+      "target_path": "schemas/context.schema.json",
+      "relationship": "documents_deferred_runtime_contract",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/capability-matrix.json",
+      "relationship": "policy_reference",
+      "basis": "registry_policy_refs",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/capability-matrix.json",
+      "target_path": "schemas/capability-matrix.schema.json",
+      "relationship": "validated_by_schema",
+      "basis": "test_contract",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "swarm/CYCLE.md",
+      "relationship": "documents_operator_runbook",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/CYCLE.md",
+      "target_path": "swarm/registry.json",
+      "relationship": "reads_canonical_state",
+      "basis": "operating_runbook",
+      "confidence": "high"
     }
   ],
   "limitations": [
     "This is a repository artifact dependency map, not a runtime call graph.",
-    "Semantic relationships are hypotheses for impact analysis and must be revalidated when files change.",
-    "This map is a versioned snapshot; the reviewed_base_commit identifies the source tree from which the map was refreshed."
+    "Semantic relationships are hypotheses and must be revalidated when files change.",
+    "Capability targets added in the current change set are verified against the resulting tree."
   ]
 }

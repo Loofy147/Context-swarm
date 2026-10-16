@@ -23,7 +23,7 @@ The swarm is primarily a state-and-transition system. It consumes data and task 
 6. An accepted change updates the relevant repository records through a versioned Git commit. High-consequence external actions remain separately gated.
 7. Later inputs can stale, challenge, supersede, or improve earlier versions without erasing history.
 
-The protocol is specified in [spec/swarm-operating-model.md](spec/swarm-operating-model.md), with an operator-facing [cycle runbook](swarm/CYCLE.md). Current state is in [swarm/registry.json](swarm/registry.json), intake rules in [swarm/intake-policy.json](swarm/intake-policy.json), and the artifact audit in [swarm/inventory.json](swarm/inventory.json). Source observations are under [swarm/sources/](swarm/sources/); individual cycle records are under [swarm/cycles/](swarm/cycles/).
+The protocol is specified in [spec/swarm-operating-model.md](spec/swarm-operating-model.md), with an operator-facing [cycle runbook](swarm/CYCLE.md). Current state is in [swarm/registry.json](swarm/registry.json), intake rules in [swarm/intake-policy.json](swarm/intake-policy.json), capability boundaries in [swarm/capability-matrix.json](swarm/capability-matrix.json), the artifact audit in [swarm/inventory.json](swarm/inventory.json), and file/test dependencies in [swarm/dependency-map.json](swarm/dependency-map.json). Source observations are under [swarm/sources/](swarm/sources/); individual cycle records are under [swarm/cycles/](swarm/cycles/).
 
 ## Repository map
 
@@ -34,11 +34,13 @@ The protocol is specified in [spec/swarm-operating-model.md](spec/swarm-operatin
 - `swarm/inventory.json` — source-backed repository inventory and recorded alignment findings.
 - `swarm/sources/` — source observations, with limits and provenance.
 - `swarm/cycles/` — durable reports of actual swarm cycles, inputs consumed, evidence, test results, and follow-up work.
-- `schemas/context.schema.json`, `schemas/event.schema.json`, `schemas/work-item.schema.json`, `schemas/context-state.schema.json` — state contracts.
-- `spec/architecture.md` — architecture and invariants; infrastructure-dependent sections are future-runtime design, not current work requirements.
+- `schemas/context-state.schema.json`, `schemas/work-item.schema.json`, `schemas/registry.schema.json`, `schemas/input-record.schema.json`, `schemas/intake-policy.schema.json`, and `schemas/capability-matrix.schema.json` — repository-native state/policy contracts.
+- `schemas/context.schema.json` and `schemas/event.schema.json` — deferred future-runtime contracts.
+- `spec/architecture.md` and `spec/schema-alignment.md` — architecture, invariants, and the boundary between current repository-native state and deferred runtime designs.
 - `spec/openapi.yaml`, `migrations/`, and `src/scs/reference_model.py` — provisional reference artifacts only; they do not imply an API, database, or service should be built now.
 - `spec/backend-decision.md` — explicitly deferred; no backend selection or provisioning in this phase.
-- `tests/` and `.github/workflows/tests.yml` — structural and reference-model checks.
+- `src/scs/intake.py` and `src/scs/transitions.py` — pure reference logic for intake decisions and versioned context/task transition proposals.
+- `tests/`, `requirements-dev.txt`, and `.github/workflows/tests.yml` — schema, intake, transition, and reference-model checks.
 
 ## Current authority and persistence
 

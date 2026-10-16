@@ -47,6 +47,18 @@ Each cycle record states:
 
 A cycle is not complete just because a response was generated. Durable state, evidence, and explicit disposition must be recorded, or the cycle must explain why no commit was appropriate.
 
+## Batch related changes
+
+When Git data tools are available, group related state/schema/test updates into one logical commit:
+1. Read the exact branch head and matching tree SHA.
+2. Create blobs for changed and new files.
+3. Create one tree based on the observed tree, overlaying only scoped paths.
+4. Create a commit whose parent is the observed branch head.
+5. Update the branch only if its current head still equals the expected SHA.
+6. Verify the resulting head and CI result for that grouped commit.
+
+If the branch moved, stop and reconcile. Never force-push around a conflict. Use per-file contents operations only when batching is unavailable or changes are independent. CI can cancel obsolete runs, but the final resulting state must pass.
+
 ## Retry and concurrent change behavior
 
 If the branch head or expected context version changes during work, stop before overwriting. Reload the current registry, compare the changed records, and rebase/reconcile the proposal. Never force-push to bypass conflicting context state.

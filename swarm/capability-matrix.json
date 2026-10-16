@@ -1,0 +1,164 @@
+{
+  "schema_version": "scs.capability-matrix.v1",
+  "policy_status": "active",
+  "execution_mode": "repository_native",
+  "universal_access_claim": false,
+  "boundary": "A capability exists only when the exact source/tool is available in this operator run and the connected principal has permission. This matrix documents routing rules; it does not grant permissions.",
+  "capabilities": [
+    {
+      "capability_id": "github.repository.read",
+      "source_kind": "github_repository",
+      "description": "Read metadata and artifacts from an explicitly scoped GitHub repository.",
+      "available_when": "An exact GitHub read action exists and the connected principal can access the named repository/resource.",
+      "read_operations": [
+        "repository metadata",
+        "contents and directory listings",
+        "Git trees, blobs, commits",
+        "branches",
+        "issues and pull requests",
+        "workflow runs and check results"
+      ],
+      "write_operations": [],
+      "default_consequence_class": "A",
+      "explicit_scope_required": true,
+      "approval_gate": "none_for_read",
+      "limitations": [
+        "A read from one repository does not imply access to other repositories/services.",
+        "An empty API page only supports a scoped statement about that query."
+      ]
+    },
+    {
+      "capability_id": "github.repository.content_write",
+      "source_kind": "github_repository",
+      "description": "Write scoped repository artifacts for a user-directed task.",
+      "available_when": "The exact write tool and permission exist, and the task names the repository and bounded outcome.",
+      "read_operations": [],
+      "write_operations": [
+        "create/update scoped text files",
+        "create one commit containing related changes via blobs/tree/commit/ref compare-and-swap",
+        "create a branch or pull request when explicitly in scope"
+      ],
+      "default_consequence_class": "B",
+      "explicit_scope_required": true,
+      "approval_gate": "scoped_task",
+      "limitations": [
+        "Main is currently unprotected.",
+        "Use expected-head compare-and-swap; never force-push to avoid conflicts.",
+        "Verify resulting commit and CI."
+      ]
+    },
+    {
+      "capability_id": "github.repository.privileged",
+      "source_kind": "github_repository",
+      "description": "Perform protected or consequential GitHub operations.",
+      "available_when": "The exact privileged action exists and explicit approval covers the resource/effect.",
+      "read_operations": [],
+      "write_operations": [
+        "delete protected artifact",
+        "change repository settings/access/secrets",
+        "change branch protection",
+        "publish release or merge consequential code"
+      ],
+      "default_consequence_class": "C",
+      "explicit_scope_required": true,
+      "approval_gate": "explicit_per_action",
+      "limitations": [
+        "Tool availability is not approval.",
+        "A context cannot authorize itself.",
+        "Block when permission or approval evidence is missing."
+      ]
+    },
+    {
+      "capability_id": "connected_service.read",
+      "source_kind": "connected_service",
+      "description": "Read a named service record through an exact advertised connector action.",
+      "available_when": "The connection is active, exact action/schema is discoverable, and the principal has resource access.",
+      "read_operations": [
+        "resolve exact connector action/schema for this task"
+      ],
+      "write_operations": [],
+      "default_consequence_class": "A",
+      "explicit_scope_required": true,
+      "approval_gate": "none_for_read",
+      "limitations": [
+        "No wildcard access to all connectors or all data.",
+        "Never guess operation names, resource IDs, or arguments.",
+        "Record source revision/time and limitations."
+      ]
+    },
+    {
+      "capability_id": "connected_service.write",
+      "source_kind": "connected_service",
+      "description": "Write or trigger an operation in a named connected service.",
+      "available_when": "An exact write action/schema exists and policy/permission allows the scoped effect.",
+      "read_operations": [],
+      "write_operations": [
+        "resolve exact operation from the current tool contract; do not wildcard"
+      ],
+      "default_consequence_class": "B",
+      "explicit_scope_required": true,
+      "approval_gate": "scoped_task",
+      "limitations": [
+        "Escalate consequence-class C actions to explicit per-action authorization.",
+        "Connector-specific confirmation requirements still apply.",
+        "Never store credentials in context state."
+      ]
+    },
+    {
+      "capability_id": "user_artifact.read",
+      "source_kind": "user_supplied_artifact",
+      "description": "Read scoped information from a user-provided file.",
+      "available_when": "The artifact is attached or available through a supported file connector and access is permitted.",
+      "read_operations": [
+        "read artifact contents",
+        "inspect relevant pages/images when needed"
+      ],
+      "write_operations": [],
+      "default_consequence_class": "A",
+      "explicit_scope_required": true,
+      "approval_gate": "none_for_read",
+      "limitations": [
+        "Preserve source locator.",
+        "Do not copy secrets or unnecessary protected data."
+      ]
+    },
+    {
+      "capability_id": "web.source.read",
+      "source_kind": "web_source",
+      "description": "Read public web sources through an actually available web/fetch tool.",
+      "available_when": "The URL/query is supported and accessible to the current tool.",
+      "read_operations": [
+        "search supported sources",
+        "open/read supported public pages",
+        "record exact URL/date"
+      ],
+      "write_operations": [],
+      "default_consequence_class": "A",
+      "explicit_scope_required": true,
+      "approval_gate": "none_for_read",
+      "limitations": [
+        "Some pages/authenticated files are inaccessible.",
+        "Failed fetches are recorded as inaccessible, not treated as empty evidence."
+      ]
+    },
+    {
+      "capability_id": "conversation.requirement.capture",
+      "source_kind": "captured_requirement",
+      "description": "Normalize explicit user requirements or decisions into durable input records.",
+      "available_when": "The user directly supplied or explicitly asked to capture the requirement.",
+      "read_operations": [
+        "capture explicit requirement/decision"
+      ],
+      "write_operations": [
+        "commit minimal normalized requirement record when in task scope"
+      ],
+      "default_consequence_class": "B",
+      "explicit_scope_required": true,
+      "approval_gate": "scoped_task",
+      "limitations": [
+        "Do not make the full transcript canonical by default.",
+        "Separate explicit requirements from inference."
+      ]
+    }
+  ]
+}

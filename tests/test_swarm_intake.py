@@ -80,6 +80,7 @@ class SwarmIntakeTests(unittest.TestCase):
             "schemas/registry.schema.json",
             "schemas/input-record.schema.json",
             "schemas/intake-policy.schema.json",
+            "schemas/capability-matrix.schema.json",
         ]
         schemas = {p: json.loads((ROOT / p).read_text()) for p in schema_paths}
         for path, schema in schemas.items():
@@ -105,6 +106,26 @@ class SwarmIntakeTests(unittest.TestCase):
         policy_schema = schemas["schemas/intake-policy.schema.json"]
         errors = list(Draft202012Validator(policy_schema, format_checker=format_checker).iter_errors(policy))
         self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+
+        matrix = json.loads((ROOT / "swarm/capability-matrix.json").read_text())
+        matrix_schema = schemas["schemas/capability-matrix.schema.json"]
+        errors = list(Draft202012Validator(matrix_schema, format_checker=format_checker).iter_errors(matrix))
+        self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+
+    def test_capability_matrix_separates_reads_writes_and_privileged_actions(self):
+        matrix = json.loads((ROOT / "swarm/capability-matrix.json").read_text())
+        self.assertFalse(matrix["universal_access_claim"])
+        caps = {item["capability_id"]: item for item in matrix["capabilities"]}
+        self.assertEqual(caps["github.repository.read"]["write_operations"], [])
+        self.assertEqual(caps["github.repository.privileged"]["approval_gate"], "explicit_per_action")
+        self.assertTrue(caps["github.repository.content_write"]["explicit_scope_required"])
+        self.assertTrue(caps["connected_service.read"]["limitations"])
+
+    def test_schema_alignment_record_exists_and_separates_current_from_future(self):
+        alignment = (ROOT / "spec/schema-alignment.md").read_text().lower()
+        self.assertIn("repository-native", alignment)
+        self.assertIn("future runtime", alignment)
+        self.assertIn("do not apply a migration", alignment)
 
     def test_repository_dependency_map_points_to_existing_paths(self):
         mapping = json.loads((ROOT / "swarm/dependency-map.json").read_text())
