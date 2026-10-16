@@ -3,7 +3,7 @@
 - **Cycle ID:** SCS-CYCLE-0003
 - **Base commit:** `625797168fa27efe90e1d1b39828aca7a2636aea`
 - **Purpose:** Connect input routing and state-transition preconditions into one reviewable plan without introducing a backend.
-- **Status at authoring:** Implementation and tests proposed; the exact resulting commit's CI result is pending.
+- **Status at this revision:** First CI run failed 1 of 43 tests; the failure was a mismatched fixture targeting a task already in progress. The fixture has been corrected to use a ready task and the exact registry snapshot; the follow-up CI result is pending. [Failed run with logs](https://github.com/Loofy147/Context-swarm/actions/runs/38956865056).
 
 ## Planned contract
 

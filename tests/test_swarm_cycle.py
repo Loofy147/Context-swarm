@@ -33,7 +33,7 @@ def make_input(**overrides):
 
 
 class SwarmCycleTests(unittest.TestCase):
-    BASE = "625797168fa27efe90e1d1b39828aca7a2636aea"
+    BASE = "beb01053051f9b4700acdadfc89970cc1b90f0a2"
 
     def plan(self, item, **kwargs):
         return plan_cycle(cycle_id="cycle-test-001", base_commit=self.BASE,
@@ -54,6 +54,14 @@ class SwarmCycleTests(unittest.TestCase):
         schema = json.loads((ROOT / "schemas/work-item.schema.json").read_text())
         errors = list(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(task))
         self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+
+    def test_cycle_plan_output_schema_validates_proposed_and_blocked_plans(self):
+        schema = json.loads((ROOT / "schemas/cycle-plan.schema.json").read_text())
+        proposed = self.plan(make_input())
+        blocked = self.plan(make_input(accessible=False))
+        for plan in (proposed, blocked):
+            errors = list(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(plan))
+            self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
 
     def test_actionable_input_without_acceptance_criteria_needs_information(self):
         plan = self.plan(make_input(acceptance_criteria=[]))
@@ -121,7 +129,7 @@ class SwarmCycleTests(unittest.TestCase):
 
     def test_existing_task_transition_requires_target_and_base_version(self):
         registry = load_registry()
-        task = next(t for t in registry["work_items"] if t["work_item_id"] == "SCS-MATURE-009")
+        task = next(t for t in registry["work_items"] if t["work_item_id"] == "SCS-MATURE-008")
         item = make_input(actionable=False, target_work_item_id=task["work_item_id"],
                           stable_source_id="test:work-result", source_revision="rev:1")
         plan = plan_cycle(
@@ -138,7 +146,7 @@ class SwarmCycleTests(unittest.TestCase):
 
     def test_stale_task_transition_is_blocked(self):
         registry = load_registry()
-        task = next(t for t in registry["work_items"] if t["work_item_id"] == "SCS-MATURE-009")
+        task = next(t for t in registry["work_items"] if t["work_item_id"] == "SCS-MATURE-008")
         item = make_input(actionable=False, target_work_item_id=task["work_item_id"])
         plan = plan_cycle(
             cycle_id="cycle-test-stale", base_commit=self.BASE, registry_snapshot=registry,

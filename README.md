@@ -34,7 +34,7 @@ The protocol is specified in [spec/swarm-operating-model.md](spec/swarm-operatin
 - `swarm/inventory.json` — source-backed repository inventory and recorded alignment findings.
 - `swarm/sources/` — source observations, with limits and provenance.
 - `swarm/cycles/` — durable reports of actual swarm cycles, inputs consumed, evidence, test results, and follow-up work.
-- `schemas/context-state.schema.json`, `schemas/work-item.schema.json`, `schemas/registry.schema.json`, `schemas/input-record.schema.json`, `schemas/intake-policy.schema.json`, and `schemas/capability-matrix.schema.json` — repository-native state/policy contracts.
+- `schemas/context-state.schema.json`, `schemas/work-item.schema.json`, `schemas/registry.schema.json`, `schemas/input-record.schema.json`, `schemas/intake-policy.schema.json`, `schemas/capability-matrix.schema.json`, and `schemas/cycle-plan.schema.json` — repository-native state/policy contracts.
 - `schemas/context.schema.json` and `schemas/event.schema.json` — deferred future-runtime contracts.
 - `spec/architecture.md` and `spec/schema-alignment.md` — architecture, invariants, and the boundary between current repository-native state and deferred runtime designs.
 - `spec/openapi.yaml`, `migrations/`, and `src/scs/reference_model.py` — provisional reference artifacts only; they do not imply an API, database, or service should be built now.

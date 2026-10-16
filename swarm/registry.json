@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 6,
+  "registry_version": 7,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -36,7 +36,7 @@
       "title": "Input and task consumption protocol",
       "purpose": "Specify and test how information enters, is normalized, related, prioritized, processed, verified, and recorded.",
       "lifecycle_status": "accepted",
-      "version": 6,
+      "version": 7,
       "relationships": [
         {
           "type": "depends_on",
@@ -57,13 +57,15 @@
         "schemas/work-item.schema.json",
         "https://github.com/Loofy147/Context-swarm/actions/runs/38955118809",
         "src/scs/cycle.py",
-        "tests/test_swarm_cycle.py"
+        "tests/test_swarm_cycle.py",
+        "schemas/cycle-plan.schema.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056"
       ],
       "open_questions": [
         "Validate exact source/adapter capabilities as concrete tasks arise.",
         "Revisit schema consolidation only when real examples justify a shared core."
       ],
-      "change_note": "Version 6 adds an integrated cycle planner to combine input routing with task/context proposal preconditions. It remains pure logic: no persistence, commit, authentication, or external side effect."
+      "change_note": "Version 7 records the integrated cycle-plan contract. Its initial CI run found a test fixture mismatch; the failure remains recorded while the fixture and output schema are corrected."
     },
     {
       "context_id": "ctx-scs-repository-demo",
@@ -71,7 +73,7 @@
       "title": "Repository engineering swarm demonstrator",
       "purpose": "Use the repository's real source files, Git history, metadata, specs, and tests to exercise context-state workflows without a backend.",
       "lifecycle_status": "active",
-      "version": 6,
+      "version": 7,
       "relationships": [
         {
           "type": "depends_on",
@@ -98,13 +100,15 @@
         "spec/swarm-operating-model.md",
         "tests/",
         "src/scs/cycle.py",
-        "tests/test_swarm_cycle.py"
+        "tests/test_swarm_cycle.py",
+        "schemas/cycle-plan.schema.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056"
       ],
       "open_questions": [
         "Verify CI and accept the grouped-change workflow only with exact evidence.",
         "Use new real inputs to improve prioritization, conflict handling, and downstream invalidation."
       ],
-      "change_note": "Version 6 records the active implementation/test cycle for the repository-native planner using the committed registry as a caller-supplied snapshot."
+      "change_note": "Version 7 records cycle planner implementation and first CI feedback; state remains in maturation and no backend is in scope."
     },
     {
       "context_id": "ctx-scs-backend-decision",
@@ -528,7 +532,7 @@
     },
     {
       "work_item_id": "SCS-MATURE-009",
-      "version": 2,
+      "version": 3,
       "kind": "cycle_orchestration",
       "title": "Integrate intake routing and state-transition planning into a bounded swarm-cycle planner",
       "status": "in_progress",
@@ -567,13 +571,15 @@
       "required_evidence": [
         "src/scs/cycle.py",
         "tests/test_swarm_cycle.py",
-        "GitHub Actions run for the exact resulting commit"
+        "schemas/cycle-plan.schema.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056"
       ],
-      "attempts": 1,
+      "attempts": 2,
       "blocked_reason": null,
-      "last_outcome": "The integrated pure cycle planner and tests are staged in the current change. It consumes a normalized input and registry snapshot, applies routing and preconditions, and returns an uncommitted proposal or blocker. CI is pending.",
+      "last_outcome": "Initial CI run 38956865056 ran 43 tests: 42 passed, one cycle task-transition test failed because it targeted SCS-MATURE-009, which the same registry had already advanced to in_progress. The fixture now targets SCS-MATURE-008 (ready), uses the exact registry snapshot commit, and adds output-schema validation. Follow-up CI is pending.",
       "history_refs": [
-        "base-commit:625797168fa27efe90e1d1b39828aca7a2636aea"
+        "base-commit:625797168fa27efe90e1d1b39828aca7a2636aea",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056"
       ]
     }
   ],
@@ -584,6 +590,6 @@
     "spec/acceptance.md",
     "swarm/CYCLE.md"
   ],
-  "last_reconciled_commit": "625797168fa27efe90e1d1b39828aca7a2636aea",
-  "change_note": "Registry v6 begins the bounded-cycle planner task on top of the validated base tree. No backend or persistent runtime was introduced."
+  "last_reconciled_commit": "beb01053051f9b4700acdadfc89970cc1b90f0a2",
+  "change_note": "Registry v7 retains the failed first CI result and records the fixture correction, exact snapshot binding, and cycle-plan output schema work. No test is marked complete until rerun evidence exists."
 }

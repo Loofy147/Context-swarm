@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scs.invalid/schemas/cycle-plan.schema.json",
+  "title": "SCS Bounded Cycle Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "cycle_id",
+    "base_commit",
+    "base_registry_version",
+    "input_ref",
+    "operation",
+    "intake",
+    "plan_status",
+    "proposals",
+    "blockers",
+    "external_actions",
+    "committed"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "scs.cycle-plan.v1"
+    },
+    "cycle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_commit": {
+      "type": "string",
+      "minLength": 7
+    },
+    "base_registry_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "input_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_id",
+        "source_kind",
+        "source_locator",
+        "source_revision"
+      ],
+      "properties": {
+        "input_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_locator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_revision": {
+          "type": [
+            "string",
+            "null",
+            "integer",
+            "number",
+            "boolean"
+          ]
+        }
+      }
+    },
+    "operation": {
+      "enum": [
+        "intake",
+        "advance_task",
+        "update_context"
+      ]
+    },
+    "intake": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "disposition",
+        "status",
+        "reason",
+        "dedupe_key"
+      ],
+      "properties": {
+        "disposition": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "dedupe_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "plan_status": {
+      "enum": [
+        "no_change",
+        "duplicate_noop",
+        "blocked",
+        "needs_information",
+        "proposed",
+        "review_required"
+      ]
+    },
+    "proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "proposal_type",
+          "status"
+        ],
+        "properties": {
+          "proposal_type": {
+            "enum": [
+              "create_work_item",
+              "transition_work_item",
+              "update_context"
+            ]
+          },
+          "status": {
+            "const": "proposed_not_committed"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "external_actions": {
+      "type": "array"
+    },
+    "committed": {
+      "const": false
+    }
+  }
+}
