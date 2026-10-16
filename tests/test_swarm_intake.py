@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from scs.intake import route_input
+from scs.intake import build_seen_revision_index, route_input
 from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
 
@@ -50,6 +50,20 @@ class SwarmIntakeTests(unittest.TestCase):
         }, set())
         self.assertEqual(result["disposition"], "hold_for_authorization")
         self.assertEqual(result["status"], "blocked")
+
+    def test_seen_revision_index_uses_locator_and_digest_fallbacks(self):
+        records = [
+            {"source_kind": "web_source", "source_locator": "https://example.invalid/spec", "source_revision": "etag-1"},
+            {"source_kind": "repository_file", "content_digest": {"algorithm": "sha256", "value": "a" * 64}},
+        ]
+        seen = build_seen_revision_index(records)
+        locator_item = {"source_kind": "web_source", "source_locator": "https://example.invalid/spec",
+                        "source_revision": "etag-1", "accessible": True, "actionable": True}
+        digest_item = {"source_kind": "repository_file",
+                       "content_digest": {"algorithm": "sha256", "value": "a" * 64},
+                       "accessible": True, "actionable": True}
+        self.assertEqual(route_input(locator_item, seen)["disposition"], "duplicate_no_new_item")
+        self.assertEqual(route_input(digest_item, seen)["disposition"], "duplicate_no_new_item")
 
     def test_missing_revision_is_not_deduplicated_by_guess(self):
         item = {"source_kind": "connected_service_record", "stable_source_id": "ticket:4",

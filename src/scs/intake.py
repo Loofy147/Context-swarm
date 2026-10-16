@@ -9,12 +9,38 @@ from __future__ import annotations
 from typing import Any, Mapping, Set, Dict
 
 
+def _dedupe_keys(item: Mapping[str, Any]) -> list[str]:
+    """Return exact-match keys in source-ID, locator, then digest order."""
+    kind = item.get("source_kind", "unknown")
+    source_id, revision = item.get("stable_source_id"), item.get("source_revision")
+    keys = []
+    if revision not in (None, ""):
+        if source_id:
+            keys.append(f"{kind}::{source_id}::{revision}")
+        locator = item.get("source_locator")
+        if isinstance(locator, str) and locator.strip():
+            keys.append(f"{kind}::locator::{locator.strip()}::rev::{revision}")
+    digest = item.get("content_digest")
+    if isinstance(digest, Mapping):
+        algorithm, value = digest.get("algorithm", "sha256"), digest.get("value")
+        if algorithm == "sha256" and isinstance(value, str) and len(value) == 64:
+            keys.append(f"{kind}::digest::{algorithm}::{value.lower()}")
+    elif isinstance(digest, str) and len(digest) == 64:
+        keys.append(f"{kind}::digest::sha256::{digest.lower()}")
+    return keys
+
+
 def _dedupe_key(item: Mapping[str, Any]) -> str | None:
-    source_id = item.get("stable_source_id")
-    revision = item.get("source_revision")
-    if not source_id or revision is None or revision == "":
-        return None
-    return f"{item.get('source_kind', 'unknown')}::{source_id}::{revision}"
+    keys = _dedupe_keys(item)
+    return keys[0] if keys else None
+
+
+def build_seen_revision_index(input_records: Iterable[Mapping[str, Any]]) -> set[str]:
+    """Build the exact-duplicate index from already captured input records."""
+    seen: set[str] = set()
+    for record in input_records:
+        seen.update(_dedupe_keys(record))
+    return seen
 
 
 def route_input(item: Mapping[str, Any], seen_revisions: Set[str]) -> Dict[str, Any]:
@@ -25,7 +51,8 @@ def route_input(item: Mapping[str, Any], seen_revisions: Set[str]) -> Dict[str, 
     ordinary action routing. The caller is responsible for recording the returned
     disposition and updating the seen-revision set only after capture is committed.
     """
-    key = _dedupe_key(item)
+    keys = _dedupe_keys(item)
+    key = keys[0] if keys else None
 
     if not item.get("accessible", False):
         return {
@@ -35,7 +62,7 @@ def route_input(item: Mapping[str, Any], seen_revisions: Set[str]) -> Dict[str, 
             "dedupe_key": key,
         }
 
-    if key is not None and key in seen_revisions:
+    if any(candidate in seen_revisions for candidate in keys):
         return {
             "disposition": "duplicate_no_new_item",
             "status": "already_captured",

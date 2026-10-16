@@ -11,7 +11,7 @@ import hashlib
 import json
 from typing import Any, Iterable, Mapping
 
-from scs.intake import route_input
+from scs.intake import build_seen_revision_index, route_input
 from scs.transitions import (
     InvalidTransition,
     StaleStateVersion,
@@ -331,6 +331,7 @@ def plan_cycle(
     registry_snapshot: Mapping[str, Any],
     input_item: Mapping[str, Any],
     seen_revisions: Iterable[str] = (),
+    prior_input_records: Iterable[Mapping[str, Any]] = (),
     operation: str = "intake",
     proposed_work_item: Mapping[str, Any] | None = None,
     task_transition: Mapping[str, Any] | None = None,
@@ -351,7 +352,9 @@ def plan_cycle(
     if not isinstance(input_item, Mapping):
         raise CyclePlanningError("input_item must be a normalized input mapping")
     context_index, task_index = _registry_indexes(registry_snapshot)
-    route = route_input(input_item, set(seen_revisions))
+    seen = set(seen_revisions)
+    seen.update(build_seen_revision_index(prior_input_records))
+    route = route_input(input_item, seen)
     result = {
         "schema_version": "scs.cycle-plan.v1",
         "cycle_id": cycle_id,

@@ -11,7 +11,8 @@ from scs.cycle import CyclePlanningError, plan_cycle
 
 
 def load_registry():
-    return json.loads((ROOT / "swarm/registry.json").read_text())
+    snapshot = json.loads((ROOT / "tests/fixtures/registry-cycle-base.json").read_text())
+    return snapshot["registry"]
 
 
 def make_input(**overrides):
@@ -33,7 +34,7 @@ def make_input(**overrides):
 
 
 class SwarmCycleTests(unittest.TestCase):
-    BASE = "beb01053051f9b4700acdadfc89970cc1b90f0a2"
+    BASE = "86244139e81ac4e3f096ec28e3ad972cfa5368c1"
 
     def plan(self, item, **kwargs):
         return plan_cycle(cycle_id="cycle-test-001", base_commit=self.BASE,
@@ -67,6 +68,15 @@ class SwarmCycleTests(unittest.TestCase):
         plan = self.plan(make_input(acceptance_criteria=[]))
         self.assertEqual(plan["plan_status"], "needs_information")
         self.assertIn("acceptance_criteria", " ".join(plan["blockers"]))
+
+    def test_prior_input_records_are_used_for_deduplication(self):
+        item = make_input()
+        item.pop("stable_source_id")
+        prior = [{"source_kind": "issue_or_pull_request", "stable_source_id": "issue:900",
+                  "source_revision": "rev:1", "source_locator": item["source_locator"]}]
+        plan = self.plan(item, prior_input_records=prior)
+        self.assertEqual(plan["plan_status"], "duplicate_noop")
+        self.assertEqual(plan["proposals"], [])
 
     def test_duplicate_revision_does_not_propose_second_task(self):
         plan = self.plan(make_input(), seen_revisions={"issue_or_pull_request::issue:900::rev:1"})

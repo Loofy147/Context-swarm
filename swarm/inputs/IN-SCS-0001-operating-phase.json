@@ -1,1 +1,58 @@
-{"input_id":"IN-SCS-0001","schema_version":"scs.input-record.v1","source_kind":"captured_requirement","source_locator":"User instruction in this conversation, captured as a normalized requirement record","source_revision":null,"observed_at":"2026-10-16","captured_by":"current_operator_run","trust_status":"source_verified","access_boundary":"project-internal-requirement","classification":"architecture_direction","normalized_claims":[{"claim_id":"IN-SCS-0001-C1","text":"Do not choose or provision a backend in the current phase.","status":"accepted","source_support":"Explicit user correction: no backends needed now."},{"claim_id":"IN-SCS-0001-C2","text":"Use the swarm's context-state and workflow logic to populate data, process tasks, and improve specification versions before committing to a true implementation.","status":"accepted","source_support":"Explicit user direction."},{"claim_id":"IN-SCS-0001-C3","text":"The system must define how new data and tasks enter, get related, processed, verified, and recorded.","status":"accepted","source_support":"Explicit user request."},{"claim_id":"IN-SCS-0001-C4","text":"Use sources and actions available through current connected tools and permissions, without assuming universal access.","status":"inferred","source_support":"Capability and authorization boundary required for implementable behavior."}],"intake_status":"accepted","disposition":"update_operating_model_and_seed_registry","linked_context_ids":["ctx-scs-charter","ctx-scs-intake","ctx-scs-repository-demo","ctx-scs-backend-decision"],"linked_work_item_ids":["SCS-MATURE-001","SCS-MATURE-002","SCS-MATURE-003"],"evidence_refs":["README.md","spec/swarm-operating-model.md","spec/backend-decision.md"],"privacy_note":"This record preserves the accepted project requirements, not the full conversation transcript."}
+{
+  "input_id": "IN-SCS-0001",
+  "schema_version": "scs.input-record.v1",
+  "source_kind": "captured_requirement",
+  "source_locator": "User instruction in this conversation, captured as a normalized requirement record",
+  "source_revision": "req-v1",
+  "observed_at": "2026-10-16",
+  "captured_by": "current_operator_run",
+  "trust_status": "source_verified",
+  "access_boundary": "project-internal-requirement",
+  "classification": "architecture_direction",
+  "normalized_claims": [
+    {
+      "claim_id": "IN-SCS-0001-C1",
+      "text": "Do not choose or provision a backend in the current phase.",
+      "status": "accepted",
+      "source_support": "Explicit user correction: no backends needed now."
+    },
+    {
+      "claim_id": "IN-SCS-0001-C2",
+      "text": "Use the swarm's context-state and workflow logic to populate data, process tasks, and improve specification versions before committing to a true implementation.",
+      "status": "accepted",
+      "source_support": "Explicit user direction."
+    },
+    {
+      "claim_id": "IN-SCS-0001-C3",
+      "text": "The system must define how new data and tasks enter, get related, processed, verified, and recorded.",
+      "status": "accepted",
+      "source_support": "Explicit user request."
+    },
+    {
+      "claim_id": "IN-SCS-0001-C4",
+      "text": "Use sources and actions available through current connected tools and permissions, without assuming universal access.",
+      "status": "inferred",
+      "source_support": "Capability and authorization boundary required for implementable behavior."
+    }
+  ],
+  "intake_status": "accepted",
+  "disposition": "update_operating_model_and_seed_registry",
+  "linked_context_ids": [
+    "ctx-scs-charter",
+    "ctx-scs-intake",
+    "ctx-scs-repository-demo",
+    "ctx-scs-backend-decision"
+  ],
+  "linked_work_item_ids": [
+    "SCS-MATURE-001",
+    "SCS-MATURE-002",
+    "SCS-MATURE-003"
+  ],
+  "evidence_refs": [
+    "README.md",
+    "spec/swarm-operating-model.md",
+    "spec/backend-decision.md"
+  ],
+  "privacy_note": "This record preserves the accepted project requirements, not the full conversation transcript.",
+  "stable_source_id": "requirement:IN-SCS-0001"
+}
