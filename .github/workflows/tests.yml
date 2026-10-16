@@ -1,5 +1,9 @@
 name: SCS contract tests
 
+concurrency:
+  group: scs-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main]
