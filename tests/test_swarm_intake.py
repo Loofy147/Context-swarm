@@ -7,6 +7,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from scs.intake import route_input
+from jsonschema import Draft202012Validator, FormatChecker
+from referencing import Registry, Resource
 
 
 class SwarmIntakeTests(unittest.TestCase):
@@ -70,6 +72,50 @@ class SwarmIntakeTests(unittest.TestCase):
             self.assertTrue(item["target_context_ids"])
             self.assertTrue(set(item["target_context_ids"]).issubset(context_ids))
             self.assertTrue(set(item["dependencies"]).issubset(work_ids))
+
+    def test_repository_state_records_validate_against_json_schemas(self):
+        schema_paths = [
+            "schemas/context-state.schema.json",
+            "schemas/work-item.schema.json",
+            "schemas/registry.schema.json",
+            "schemas/input-record.schema.json",
+            "schemas/intake-policy.schema.json",
+        ]
+        schemas = {p: json.loads((ROOT / p).read_text()) for p in schema_paths}
+        for path, schema in schemas.items():
+            with self.subTest(schema=path):
+                Draft202012Validator.check_schema(schema)
+
+        registry = Registry()
+        for schema in schemas.values():
+            registry = registry.with_resource(schema["$id"], Resource.from_contents(schema))
+        format_checker = FormatChecker()
+
+        registry_data = json.loads((ROOT / "swarm/registry.json").read_text())
+        reg_schema = schemas["schemas/registry.schema.json"]
+        errors = list(Draft202012Validator(reg_schema, registry=registry, format_checker=format_checker).iter_errors(registry_data))
+        self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+
+        input_data = json.loads((ROOT / "swarm/inputs/IN-SCS-0001-operating-phase.json").read_text())
+        input_schema = schemas["schemas/input-record.schema.json"]
+        errors = list(Draft202012Validator(input_schema, format_checker=format_checker).iter_errors(input_data))
+        self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+
+        policy = json.loads((ROOT / "swarm/intake-policy.json").read_text())
+        policy_schema = schemas["schemas/intake-policy.schema.json"]
+        errors = list(Draft202012Validator(policy_schema, format_checker=format_checker).iter_errors(policy))
+        self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+
+    def test_repository_dependency_map_points_to_existing_paths(self):
+        mapping = json.loads((ROOT / "swarm/dependency-map.json").read_text())
+        self.assertTrue(mapping["edges"])
+        for edge in mapping["edges"]:
+            for key in ("source_path", "target_path"):
+                target = edge[key]
+                if target.startswith("http://") or target.startswith("https://"):
+                    continue
+                with self.subTest(edge=edge, field=key):
+                    self.assertTrue((ROOT / target).exists(), f"missing dependency target: {target}")
 
     def test_input_fixture_and_policy_are_parseable_and_aligned(self):
         policy = json.loads((ROOT / "swarm/intake-policy.json").read_text())
