@@ -14,7 +14,8 @@
     "dependencies",
     "priority",
     "acceptance_criteria",
-    "attempts"
+    "attempts",
+    "version"
   ],
   "properties": {
     "work_item_id": {
