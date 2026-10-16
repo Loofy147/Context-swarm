@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.source-catalog.v1",
-  "catalog_version": 1,
+  "catalog_version": 2,
   "execution_mode": "repository_native",
   "scope_boundary": "Only sources and action surfaces observed in this operator run are listed as observed. Other services remain conditional until an exact connector action, resource, and permission are confirmed. This catalog guides discovery and normalization; it does not grant access.",
   "sources": [
@@ -26,7 +26,7 @@
         "Record date and source URL.",
         "Compare the current default branch SHA with the last accepted observation."
       ],
-      "adapter_status": "direct_observation",
+      "adapter_status": "pure_adapter_available",
       "limitations": [
         "A repository read does not imply access to other repositories or private resources.",
         "Read access does not authorize writes."
@@ -82,7 +82,7 @@
         "Record the returned count and page size.",
         "Label topic classification as inferred."
       ],
-      "adapter_status": "manual_normalization",
+      "adapter_status": "pure_adapter_available",
       "limitations": [
         "A page limit does not establish complete history.",
         "Subject-derived categories remain inferred."
@@ -110,7 +110,7 @@
         "Normalize returned items into source envelopes.",
         "Do not equate an empty response with no tasks outside GitHub."
       ],
-      "adapter_status": "pure_adapter_needed",
+      "adapter_status": "pure_adapter_available",
       "limitations": [
         "The observed response was empty.",
         "Other task sources need their own explicit catalog entries."
@@ -138,7 +138,7 @@
         "Select the run for the exact target commit.",
         "Read job conclusions/logs before accepting a verification claim."
       ],
-      "adapter_status": "manual_normalization",
+      "adapter_status": "pure_adapter_available",
       "limitations": [
         "A success verifies only the named commit and test scope.",
         "CI success does not establish production readiness."
@@ -233,6 +233,7 @@
     "Prefer append-only dated observations rather than overwriting historical claims; mark affected derived context stale.",
     "Every accepted input should retain source locator, revision when available, access boundary, trust status, disposition, and linked contexts/tasks.",
     "The registry and catalog describe capability boundaries; they never grant resource permission.",
-    "No backend, persistent queue, API service, or deployment is required during the current phase."
+    "No backend, persistent queue, API service, or deployment is required during the current phase.",
+    "Pure GitHub normalizers and the snapshot runner are implemented at src/scs/adapters/github.py and src/scs/runner.py. They consume caller-supplied API objects and do not fetch the network."
   ]
 }

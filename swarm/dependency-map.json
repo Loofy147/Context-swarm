@@ -1,11 +1,11 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 7,
-  "reviewed_base_commit": "6229ddd03f5ced292c4271335f82f18080f5634a",
+  "map_version": 8,
+  "reviewed_base_commit": "29d61ddce497bc8c1c814fa9a938a1e2b7b2e71b",
   "derived_from": [
-    "exact tracked file tree at 6229ddd03f5ced292c4271335f82f18080f5634a",
-    "current source catalog and tool-surface observation",
-    "intake/cycle implementation and tests at reviewed commit"
+    "tracked repository tree at 29d61ddce497bc8c1c814fa9a938a1e2b7b2e71b",
+    "pure GitHub adapter and runner sources/tests",
+    "swarm/source-catalog.json"
   ],
   "note": "Edges are typed and evidence-based. Explicit path references and test imports are stronger than semantic design relationships, which are labeled as contract relationships.",
   "edges": [
@@ -470,6 +470,69 @@
       "relationship": "cycle_evidence",
       "basis": "registry_context_and_work_item_refs",
       "confidence": "high"
+    },
+    {
+      "source_path": "src/scs/adapters/github.py",
+      "target_path": "schemas/intake-envelope.schema.json",
+      "relationship": "emits_normalized_envelope",
+      "basis": "schema_validation_in_adapter_tests",
+      "confidence": "high"
+    },
+    {
+      "source_path": "src/scs/runner.py",
+      "target_path": "src/scs/adapters/github.py",
+      "relationship": "uses_normalizers",
+      "basis": "direct_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "src/scs/runner.py",
+      "target_path": "src/scs/cycle.py",
+      "relationship": "calls_batch_planner",
+      "basis": "direct_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_adapter.py",
+      "target_path": "src/scs/adapters/github.py",
+      "relationship": "tests_source_normalizers",
+      "basis": "direct_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_adapter.py",
+      "target_path": "tests/fixtures/github-observations.json",
+      "relationship": "loads_observation_fixture",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_runner.py",
+      "target_path": "src/scs/runner.py",
+      "relationship": "tests_snapshot_runner",
+      "basis": "direct_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_runner.py",
+      "target_path": "schemas/batch-cycle-plan.schema.json",
+      "relationship": "validates_batch_plan",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/source-catalog.json",
+      "target_path": "src/scs/adapters/github.py",
+      "relationship": "adapter_implementation",
+      "basis": "catalog_adapter_status",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/source-catalog.json",
+      "target_path": "src/scs/runner.py",
+      "relationship": "snapshot_orchestration",
+      "basis": "catalog_adapter_status",
+      "confidence": "high"
     }
   ],
   "limitations": [
@@ -479,6 +542,7 @@
     "This map version is reconciled against commit 8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f; changes committed afterward may make it stale.",
     "Cycle planner and test edges added in v5; it generates proposals only and does not execute persistence or external side effects.",
     "Map v6 includes the cycle-plan output contract; refresh after the corrected test run.",
-    "Map v7 is reviewed at 6229ddd03f5ced292c4271335f82f18080f5634a and adds source-catalog, tool-surface, durable capture and batch-plan relationships. Files changed by the enclosing metadata commit require a fresh tree snapshot on the next cycle."
+    "Map v7 is reviewed at 6229ddd03f5ced292c4271335f82f18080f5634a and adds source-catalog, tool-surface, durable capture and batch-plan relationships. Files changed by the enclosing metadata commit require a fresh tree snapshot on the next cycle.",
+    "Map v8 reviewed at 29d61ddce497bc8c1c814fa9a938a1e2b7b2e71b adds pure adapter/envelope/runner dependencies. Inventory paths may change when the next metadata update is committed."
   ]
 }

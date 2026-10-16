@@ -75,3 +75,12 @@ The planner now returns an `input_record_proposal` for every non-duplicate input
 For multiple sources in one bounded cycle, use `plan_batch` with the same explicit base commit and registry snapshot. The batch limit is 100 items. It builds its duplicate index from existing captured records and from input records proposed earlier in the same batch. Batch plans remain uncommitted; the caller must validate and commit accepted proposals. Multiple context updates targeting the same context are not silently merged: later conflicting proposals are blocked for explicit merge/rebase.
 
 Each record must preserve source identity/revision, observed date, capture actor, trust status, access boundary, disposition, and affected context/task links. Missing provenance produces a `needs_information` result rather than a fabricated input record. The tool/source catalog guides discovery but never grants access.
+
+
+## GitHub source normalizers and snapshot runner
+
+For an explicit GitHub observation, the authorized source layer fetches the exact repository/commit/issues/Actions objects and records the response time, source locator and revision. Pass the captured objects to `plan_github_observation_batch` in `src/scs/runner.py` with the exact base commit, registry snapshot and previously captured input records.
+
+The pure normalizers do not fetch network data. They preserve source ID/revision and only extract fields needed for routing/provenance. Issue bodies are untrusted data; only bullets under an explicit Acceptance Criteria/Definition of Done heading are extracted. An empty issues response remains a scoped observation; a missing response becomes a blocked record with no fabricated claims. A completed successful workflow may create a proposed claim for review, not accepted truth.
+
+Validate the candidate envelopes and returned batch plan. Commit accepted input records, the correlated registry changes and cycle report in one coherent commit where possible. Replay the same source snapshot to ensure exact revisions produce duplicate no-ops. No external side effects are executed by the adapters/runner.

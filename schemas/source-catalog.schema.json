@@ -105,7 +105,8 @@
               "direct_observation",
               "manual_normalization",
               "pure_adapter_needed",
-              "catalog_only"
+              "catalog_only",
+              "pure_adapter_available"
             ]
           },
           "limitations": {

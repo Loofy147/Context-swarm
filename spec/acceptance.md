@@ -27,6 +27,8 @@ The runtime criteria below are future implementation gates. They are not blocker
 - [x] Batch processing supports up to 100 inputs and deduplicates exact source revisions against prior records and earlier items in the same batch; [cycle tests passed](https://github.com/Loofy147/Context-swarm/actions/runs/38958604867).
 - [x] A source catalog describes repository endpoints and revision strategy; a dated tool-surface snapshot lists 1,098 visible tool definitions while explicitly not claiming resource access.
 - [x] The source catalog and tool-surface schemas passed the [CI run 38959142167](https://github.com/Loofy147/Context-swarm/actions/runs/38959142167).
+- [x] Pure GitHub adapters normalize repository metadata, commits, issue/PR pages, workflow runs and unavailable-source outcomes into schema-valid intake envelopes.
+- [x] A snapshot runner composes these normalizers with the batch planner; the successful path yields a review proposal, while unavailable sources are blocked with no invented claims. [61 tests passed](https://github.com/Loofy147/Context-swarm/actions/runs/38960068848).
 
 These checks verify the repository-native reference logic and captured state. They do not establish autonomous continuous execution, durable runtime storage, authentication, external-action enforcement by a deployed service, or production readiness.
 

@@ -36,12 +36,12 @@ The protocol is specified in [spec/swarm-operating-model.md](spec/swarm-operatin
 - `swarm/inventory.json` — source-backed repository inventory and recorded alignment findings.
 - `swarm/sources/` — source observations, with limits and provenance.
 - `swarm/cycles/` — durable reports of actual swarm cycles, inputs consumed, evidence, test results, and follow-up work.
-- `schemas/context-state.schema.json`, `schemas/work-item.schema.json`, `schemas/registry.schema.json`, `schemas/input-record.schema.json`, `schemas/intake-policy.schema.json`, `schemas/capability-matrix.schema.json`, `schemas/cycle-plan.schema.json`, `schemas/batch-cycle-plan.schema.json`, `schemas/source-catalog.schema.json`, and `schemas/tool-surface-observation.schema.json` — repository-native state, policy, and planning contracts.
+- `schemas/intake-envelope.schema.json`, `schemas/context-state.schema.json`, `schemas/work-item.schema.json`, `schemas/registry.schema.json`, `schemas/input-record.schema.json`, `schemas/intake-policy.schema.json`, `schemas/capability-matrix.schema.json`, `schemas/cycle-plan.schema.json`, `schemas/batch-cycle-plan.schema.json`, `schemas/source-catalog.schema.json`, and `schemas/tool-surface-observation.schema.json` — repository-native state, policy, and planning contracts.
 - `schemas/context.schema.json` and `schemas/event.schema.json` — deferred future-runtime contracts.
 - `spec/architecture.md` and `spec/schema-alignment.md` — architecture, invariants, and the boundary between current repository-native state and deferred runtime designs.
 - `spec/openapi.yaml`, `migrations/`, and `src/scs/reference_model.py` — provisional reference artifacts only; they do not imply an API, database, or service should be built now.
 - `spec/backend-decision.md` — explicitly deferred; no backend selection or provisioning in this phase.
-- `src/scs/intake.py`, `src/scs/transitions.py`, and `src/scs/cycle.py` — pure logic for intake routing, state-transition checks, and integrated bounded-cycle proposals. None of these modules persists or commits state by itself.
+- `src/scs/intake.py`, `src/scs/transitions.py`, `src/scs/cycle.py`, `src/scs/adapters/github.py`, and `src/scs/runner.py` — pure logic for intake routing, source normalization, state-transition checks, and snapshot-to-batch plans. These modules do not fetch network data, persist state, or commit changes.
 - `tests/`, `requirements-dev.txt`, and `.github/workflows/tests.yml` — schema, intake, transition, and reference-model checks.
 
 ## Current authority and persistence
