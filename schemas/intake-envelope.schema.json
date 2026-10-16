@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scs.invalid/schemas/intake-envelope.schema.json",
+  "title": "SCS Normalized Intake Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "input_id",
+    "source_kind",
+    "stable_source_id",
+    "source_revision",
+    "source_locator",
+    "observed_at",
+    "captured_by",
+    "access_boundary",
+    "trust_status",
+    "classification",
+    "accessible",
+    "actionable",
+    "target_context_ids",
+    "acceptance_criteria",
+    "priority",
+    "normalized_claims",
+    "evidence_refs",
+    "privacy_note",
+    "consequence_class",
+    "separate_authorization_present",
+    "contains_untrusted_instructions",
+    "contains_conflicting_claim",
+    "conflict_refs",
+    "verification_passed"
+  ],
+  "properties": {
+    "input_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_kind": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stable_source_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_revision": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_locator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "captured_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "access_boundary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trust_status": {
+      "enum": [
+        "unreviewed",
+        "source_verified",
+        "corroborated",
+        "disputed",
+        "rejected"
+      ]
+    },
+    "classification": {
+      "type": "string",
+      "minLength": 1
+    },
+    "accessible": {
+      "type": "boolean"
+    },
+    "actionable": {
+      "type": "boolean"
+    },
+    "target_context_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "priority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "rationale"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            "critical",
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "normalized_claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim_id",
+          "text",
+          "status",
+          "source_support"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "observed",
+              "inferred",
+              "proposed",
+              "verified",
+              "accepted",
+              "stale",
+              "disputed",
+              "rejected"
+            ]
+          },
+          "source_support": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "privacy_note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "consequence_class": {
+      "enum": [
+        "A",
+        "B",
+        "C"
+      ]
+    },
+    "separate_authorization_present": {
+      "type": "boolean"
+    },
+    "contains_untrusted_instructions": {
+      "type": "boolean"
+    },
+    "contains_conflicting_claim": {
+      "type": "boolean"
+    },
+    "conflict_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "verification_passed": {
+      "type": "boolean"
+    },
+    "title": {
+      "type": "string"
+    },
+    "target_work_item_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "commit_sha": {
+      "type": "string"
+    },
+    "repository_full_name": {
+      "type": "string"
+    },
+    "issue_number": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "is_pull_request": {
+      "type": "boolean"
+    },
+    "workflow_run_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "head_sha": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "conclusion": {
+      "type": "string"
+    },
+    "source_error_summary": {
+      "type": "string"
+    }
+  }
+}

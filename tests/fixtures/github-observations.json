@@ -1,0 +1,47 @@
+{
+  "fixture_schema": "scs.github-observation-fixtures.v1",
+  "observed_on": "2026-10-16",
+  "provenance": "Repository/API objects below are reduced fixtures grounded in current observed GitHub API responses at commit 6ed1c964a55e011ec23e3df54059db20d12b9e44. The synthetic_issue object is explicitly test-only and is not asserted to exist in the live repository.",
+  "repository": {
+    "full_name": "Loofy147/Context-swarm",
+    "html_url": "https://github.com/Loofy147/Context-swarm",
+    "private": false,
+    "archived": false,
+    "default_branch": "main",
+    "updated_at": "2026-10-16T20:02:59Z"
+  },
+  "branch_head_sha": "6ed1c964a55e011ec23e3df54059db20d12b9e44",
+  "latest_commit": {
+    "sha": "6ed1c964a55e011ec23e3df54059db20d12b9e44",
+    "html_url": "https://github.com/Loofy147/Context-swarm/commit/6ed1c964a55e011ec23e3df54059db20d12b9e44",
+    "commit": {
+      "message": "Reconcile registry, evidence inventory and batch-cycle source catalog",
+      "author": {
+        "date": "2026-10-16T20:02:53Z"
+      }
+    }
+  },
+  "issues_query": "state=all&per_page=30",
+  "issues": [],
+  "synthetic_issue": {
+    "number": 9001,
+    "title": "Add replayable source adapter coverage",
+    "state": "open",
+    "updated_at": "2026-10-16T20:04:00Z",
+    "html_url": "https://github.com/Loofy147/Context-swarm/issues/9001",
+    "labels": [
+      {
+        "name": "priority:high"
+      }
+    ],
+    "body": "Description about pure mapping for source objects.\n\n## Acceptance Criteria\n- Source identity and revision are preserved.\n- Unavailable sources create blocked records.\n\n## Notes\nThis text is fixture data only."
+  },
+  "workflow_run": {
+    "id": 38959383315,
+    "head_sha": "6ed1c964a55e011ec23e3df54059db20d12b9e44",
+    "status": "completed",
+    "conclusion": "success",
+    "updated_at": "2026-10-16T20:03:07Z",
+    "html_url": "https://github.com/Loofy147/Context-swarm/actions/runs/38959383315"
+  }
+}
