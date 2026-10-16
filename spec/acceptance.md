@@ -15,6 +15,12 @@ The runtime criteria below are future implementation gates. They are not blocker
 - [x] GitHub Actions succeeded for commit `481fe14acada05c55cf08166c895c4440725f359`: [workflow run](https://github.com/Loofy147/Context-swarm/actions/runs/38954032510).
 - [x] An evidence-backed repository inventory records file roles, blob identities at its reviewed commit, deferred artifacts, and alignment findings.
 - [x] Current GitHub repository metadata was captured with source locators and explicit limitations.
+- [x] A recent commit-history observation preserves commit URLs, dates, inferred topic categories and page limitations.
+- [x] JSON Schema validation checks the current registry, work items, captured input, intake policy and capability matrix.
+- [x] Pure context/task transition planning rejects stale versions and invalid transitions and enforces evidence/dependency preconditions before proposing acceptance.
+- [x] Current versus future-runtime schema differences are documented in `spec/schema-alignment.md`.
+- [x] A capability matrix explicitly separates scoped reads, task-scoped writes and consequential per-action authorization; it does not grant access.
+- [x] Nine related repository artifacts were grouped in commit `8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f`; [the resulting CI run succeeded](https://github.com/Loofy147/Context-swarm/actions/runs/38956067934).
 
 These checks verify the repository-native reference logic and captured state. They do not establish autonomous continuous execution, durable runtime storage, authentication, external-action enforcement by a deployed service, or production readiness.
 

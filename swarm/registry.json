@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 4,
+  "registry_version": 5,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -36,7 +36,7 @@
       "title": "Input and task consumption protocol",
       "purpose": "Specify and test how information enters, is normalized, related, prioritized, processed, verified, and recorded.",
       "lifecycle_status": "accepted",
-      "version": 4,
+      "version": 5,
       "relationships": [
         {
           "type": "depends_on",
@@ -61,7 +61,7 @@
         "Validate exact source/adapter capabilities as concrete tasks arise.",
         "Revisit schema consolidation only when real examples justify a shared core."
       ],
-      "change_note": "Version 2 adds deterministic intake disposition logic and seven replayable behavior scenarios. CI passes for the named commit."
+      "change_note": "Version 5 records accepted intake and transition reference behavior, capability-boundary policy, and schema validation evidence. State proposals still require a caller to review and commit repository changes."
     },
     {
       "context_id": "ctx-scs-repository-demo",
@@ -69,7 +69,7 @@
       "title": "Repository engineering swarm demonstrator",
       "purpose": "Use the repository's real source files, Git history, metadata, specs, and tests to exercise context-state workflows without a backend.",
       "lifecycle_status": "active",
-      "version": 4,
+      "version": 5,
       "relationships": [
         {
           "type": "depends_on",
@@ -100,7 +100,7 @@
         "Verify CI and accept the grouped-change workflow only with exact evidence.",
         "Use new real inputs to improve prioritization, conflict handling, and downstream invalidation."
       ],
-      "change_note": "Version 2 records an artifact inventory, architecture alignment findings, current GitHub repository observations, and verified CI evidence."
+      "change_note": "Version 5 records the source-backed repository inventory/dependency map, capability matrix, and successful grouped validation commit. Current phase remains repository-native."
     },
     {
       "context_id": "ctx-scs-backend-decision",
@@ -129,7 +129,7 @@
       "title": "Observed GitHub state for Context-swarm",
       "purpose": "Preserve source-backed metadata about the repository's visibility, default branch, branch protection, issue listing, commit history, and CI run.",
       "lifecycle_status": "accepted",
-      "version": 3,
+      "version": 4,
       "relationships": [
         {
           "type": "derived_from",
@@ -142,21 +142,23 @@
         "swarm/dependency-map.json",
         "swarm/inventory.json",
         "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=30",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38955118809"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38955118809",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956067934",
+        "https://github.com/Loofy147/Context-swarm/commit/8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f"
       ],
       "open_questions": [
         "Refresh source observations on material revisions and mark old observations stale.",
         "The main branch is not protected; procedural review is not server-enforced."
       ],
-      "change_note": "Initial evidence context; recorded facts are scoped to observation date and source response."
+      "change_note": "Version 4 appends successful CI evidence for the grouped schema/capability/inventory update; metadata observations remain time-bounded."
     },
     {
       "context_id": "ctx-scs-capabilities",
       "context_type": "source_capability_policy",
       "title": "Source and operation capability boundaries",
       "purpose": "Define which reads, repository writes, connected-service operations, and privileged actions may be considered in a specific operator run.",
-      "lifecycle_status": "review",
-      "version": 1,
+      "lifecycle_status": "accepted",
+      "version": 2,
       "relationships": [
         {
           "type": "depends_on",
@@ -170,12 +172,13 @@
       "evidence_refs": [
         "swarm/capability-matrix.json",
         "schemas/capability-matrix.schema.json",
-        "spec/swarm-operating-model.md"
+        "spec/swarm-operating-model.md",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956067934"
       ],
       "open_questions": [
-        "A matrix entry does not grant access; confirm exact operation and current permission for every real task."
+        "For each future non-repository source, verify its exact current tool action, resource scope and read/write permission before processing a task."
       ],
-      "change_note": "Separates scoped reads, task-scoped writes, and explicit per-action privileged gates."
+      "change_note": "Version 2 accepted after the capability matrix schema and no-universal-access/read-write separation tests passed in GitHub Actions."
     }
   ],
   "work_items": [
@@ -400,7 +403,7 @@
       "work_item_id": "SCS-MATURE-006",
       "kind": "evidence_population",
       "title": "Expand repository observations with recent commit details and artifact dependency links",
-      "status": "review",
+      "status": "accepted",
       "requested_by": "swarm_observed_gap",
       "source_refs": [
         "swarm/sources/github-repository-state.json",
@@ -426,23 +429,26 @@
       ],
       "required_evidence": [
         "swarm/sources/recent-commit-history.json",
-        "swarm/dependency-map.json"
+        "swarm/dependency-map.json",
+        "swarm/inventory.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956067934"
       ],
       "attempts": 2,
       "blocked_reason": null,
-      "version": 4,
-      "last_outcome": "Commit history and dependency map are captured; v3 adds state-transition and capability edges in the grouped change set. Await CI validation.",
+      "version": 5,
+      "last_outcome": "Accepted: a 30-entry recent-commit page is stored with exact commit links, inferred categories labeled, and limitations; the dependency map links direct imports, schema references and test dependencies. Latest grouped artifact set passed CI.",
       "history_refs": [
         "https://github.com/Loofy147/Context-swarm/commit/313cec308846ad4fa9172855ddf38b85ed56fb75",
-        "https://github.com/Loofy147/Context-swarm/commit/711ea6256e5a87fb2cb45b3c51561e9ae36833dc"
+        "https://github.com/Loofy147/Context-swarm/commit/711ea6256e5a87fb2cb45b3c51561e9ae36833dc",
+        "https://github.com/Loofy147/Context-swarm/commit/8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f"
       ]
     },
     {
       "work_item_id": "SCS-MATURE-007",
-      "version": 2,
+      "version": 3,
       "kind": "workflow_efficiency",
       "title": "Batch related context-state files into coherent Git commits where tooling permits",
-      "status": "review",
+      "status": "accepted",
       "requested_by": "inventory_finding_INV-005",
       "source_refs": [
         "swarm/sources/recent-commit-history.json",
@@ -468,13 +474,16 @@
       ],
       "required_evidence": [
         "swarm/CYCLE.md",
-        ".github/workflows/tests.yml"
+        "/.github/workflows/tests.yml",
+        "https://github.com/Loofy147/Context-swarm/commit/8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38956067934"
       ],
-      "attempts": 1,
+      "attempts": 2,
       "blocked_reason": null,
-      "last_outcome": "Runbook supports grouped tree/commit/ref updates and CI cancels obsolete runs. The current change combines related state/spec/test artifacts; await its result.",
+      "last_outcome": "Accepted for the bounded change-batching goal: nine related artifacts (README, inventory, dependency map, registry, runbook, acceptance doc, tests and capability schema/data) were committed as one tree/commit/ref update; that resulting commit has one successful CI run. This demonstrates batching, though it does not prove global reduction in all CI usage.",
       "history_refs": [
-        "https://github.com/Loofy147/Context-swarm/commit/13f3089f645da89c6a854d958334247a748e8390"
+        "https://github.com/Loofy147/Context-swarm/commit/13f3089f645da89c6a854d958334247a748e8390",
+        "https://github.com/Loofy147/Context-swarm/commit/8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f"
       ]
     },
     {
@@ -512,6 +521,52 @@
       ],
       "attempts": 0,
       "blocked_reason": null
+    },
+    {
+      "work_item_id": "SCS-MATURE-009",
+      "version": 1,
+      "kind": "cycle_orchestration",
+      "title": "Integrate intake routing and state-transition planning into a bounded swarm-cycle planner",
+      "status": "ready",
+      "requested_by": "swarm_operating_model",
+      "source_refs": [
+        "spec/swarm-operating-model.md",
+        "swarm/CYCLE.md",
+        "src/scs/intake.py",
+        "src/scs/transitions.py",
+        "swarm/registry.json",
+        "swarm/intake-policy.json"
+      ],
+      "target_context_ids": [
+        "ctx-scs-intake",
+        "ctx-scs-repository-demo"
+      ],
+      "dependencies": [
+        "SCS-MATURE-004",
+        "SCS-MATURE-005",
+        "SCS-MATURE-006",
+        "SCS-MATURE-007"
+      ],
+      "priority": {
+        "level": "high",
+        "rationale": "The intake router and transition planner work independently; a pure orchestrator should demonstrate how normalized inputs/tasks are consumed together without introducing a backend."
+      },
+      "acceptance_criteria": [
+        "A cycle begins from an explicit source snapshot/base commit and bounded task scope.",
+        "Every input receives a deterministic disposition or an explicit blocked reason.",
+        "A duplicate source revision does not create another work item.",
+        "A proposed context/task update carries the expected base version and evidence links.",
+        "The cycle returns a proposed diff/report and does not commit or execute external side effects itself.",
+        "Schema, dependency, authority and acceptance preconditions are represented in the result.",
+        "Tests include actionable input, duplicate, inaccessible source, material conflict, and consequential action without authorization."
+      ],
+      "required_evidence": [
+        "src/scs/cycle.py",
+        "tests/test_swarm_cycle.py",
+        "GitHub Actions run for the exact resulting commit"
+      ],
+      "attempts": 0,
+      "blocked_reason": null
     }
   ],
   "policy_refs": [
@@ -521,6 +576,6 @@
     "spec/acceptance.md",
     "swarm/CYCLE.md"
   ],
-  "last_reconciled_commit": "28aac8b1b4a3d17527d378820edbcd0108ce6cf7",
-  "change_note": "Registry v4 records the tested transition planner, schema alignment, expanded dependency map and capability policy. Current review items await CI on the grouped change."
+  "last_reconciled_commit": "8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f",
+  "change_note": "Registry v5 reconciles the successful grouped CI result: repository inventory/dependency evidence, state transition behavior, schema alignment, capability boundaries, and grouped commits. Next work focuses on an integrated bounded cycle planner."
 }

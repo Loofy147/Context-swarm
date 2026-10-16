@@ -1,12 +1,12 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 3,
-  "reviewed_base_commit": "28aac8b1b4a3d17527d378820edbcd0108ce6cf7",
+  "map_version": 4,
+  "reviewed_base_commit": "8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f",
   "derived_from": [
     "swarm/inventory.json",
     "swarm/sources/github-repository-state.json",
     "swarm/sources/recent-commit-history.json",
-    "base source tree plus current grouped change"
+    "repository tree at 8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f"
   ],
   "note": "Edges are typed and evidence-based. Explicit path references and test imports are stronger than semantic design relationships, which are labeled as contract relationships.",
   "edges": [
@@ -338,11 +338,19 @@
       "relationship": "reads_canonical_state",
       "basis": "operating_runbook",
       "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0002-state-machine-and-capability.md",
+      "target_path": "https://github.com/Loofy147/Context-swarm/actions/runs/38956067934",
+      "relationship": "verified_by_ci",
+      "basis": "successful_GitHub_Actions_run",
+      "confidence": "high"
     }
   ],
   "limitations": [
     "This is a repository artifact dependency map, not a runtime call graph.",
     "Semantic relationships are hypotheses and must be revalidated when files change.",
-    "Capability targets added in the current change set are verified against the resulting tree."
+    "Capability targets added in the current change set are verified against the resulting tree.",
+    "This map version is reconciled against commit 8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f; changes committed afterward may make it stale."
   ]
 }
