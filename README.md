@@ -1,46 +1,60 @@
 # Swarm Context System (SCS)
 
-**Specification baseline:** v0.3  
-**Status:** Pre-implementation; this repository is being initialized from the reviewed design package.  
-**Primary unit:** Context, not agent.  
+**Operating phase:** Repository-native swarm maturation (no application backend required).  
+**Specification baseline:** v0.4 operating model.  
+**Primary unit:** Context state, not agent.  
 **First demonstrator:** Repository engineering swarm.  
-**Backend:** Deliberately undecided pending an operational comparison.  
-**Identity:** Dedicated identity and access subsystem.  
-**Artifact storage:** Transactional database plus immutable, versioned artifacts.
+**Canonical working store for this phase:** Versioned files and Git history in this repository.  
+**Production backend:** Explicitly out of scope until the swarm's data, workflows, specifications, and acceptance evidence mature.
 
 ## Definition
 
-The Swarm Context System is a coordinated network of independent, bounded, versioned contexts that maintain specialized knowledge and working state, establish typed relationships, exchange relevant information under policy, and converge on consistent, verifiable outcomes.
+The Swarm Context System is a coordinated network of independent, bounded, versioned contexts that maintain specialized knowledge and working state, establish typed relationships, exchange relevant information under rules, and converge on consistent, verifiable outcomes.
 
-Conversational clients are interfaces to persistent state, not the source of truth. Agents are optional operators; they are not a fundamental unit of the system.
+The swarm is primarily a state-and-transition system. It consumes data and task events, preserves source and provenance, classifies and links inputs, creates or updates context states, evaluates dependencies and contradictions, proposes changes, validates them, and commits accepted state changes. Agents are not the fundamental unit.
+
+## How work happens now
+
+1. New inputs are captured as source records with origin, revision/time, digest when available, trust status, and access boundary.
+2. Inputs are normalized without discarding the original source pointer, classified, deduplicated, and linked to affected contexts.
+3. The intake policy either creates a work item, updates an existing one, requests evidence, or marks a conflict. It must not silently discard an input.
+4. The swarm processes work against explicit context versions and invariants. Each result is a proposal with evidence and expected base version.
+5. Validation checks scope, evidence, dependencies, contradictions, schema, and authorization.
+6. An accepted change updates the relevant repository records through a versioned Git commit. High-consequence external actions remain separately gated.
+7. Later inputs can stale, challenge, supersede, or improve earlier versions without erasing history.
+
+The protocol is specified in [spec/swarm-operating-model.md](spec/swarm-operating-model.md). Current repository state is in [swarm/registry.json](swarm/registry.json), and the intake policy is in [swarm/intake-policy.json](swarm/intake-policy.json).
 
 ## Repository map
 
-- `spec/architecture.md` — normative architecture, invariants, trust boundaries, consistency, and migration/release gates.
-- `spec/openapi.yaml` — initial HTTP API contract.
-- `schemas/context.schema.json` — context envelope schema.
-- `schemas/event.schema.json` — event envelope schema.
-- `migrations/001_initial_postgres.sql` — PostgreSQL reference migration; not applied or production-certified.
-- `src/scs/reference_model.py` — dependency-free reference semantics for versioning and authorization gates.
-- `tests/` — executable reference-model and contract-artifact tests.
+- `spec/swarm-operating-model.md` — intake, routing, work-item lifecycle, context-state lifecycle, update rules, and promotion gates.
+- `swarm/registry.json` — seed registry and initial task queue for the repository-native phase.
+- `swarm/intake-policy.json` — deterministic intake and routing rules.
+- `schemas/context.schema.json`, `schemas/event.schema.json`, `schemas/work-item.schema.json`, `schemas/context-state.schema.json` — state contracts.
+- `spec/architecture.md` — architecture and invariants; infrastructure-dependent sections are future-runtime design, not current work requirements.
+- `spec/openapi.yaml`, `migrations/`, and `src/scs/reference_model.py` — provisional reference artifacts only; they do not imply an API, database, or service should be built now.
+- `spec/backend-decision.md` — explicitly deferred; no backend selection or provisioning in this phase.
+- `tests/` and `.github/workflows/tests.yml` — structural and reference-model checks.
 
-## Current status
+## Current authority and persistence
 
-This repository starts from the SCS v0.3 pre-implementation specification. Files here are design artifacts and reference code, not evidence of a deployed service. The included reference tests, where present, must be run in CI and their exact results recorded. A database migration, HTTP server, identity subsystem, durable artifact store, and coordination worker are not considered implemented until built and tested.
+For the repository-native phase, the committed registry, context state files, task records, evidence links, specifications, and Git history are the durable source of truth. Conversation text is an interface/work session, not the canonical store. A successful Git commit records a swarm-state change; it does not mean the future production architecture is finalized.
 
-## Backend decision gate
+No database, server, identity service, queue service, or deployed application is required now. Use available connected tools only within their actual permissions. “All accessible sources” means sources exposed by connected integrations or supplied artifacts—not unbounded access to every service or private dataset.
 
-Compare managed PostgreSQL (including Supabase), another managed/self-managed PostgreSQL option, and SQLite local-first against: deployment target, data residency, concurrency, RPO/RTO, monthly budget, operational ownership, backup/restore, identity/session requirements, artifact-store integration, portability, and exit cost. Do not provision a paid service until the owner approves the cost and region.
+## Status discipline
 
-## Security boundary
+Distinguish:
+- **observed** — read directly from a source;
+- **inferred** — reasoned from observed data, with rationale;
+- **proposed** — not yet accepted;
+- **verified** — an explicit test or independent evidence supports the claim;
+- **accepted** — approved context state;
+- **blocked/conflicted/stale** — not safe to treat as current accepted truth.
 
-- Context data is not authorization.
-- Content integrity is not proof of factual truth or source authenticity.
-- Consequential external actions require a separate, current authorization check.
-- Do not store passwords, tokens, private keys, or secrets in context content, artifacts, or ordinary logs.
-- Committed versions and events must not be silently rewritten; corrections are new events/versions.
+A context's integrity digest is not proof of factual truth. A source's presence is not proof of authorization. A repeated claim is not independent confirmation.
 
-## Running reference tests
+## Test reference artifacts
 
 Requires Python 3.10+ and no third-party dependencies:
 
@@ -48,4 +62,4 @@ Requires Python 3.10+ and no third-party dependencies:
 python -m unittest discover -s tests -v
 ```
 
-Passing reference tests do not imply that the full system is implemented, deployed, or integration-tested.
+Passing reference tests verify only the tested code and file structures. They do not show that a production SCS runtime exists.
