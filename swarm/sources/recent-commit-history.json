@@ -1,0 +1,228 @@
+{
+  "schema_version": "scs.commit-history-observation.v1",
+  "observation_id": "OBS-GH-COMMITS-0001",
+  "source_url": "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=30",
+  "observed_at": "2026-10-16",
+  "branch": "main",
+  "latest_commit_at_observation": "fff85089470e3707a3d11d03d40d430d849ed42d",
+  "requested_page_size": 30,
+  "returned_count": 30,
+  "observation_kind": "recent_commit_page",
+  "limitations": [
+    "This is the first page returned by the source, not a claim that the repository has only this many commits.",
+    "Category labels are inferred from commit subjects; they are not GitHub-native classifications.",
+    "The branch may advance after this observation."
+  ],
+  "commits": [
+    {
+      "sha": "fff85089470e3707a3d11d03d40d430d849ed42d",
+      "subject": "Document cycle runbook and repository evidence state",
+      "authored_at": "2026-10-16T19:23:17Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/fff85089470e3707a3d11d03d40d430d849ed42d",
+      "category_inferred": "evidence"
+    },
+    {
+      "sha": "725a3d176746752312a0eaa476cf297064bc729c",
+      "subject": "Record first repository-native swarm cycle",
+      "authored_at": "2026-10-16T19:22:52Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/725a3d176746752312a0eaa476cf297064bc729c",
+      "category_inferred": "documentation_or_scaffolding"
+    },
+    {
+      "sha": "e208c80463697c45fc67cc3bbbdcf1c12ee668f0",
+      "subject": "Add repository-native swarm cycle runbook",
+      "authored_at": "2026-10-16T19:22:50Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/e208c80463697c45fc67cc3bbbdcf1c12ee668f0",
+      "category_inferred": "documentation_or_scaffolding"
+    },
+    {
+      "sha": "f0df06f174c202f7c0651a684fe3a48c5d7797c6",
+      "subject": "Test priority of consequential authorization gate",
+      "authored_at": "2026-10-16T19:22:19Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/f0df06f174c202f7c0651a684fe3a48c5d7797c6",
+      "category_inferred": "verification"
+    },
+    {
+      "sha": "47dc294e0e47edaad0671cabd462aade1248e172",
+      "subject": "Prioritize consequential-action authorization before source-content routing",
+      "authored_at": "2026-10-16T19:22:14Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/47dc294e0e47edaad0671cabd462aade1248e172",
+      "category_inferred": "documentation_or_scaffolding"
+    },
+    {
+      "sha": "af936c96f782f331176102ea44c1b3e86b41fbb5",
+      "subject": "Advance swarm registry with accepted outcomes and next work items",
+      "authored_at": "2026-10-16T19:21:48Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/af936c96f782f331176102ea44c1b3e86b41fbb5",
+      "category_inferred": "state_model"
+    },
+    {
+      "sha": "7826370ab162cfaebce5c40f95c48ab5af8e921b",
+      "subject": "Separate current swarm maturation checks from future runtime gates",
+      "authored_at": "2026-10-16T19:21:10Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/7826370ab162cfaebce5c40f95c48ab5af8e921b",
+      "category_inferred": "documentation_or_scaffolding"
+    },
+    {
+      "sha": "ae9eeb4d6f496e3e48ef79bd667aad9cc3de7313",
+      "subject": "Correct inventory blob identities and record follow-up evidence",
+      "authored_at": "2026-10-16T19:20:59Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/ae9eeb4d6f496e3e48ef79bd667aad9cc3de7313",
+      "category_inferred": "evidence"
+    },
+    {
+      "sha": "43db8a6a8caf607aeefd460a842d01135481e8a0",
+      "subject": "Capture verified GitHub repository state as swarm evidence",
+      "authored_at": "2026-10-16T19:20:33Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/43db8a6a8caf607aeefd460a842d01135481e8a0",
+      "category_inferred": "evidence"
+    },
+    {
+      "sha": "47903b4cf53801d60e219ebc26e9d1357458b06b",
+      "subject": "Populate repository inventory and record architecture alignment findings",
+      "authored_at": "2026-10-16T19:19:55Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/47903b4cf53801d60e219ebc26e9d1357458b06b",
+      "category_inferred": "evidence"
+    },
+    {
+      "sha": "481fe14acada05c55cf08166c895c4440725f359",
+      "subject": "Test deterministic intake scenarios and seeded swarm state",
+      "authored_at": "2026-10-16T19:19:10Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/481fe14acada05c55cf08166c895c4440725f359",
+      "category_inferred": "verification"
+    },
+    {
+      "sha": "d338fb6149c020a0a84c82f95ad9c1fa25024ff4",
+      "subject": "Add deterministic intake decision reference logic",
+      "authored_at": "2026-10-16T19:19:08Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/d338fb6149c020a0a84c82f95ad9c1fa25024ff4",
+      "category_inferred": "intake_logic"
+    },
+    {
+      "sha": "03493722b08febff6fe94653257dfb11aff31a4b",
+      "subject": "Document durable input envelope storage",
+      "authored_at": "2026-10-16T19:18:41Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/03493722b08febff6fe94653257dfb11aff31a4b",
+      "category_inferred": "documentation_or_scaffolding"
+    },
+    {
+      "sha": "76116ea81fdae3e06fcdf3fc405244780a2d3b14",
+      "subject": "Document repository-native context record organization",
+      "authored_at": "2026-10-16T19:18:39Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/76116ea81fdae3e06fcdf3fc405244780a2d3b14",
+      "category_inferred": "documentation_or_scaffolding"
+    },
+    {
+      "sha": "e7e91b9506ff7babc313895ed80fc8e45292831c",
+      "subject": "Add replayable intake behavior scenarios",
+      "authored_at": "2026-10-16T19:18:37Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/e7e91b9506ff7babc313895ed80fc8e45292831c",
+      "category_inferred": "intake_logic"
+    },
+    {
+      "sha": "f61e33ee35db6373f49269b1745a6837d56083d2",
+      "subject": "Capture operating-model requirements as a durable input record",
+      "authored_at": "2026-10-16T19:18:34Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/f61e33ee35db6373f49269b1745a6837d56083d2",
+      "category_inferred": "documentation_or_scaffolding"
+    },
+    {
+      "sha": "2c039955023d89bc348fd7d0a6426f920e65ea23",
+      "subject": "Define task and input work-item schema",
+      "authored_at": "2026-10-16T19:17:59Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/2c039955023d89bc348fd7d0a6426f920e65ea23",
+      "category_inferred": "schema_contract"
+    },
+    {
+      "sha": "4c3cf03ff187601380a5acf8dcbdd51e65df5509",
+      "subject": "Define repository-native context state schema",
+      "authored_at": "2026-10-16T19:17:56Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/4c3cf03ff187601380a5acf8dcbdd51e65df5509",
+      "category_inferred": "schema_contract"
+    },
+    {
+      "sha": "b259970c380a5d29a380b0d03bcff4059693eb7e",
+      "subject": "Seed initial context registry and work queue",
+      "authored_at": "2026-10-16T19:17:40Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/b259970c380a5d29a380b0d03bcff4059693eb7e",
+      "category_inferred": "state_model"
+    },
+    {
+      "sha": "70c84eefa68e5778e4842ce49b109f4b1ca31335",
+      "subject": "Add deterministic repository-native intake policy",
+      "authored_at": "2026-10-16T19:17:38Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/70c84eefa68e5778e4842ce49b109f4b1ca31335",
+      "category_inferred": "intake_logic"
+    },
+    {
+      "sha": "2883d3d1b457be969c8b89d2b79b597cdb107909",
+      "subject": "Define repository-native swarm intake and state transitions",
+      "authored_at": "2026-10-16T19:17:36Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/2883d3d1b457be969c8b89d2b79b597cdb107909",
+      "category_inferred": "intake_logic"
+    },
+    {
+      "sha": "e20a441afa080848d5f63fdfcaa026ea9ddb712d",
+      "subject": "Defer backend selection during swarm maturation",
+      "authored_at": "2026-10-16T19:16:42Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/e20a441afa080848d5f63fdfcaa026ea9ddb712d",
+      "category_inferred": "deferred_decision"
+    },
+    {
+      "sha": "2103752eb205f6fb403283284c076f6d07f3ba72",
+      "subject": "Clarify repository-native operating phase in architecture",
+      "authored_at": "2026-10-16T19:16:40Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/2103752eb205f6fb403283284c076f6d07f3ba72",
+      "category_inferred": "state_model"
+    },
+    {
+      "sha": "cf2910f9d5339e4f67ff392ab886f65a63577a42",
+      "subject": "Refocus README on repository-native swarm maturation",
+      "authored_at": "2026-10-16T19:16:37Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/cf2910f9d5339e4f67ff392ab886f65a63577a42",
+      "category_inferred": "project_entrypoint"
+    },
+    {
+      "sha": "e8f64d0d829d109724c6cdf0b4814468eb271aea",
+      "subject": "Add CI workflow for dependency-free acceptance tests",
+      "authored_at": "2026-10-16T19:07:47Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/e8f64d0d829d109724c6cdf0b4814468eb271aea",
+      "category_inferred": "verification"
+    },
+    {
+      "sha": "09d4b2c0cba0b2bd751c73dfae344bc5ccdc5dcc",
+      "subject": "Add schema and API contract structural tests",
+      "authored_at": "2026-10-16T19:07:40Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/09d4b2c0cba0b2bd751c73dfae344bc5ccdc5dcc",
+      "category_inferred": "verification"
+    },
+    {
+      "sha": "65de641d284a88739ed4b8927284fe1db1212711",
+      "subject": "Add reference-model acceptance tests",
+      "authored_at": "2026-10-16T19:07:38Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/65de641d284a88739ed4b8927284fe1db1212711",
+      "category_inferred": "verification"
+    },
+    {
+      "sha": "71f7afbd8e5cb69ded48ee8068e094b44c7b0666",
+      "subject": "Add dependency-free SCS reference semantics",
+      "authored_at": "2026-10-16T19:07:36Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/71f7afbd8e5cb69ded48ee8068e094b44c7b0666",
+      "category_inferred": "documentation_or_scaffolding"
+    },
+    {
+      "sha": "5177631979045b5bd1f3bee130808f42e4224683",
+      "subject": "Add SCS package namespace",
+      "authored_at": "2026-10-16T19:07:34Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/5177631979045b5bd1f3bee130808f42e4224683",
+      "category_inferred": "documentation_or_scaffolding"
+    },
+    {
+      "sha": "08dc7532b0d8d35b662174f47b01d60e0f16b505",
+      "subject": "Add PostgreSQL reference schema migration",
+      "authored_at": "2026-10-16T19:07:32Z",
+      "commit_url": "https://github.com/Loofy147/Context-swarm/commit/08dc7532b0d8d35b662174f47b01d60e0f16b505",
+      "category_inferred": "schema_contract"
+    }
+  ]
+}
