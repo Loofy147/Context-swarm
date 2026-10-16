@@ -16,7 +16,8 @@
     "proposals",
     "blockers",
     "external_actions",
-    "committed"
+    "committed",
+    "input_record_proposal"
   ],
   "properties": {
     "schema_version": {
@@ -130,7 +131,8 @@
             "enum": [
               "create_work_item",
               "transition_work_item",
-              "update_context"
+              "update_context",
+              "capture_input"
             ]
           },
           "status": {
@@ -151,6 +153,38 @@
     },
     "committed": {
       "const": false
+    },
+    "input_record_proposal": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "proposal_type",
+            "status",
+            "base_registry_version",
+            "input_record"
+          ],
+          "properties": {
+            "proposal_type": {
+              "const": "capture_input"
+            },
+            "status": {
+              "const": "proposed_not_committed"
+            },
+            "base_registry_version": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "input_record": {
+              "type": "object"
+            }
+          }
+        }
+      ]
     }
   }
 }

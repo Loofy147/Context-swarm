@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from jsonschema import Draft202012Validator, FormatChecker
-from scs.cycle import CyclePlanningError, plan_cycle
+from scs.cycle import CyclePlanningError, plan_batch, plan_cycle
 
 
 def load_registry():
@@ -18,6 +18,14 @@ def load_registry():
 def make_input(**overrides):
     data = {
         "input_id": "IN-TEST-900",
+        "observed_at": "2026-10-16",
+        "captured_by": "test-harness",
+        "access_boundary": "test-fixture-only",
+        "trust_status": "unreviewed",
+        "classification": "test_task_request",
+        "normalized_claims": [],
+        "evidence_refs": [],
+        "privacy_note": "Synthetic test fixture.",
         "source_kind": "issue_or_pull_request",
         "stable_source_id": "issue:900",
         "source_revision": "rev:1",
@@ -63,6 +71,55 @@ class SwarmCycleTests(unittest.TestCase):
         for plan in (proposed, blocked):
             errors = list(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(plan))
             self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+
+    def test_every_nonduplicate_input_has_a_schema_valid_capture_proposal(self):
+        item = make_input()
+        plan = self.plan(item)
+        capture = plan["input_record_proposal"]
+        self.assertEqual(capture["proposal_type"], "capture_input")
+        self.assertEqual(capture["status"], "proposed_not_committed")
+        record = capture["input_record"]
+        schema = json.loads((ROOT / "schemas/input-record.schema.json").read_text())
+        errors = list(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(record))
+        self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+        self.assertIn(plan["proposals"][0]["work_item"]["work_item_id"], record["linked_work_item_ids"])
+
+    def test_inaccessible_input_is_captured_as_blocked_without_claiming_source_content(self):
+        item = make_input(accessible=False, normalized_claims=[])
+        plan = self.plan(item)
+        self.assertEqual(plan["plan_status"], "blocked")
+        self.assertEqual(plan["input_record_proposal"]["input_record"]["intake_status"], "blocked")
+        self.assertEqual(plan["input_record_proposal"]["input_record"]["normalized_claims"], [])
+        self.assertEqual(plan["proposals"], [])
+
+    def test_batch_consumes_inputs_and_deduplicates_within_batch(self):
+        first = make_input(input_id="IN-BATCH-1", stable_source_id="issue:901",
+                           source_locator="https://github.com/Loofy147/Context-swarm/issues/901")
+        duplicate = dict(first)
+        duplicate["input_id"] = "IN-BATCH-2"
+        batch = plan_batch(
+            cycle_id="cycle-batch-001",
+            base_commit=self.BASE,
+            registry_snapshot=load_registry(),
+            input_items=[first, duplicate],
+        )
+        self.assertFalse(batch["committed"])
+        self.assertEqual(batch["input_count"], 2)
+        self.assertEqual(batch["summary"]["input_records_proposed"], 1)
+        self.assertEqual(batch["summary"]["duplicate_noop"], 1)
+        self.assertEqual(batch["summary"]["state_change_proposals"], 1)
+        self.assertEqual(batch["plans"][1]["plan_status"], "duplicate_noop")
+        schema = json.loads((ROOT / "schemas/batch-cycle-plan.schema.json").read_text())
+        errors = list(Draft202012Validator(schema, format_checker=FormatChecker()).iter_errors(batch))
+        self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+
+    def test_input_record_id_collision_does_not_overwrite_existing_record(self):
+        prior = [{"input_id":"IN-TEST-900","source_kind":"other-source","source_locator":"source:old",
+                  "source_revision":"rev:old","stable_source_id":"old:source"}]
+        plan = self.plan(make_input(), prior_input_records=prior)
+        self.assertEqual(plan["plan_status"], "conflicted")
+        self.assertIsNone(plan["input_record_proposal"])
+        self.assertTrue(plan["blockers"])
 
     def test_actionable_input_without_acceptance_criteria_needs_information(self):
         plan = self.plan(make_input(acceptance_criteria=[]))

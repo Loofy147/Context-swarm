@@ -101,6 +101,118 @@ def _stable_task_id(item: Mapping[str, Any]) -> str | None:
     return "SCS-TASK-" + hashlib.sha256(canonical).hexdigest()[:16].upper()
 
 
+
+
+def _make_input_record_proposal(
+    item: Mapping[str, Any],
+    registry: Mapping[str, Any],
+    route: Mapping[str, Any],
+    context_index: Mapping[str, dict],
+    task_index: Mapping[str, dict],
+) -> dict:
+    """Prepare a durable input-record proposal for every non-duplicate input."""
+    source_ref = _source_ref(item)
+    if not source_ref:
+        return {"proposal": None, "blockers": ["A stable source locator or input identity is required for input capture."]}
+
+    input_id = item.get("input_id")
+    if not isinstance(input_id, str) or not input_id.strip():
+        identity = json.dumps(
+            {"source_kind": item.get("source_kind"), "source_ref": source_ref,
+             "source_revision": item.get("source_revision")},
+            sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+        ).encode("utf-8")
+        input_id = "IN-SCS-" + hashlib.sha256(identity).hexdigest()[:16].upper()
+
+    observed_at = item.get("observed_at") or item.get("captured_at")
+    if not isinstance(observed_at, str) or len(observed_at) < 10:
+        return {"proposal": None, "blockers": ["observed_at (YYYY-MM-DD) is required for durable input capture."]}
+    if not isinstance(item.get("captured_by"), str) or not item.get("captured_by", "").strip():
+        return {"proposal": None, "blockers": ["captured_by is required for input provenance."]}
+    access_boundary = item.get("access_boundary")
+    if not isinstance(access_boundary, str) or not access_boundary.strip():
+        return {"proposal": None, "blockers": ["access_boundary is required; access must not be assumed."]}
+
+    trust_status = item.get("trust_status", "unreviewed")
+    valid_trust = {"unreviewed", "source_verified", "corroborated", "disputed", "rejected"}
+    if trust_status not in valid_trust:
+        return {"proposal": None, "blockers": [f"Invalid trust_status: {trust_status}"]}
+
+    revision = item.get("source_revision")
+    if revision is not None and not isinstance(revision, str):
+        return {"proposal": None, "blockers": ["source_revision must be a string or null."]}
+
+    raw_claims = item.get("normalized_claims", [])
+    if not isinstance(raw_claims, list):
+        return {"proposal": None, "blockers": ["normalized_claims must be a list."]}
+    claims = []
+    valid_claim_statuses = {"observed", "inferred", "proposed", "verified", "accepted", "stale", "disputed", "rejected"}
+    for index, claim in enumerate(raw_claims):
+        if not isinstance(claim, Mapping):
+            return {"proposal": None, "blockers": [f"normalized_claims[{index}] must be an object."]}
+        claim_id, claim_text = claim.get("claim_id"), claim.get("text")
+        if not isinstance(claim_id, str) or not claim_id.strip() or not isinstance(claim_text, str) or not claim_text.strip():
+            return {"proposal": None, "blockers": [f"normalized_claims[{index}] requires claim_id and text."]}
+        status = claim.get("status", "observed")
+        if status not in valid_claim_statuses:
+            return {"proposal": None, "blockers": [f"normalized_claims[{index}] has invalid status: {status}"]}
+        support = claim.get("source_support") or source_ref
+        claims.append({
+            "claim_id": claim_id,
+            "text": claim_text,
+            "status": status,
+            "source_support": support,
+        })
+
+    linked_context_ids = []
+    for context_id in item.get("target_context_ids", []):
+        if context_id in context_index and context_id not in linked_context_ids:
+            linked_context_ids.append(context_id)
+    target_task = item.get("target_work_item_id")
+    linked_work_item_ids = [target_task] if target_task in task_index else []
+    evidence_refs = item.get("evidence_refs", [])
+    if not isinstance(evidence_refs, list):
+        return {"proposal": None, "blockers": ["evidence_refs must be a list."]}
+    evidence_refs = list(dict.fromkeys(
+        [x.strip() for x in evidence_refs if isinstance(x, str) and x.strip()] + [source_ref]
+    ))
+
+    classification = item.get("classification")
+    if not isinstance(classification, str) or not classification.strip():
+        classification = "task_request" if item.get("actionable", False) else "source_observation"
+
+    record = {
+        "input_id": input_id,
+        "schema_version": "scs.input-record.v1",
+        "source_kind": str(item.get("source_kind") or "unknown"),
+        "source_locator": source_ref,
+        "source_revision": revision,
+        "observed_at": observed_at[:10],
+        "captured_by": item["captured_by"],
+        "trust_status": trust_status,
+        "access_boundary": access_boundary,
+        "classification": classification,
+        "normalized_claims": claims,
+        "intake_status": route.get("status") if route.get("status") != "already_captured" else "captured",
+        "disposition": route.get("disposition", "record_informational"),
+        "linked_context_ids": linked_context_ids,
+        "linked_work_item_ids": linked_work_item_ids,
+        "evidence_refs": evidence_refs,
+        "privacy_note": item.get("privacy_note") or "Only minimum metadata and evidence pointers needed for traceable intake are stored.",
+        "stable_source_id": item.get("stable_source_id"),
+        "content_digest": item.get("content_digest"),
+    }
+    return {
+        "proposal": {
+            "proposal_type": "capture_input",
+            "status": "proposed_not_committed",
+            "base_registry_version": registry["registry_version"],
+            "input_record": record,
+        },
+        "blockers": [],
+    }
+
+
 def _make_work_item_proposal(
     item: Mapping[str, Any],
     registry: Mapping[str, Any],
@@ -367,6 +479,7 @@ def plan_cycle(
         "operation": operation,
         "intake": route,
         "plan_status": "no_change",
+        "input_record_proposal": None,
         "proposals": [],
         "blockers": [],
         "external_actions": [],
@@ -376,6 +489,32 @@ def plan_cycle(
     if disposition == "duplicate_no_new_item":
         result["plan_status"] = "duplicate_noop"
         return result
+
+    prior_records = list(prior_input_records)
+    incoming_id = input_item.get("input_id")
+    prior_ids = {record.get("input_id") for record in prior_records if isinstance(record, Mapping)}
+    if incoming_id and incoming_id in prior_ids:
+        result["plan_status"] = "conflicted"
+        result["blockers"].append(
+            "input_id already exists for a different source revision; preserve both source records and assign a new input_id."
+        )
+        return result
+
+    captured = _make_input_record_proposal(input_item, registry_snapshot, route, context_index, task_index)
+    if captured["blockers"]:
+        result["plan_status"] = "needs_information"
+        result["blockers"].extend(captured["blockers"])
+        return result
+    capture_proposal = captured["proposal"]
+    proposed_input_id = capture_proposal["input_record"]["input_id"]
+    if proposed_input_id in prior_ids:
+        result["plan_status"] = "conflicted"
+        result["blockers"].append(
+            "Derived input_id collides with an existing record; resolve the identity conflict before capture."
+        )
+        return result
+    result["input_record_proposal"] = capture_proposal
+
     if disposition in {"request_information", "hold_for_authorization"}:
         result["plan_status"] = "blocked"
         result["blockers"].append(route["reason"])
@@ -397,6 +536,8 @@ def plan_cycle(
                 result["blockers"].extend(outcome["blockers"])
             elif outcome["proposal"]:
                 result["plan_status"] = "proposed"
+                proposed_task = outcome["proposal"]["work_item"]
+                capture_proposal["input_record"]["linked_work_item_ids"] = [proposed_task["work_item_id"]]
                 result["proposals"].append(outcome["proposal"])
             return result
         if disposition in {"propose_reversible_update", "open_conflict"}:
@@ -416,6 +557,9 @@ def plan_cycle(
                 result["blockers"].extend(outcome["blockers"])
             else:
                 result["plan_status"] = "proposed"
+                proposed_context_id = outcome["proposal"]["context_id"]
+                if proposed_context_id not in capture_proposal["input_record"]["linked_context_ids"]:
+                    capture_proposal["input_record"]["linked_context_ids"].append(proposed_context_id)
                 result["proposals"].append(outcome["proposal"])
             return result
         if proposed_work_item or task_transition or context_update:
@@ -445,6 +589,7 @@ def plan_cycle(
             result["blockers"].extend(outcome["blockers"])
         else:
             result["plan_status"] = "proposed"
+            capture_proposal["input_record"]["linked_work_item_ids"] = [task_transition["work_item_id"]]
             result["proposals"].append(outcome["proposal"])
         return result
 
@@ -469,5 +614,106 @@ def plan_cycle(
         result["blockers"].extend(outcome["blockers"])
     else:
         result["plan_status"] = "proposed"
+        proposed_context_id = outcome["proposal"]["context_id"]
+        if proposed_context_id not in capture_proposal["input_record"]["linked_context_ids"]:
+            capture_proposal["input_record"]["linked_context_ids"].append(proposed_context_id)
         result["proposals"].append(outcome["proposal"])
     return result
+
+
+
+def plan_batch(
+    *,
+    cycle_id: str,
+    base_commit: str,
+    registry_snapshot: Mapping[str, Any],
+    input_items: Iterable[Mapping[str, Any]],
+    prior_input_records: Iterable[Mapping[str, Any]] = (),
+    options_by_input_id: Mapping[str, Mapping[str, Any]] | None = None,
+) -> dict:
+    """Consume a bounded batch, deduplicate within the batch, and return proposals only.
+
+    The first occurrence of a source revision receives an input-record proposal.
+    Later exact repetitions are routed as duplicates using that proposed record as
+    staged history. These staged records are not durable until the caller commits
+    an accepted cycle diff. Multiple updates against the same context are blocked
+    for explicit merge/rebase rather than pretending they compose atomically.
+    """
+    items = list(input_items)
+    if not isinstance(cycle_id, str) or not cycle_id.strip():
+        raise CyclePlanningError("cycle_id is required")
+    if not isinstance(base_commit, str) or len(base_commit) < 7:
+        raise CyclePlanningError("base_commit must identify the repository snapshot")
+    if not items:
+        raise CyclePlanningError("batch must contain at least one input")
+    if len(items) > 100:
+        raise CyclePlanningError("batch limit is 100 inputs per bounded cycle")
+    if any(not isinstance(item, Mapping) for item in items):
+        raise CyclePlanningError("every batch item must be a normalized input mapping")
+
+    staged_records = [copy.deepcopy(dict(x)) for x in prior_input_records]
+    seen = build_seen_revision_index(staged_records)
+    options = options_by_input_id or {}
+    plans = []
+    proposed_context_ids: set[str] = set()
+
+    for index, item in enumerate(items, start=1):
+        input_id = item.get("input_id")
+        item_options = dict(options.get(input_id, {}))
+        if "cycle_id" in item_options or "base_commit" in item_options or "registry_snapshot" in item_options:
+            raise CyclePlanningError("per-input options cannot override cycle ID, base commit, or registry snapshot")
+        plan = plan_cycle(
+            cycle_id=f"{cycle_id}-{index:03d}",
+            base_commit=base_commit,
+            registry_snapshot=registry_snapshot,
+            input_item=item,
+            seen_revisions=seen,
+            prior_input_records=staged_records,
+            **item_options,
+        )
+
+        context_proposals = [p for p in plan["proposals"] if p.get("proposal_type") == "update_context"]
+        collision = next((p for p in context_proposals if p.get("context_id") in proposed_context_ids), None)
+        if collision:
+            plan["proposals"] = [p for p in plan["proposals"] if p is not collision]
+            plan["plan_status"] = "blocked"
+            plan["blockers"].append(
+                f"Another input in this batch already proposes context {collision['context_id']}; merge/rebase updates before committing."
+            )
+            record_proposal = plan.get("input_record_proposal")
+            if record_proposal:
+                record = record_proposal["input_record"]
+                record["intake_status"] = "blocked"
+                record["disposition"] = "batch_context_update_collision"
+        else:
+            proposed_context_ids.update(p["context_id"] for p in context_proposals)
+
+        record_proposal = plan.get("input_record_proposal")
+        if record_proposal:
+            staged = record_proposal["input_record"]
+            staged_records.append(copy.deepcopy(staged))
+            seen.update(build_seen_revision_index([staged]))
+        plans.append(plan)
+
+    statuses = [plan["plan_status"] for plan in plans]
+    summary = {
+        "proposed": statuses.count("proposed"),
+        "blocked": statuses.count("blocked") + statuses.count("conflicted"),
+        "needs_information": statuses.count("needs_information"),
+        "duplicate_noop": statuses.count("duplicate_noop"),
+        "review_required": statuses.count("review_required"),
+        "no_change": statuses.count("no_change"),
+        "input_records_proposed": sum(1 for plan in plans if plan.get("input_record_proposal")),
+        "state_change_proposals": sum(len(plan["proposals"]) for plan in plans),
+    }
+    return {
+        "schema_version": "scs.batch-cycle-plan.v1",
+        "cycle_id": cycle_id,
+        "base_commit": base_commit,
+        "base_registry_version": registry_snapshot["registry_version"],
+        "input_count": len(items),
+        "plans": plans,
+        "summary": summary,
+        "external_actions": [],
+        "committed": False,
+    }
