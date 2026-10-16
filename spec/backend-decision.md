@@ -1,35 +1,21 @@
-# Backend selection decision record
+# Backend decision — deferred by design
 
-**Status:** Open — no paid infrastructure until owner approval.  
-**Storage requirement:** transactional relational state plus immutable, versioned artifacts.  
-**Identity requirement:** dedicated SCS identity/access subsystem; external federation may be added as an adapter.
+**Status:** Deferred. No backend is required for the current repository-native swarm-maturation phase. Do not provision infrastructure as part of the current milestone.
 
-## Candidate comparison
+## Current operating model
 
-| Criterion | Managed PostgreSQL (including Supabase) | Other managed/self-managed PostgreSQL | SQLite local-first |
-|---|---|---|---|
-| Multi-writer transactions | Strong fit | Strong fit | Best for embedded/local prototype; limited service concurrency pattern |
-| Operations burden | Usually lower with managed service | Managed varies; self-managed higher | Low for single-node use |
-| Portability | SQL core portable; hosted extensions/auth/storage may couple | Higher with standard PostgreSQL; self-managed needs operations expertise | Simple file/database portability |
-| Identity | SCS still owns resource authorization; integrate rather than conflate vendor auth | Full control, more implementation/operations | Must implement sessions and permissions around it |
-| Background coordination | Good with transactional outbox and worker | Good with transactional outbox and worker | Possible in one process; multi-worker service needs care |
-| Backup/restore | Provider-specific objectives/charges; test an actual restore | Depends on provider/operator | Straightforward for prototype, but consistency and recovery procedures still matter |
-| Cost | Inspect current plan, region, storage, egress, compute | Inspect provider or operations costs | Low infrastructure cost, with scalability/availability trade-offs |
-| Best role | Production candidate for a modest concurrent service | Where portability/control matters | Local prototype or desktop/offline cache |
+The committed Git repository is the canonical store for the registry, context states, task records, workflow/intake policy, specifications, evidence pointers, and version history. Tool calls and conversations are operators/interfaces over those records. Changes are proposed, reviewed against rules and evidence, and recorded as commits.
 
-## Required evidence before selection
+The system should populate and improve its domain data, rules, contexts, test vectors, workflows, and implementation specification before selecting or implementing a production runtime.
 
-1. Deployment target and availability expectation.
-2. Data residency and region requirements.
-3. Estimated concurrent readers/writers and worker count.
-4. Recovery point objective (RPO) and recovery time objective (RTO).
-5. Monthly cost ceiling and explicit approval for recurring costs.
-6. Who owns patching, monitoring, backup, restore, and incident response.
-7. Artifact-store location, retention, and immutability controls.
-8. Identity/session model and secret management.
-9. Export format, migration path, and exit cost.
-10. Successful restore drill on a non-production dataset.
+## Future backend evaluation — not an active task
 
-## Provisional recommendation
+Only after a stable implementation contract and measurable operational requirements exist, evaluate:
+- managed PostgreSQL (including Supabase);
+- another managed or self-managed PostgreSQL option;
+- SQLite for local-first/single-user deployments;
+- repository/object-artifact storage and other options only if requirements justify them.
 
-Keep the data model PostgreSQL-compatible and treat managed PostgreSQL as the leading candidate for the first hosted repository swarm, but make no final provider decision until region, budget, RPO/RTO, operational ownership, and plan costs are evidenced. SQLite can support a local prototype and fast tests; it is not selected as the canonical multi-user production store.
+Future selection criteria: hosting and availability needs, data residency, concurrency, recovery point/time objectives, budget, operational ownership, artifact retention/immutability, identity/session requirements, portability, and exit cost. Any recurring cost requires explicit owner approval.
+
+This document records a deferred decision, not a recommendation to provision any candidate.
