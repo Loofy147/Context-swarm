@@ -1,3 +1,5 @@
+> **Operating-model correction — v0.4:** The immediate system is repository-native swarm logic, not a backend-hosted application. The current canonical registry, context states, work queue, intake rules, evidence links, and version history live in Git-tracked repository artifacts. No database, API server, queue service, or deployed identity system is needed to mature the swarm's behavior. Sections below that discuss databases, service APIs, durable workers, or production identity are future-runtime design options and MUST NOT be read as a current implementation prerequisite. The next gate is evidence-backed context/task processing and specification convergence, not backend selection or application construction.
+
 # SCS v0.3 — architecture and implementation specification
 
 Status: design baseline, pre-implementation. Normative terms MUST, MUST NOT, SHOULD, and MAY are requirements. No claim of production readiness is implied.
