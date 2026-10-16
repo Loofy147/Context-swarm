@@ -1,0 +1,271 @@
+openapi: 3.1.0
+info:
+  title: Swarm Context System API
+  version: 0.3.0
+  description: Initial pre-implementation API contract. Deployment URL and credential format remain undecided.
+servers:
+  - url: https://scs.example.invalid/v1
+security:
+  - bearerAuth: []
+paths:
+  /contexts:
+    post:
+      operationId: createContext
+      summary: Create a context
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContext'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextSummary'
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '422': {$ref: '#/components/responses/Invalid'}
+    get:
+      operationId: listContexts
+      summary: List contexts visible to the caller
+      parameters:
+        - in: query
+          name: context_type
+          schema: {type: string}
+        - in: query
+          name: lifecycle_status
+          schema: {type: string, enum: [draft, active, blocked, archived, superseded]}
+        - in: query
+          name: limit
+          schema: {type: integer, minimum: 1, maximum: 100, default: 25}
+        - in: query
+          name: cursor
+          schema: {type: string}
+      responses:
+        '200':
+          description: Visible contexts
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: {$ref: '#/components/schemas/ContextSummary'}
+                  next_cursor: {type: [string, 'null']}
+  /contexts/{context_id}:
+    parameters:
+      - $ref: '#/components/parameters/ContextId'
+    get:
+      operationId: getContext
+      summary: Retrieve a context
+      parameters:
+        - in: query
+          name: version
+          schema: {type: integer, minimum: 1}
+      responses:
+        '200':
+          description: Context envelope
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ContextSummary'}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /contexts/{context_id}/proposals:
+    parameters:
+      - $ref: '#/components/parameters/ContextId'
+    post:
+      operationId: proposeChange
+      summary: Stage a change against an explicit base version
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [expected_version, change, rationale]
+              properties:
+                expected_version: {type: integer, minimum: 1}
+                change: {type: object}
+                rationale: {type: string, minLength: 1}
+                evidence_refs: {type: array, items: {type: string}}
+      responses:
+        '202': {description: Proposal staged}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/Invalid'}
+  /contexts/{context_id}/proposals/{proposal_id}/validate:
+    post:
+      operationId: validateChange
+      summary: Validate proposal without committing it
+      parameters:
+        - in: path
+          name: context_id
+          required: true
+          schema: {type: string}
+        - in: path
+          name: proposal_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200': {description: Validation report}
+        '404': {$ref: '#/components/responses/NotFound'}
+  /contexts/{context_id}/proposals/{proposal_id}/commit:
+    post:
+      operationId: commitChange
+      summary: Commit an authorized proposal using compare-and-swap
+      parameters:
+        - in: path
+          name: context_id
+          required: true
+          schema: {type: string}
+        - in: path
+          name: proposal_id
+          required: true
+          schema: {type: string}
+        - $ref: '#/components/parameters/IdempotencyKey'
+      responses:
+        '200': {description: Committed version and event reference}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '422': {$ref: '#/components/responses/Invalid'}
+  /contexts/{context_id}/relationships:
+    parameters:
+      - $ref: '#/components/parameters/ContextId'
+    post:
+      operationId: linkContexts
+      summary: Create a typed context relationship
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [relationship_type, target_context_id]
+              properties:
+                relationship_type:
+                  type: string
+                  enum: [parent_of, depends_on, references, derived_from, conflicts_with, supersedes, shares_with]
+                target_context_id: {type: string}
+      responses:
+        '201': {description: Relationship created}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+  /coordination/jobs:
+    post:
+      operationId: coordinateChanges
+      summary: Request impact analysis and policy-controlled propagation
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [source_context_id, source_version]
+              properties:
+                source_context_id: {type: string}
+                source_version: {type: integer, minimum: 1}
+      responses:
+        '202': {description: Coordination job accepted}
+  /events:
+    get:
+      operationId: getEventHistory
+      summary: Read authorized event history
+      parameters:
+        - in: query
+          name: context_id
+          schema: {type: string}
+        - in: query
+          name: cursor
+          schema: {type: string}
+        - in: query
+          name: limit
+          schema: {type: integer, minimum: 1, maximum: 100, default: 50}
+      responses:
+        '200': {description: Event page}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: opaque-or-jwt
+      description: Final credential format is an implementation decision. Never place credentials in context payloads.
+  parameters:
+    ContextId:
+      in: path
+      name: context_id
+      required: true
+      schema: {type: string, minLength: 1}
+    IdempotencyKey:
+      in: header
+      name: Idempotency-Key
+      required: false
+      schema: {type: string, minLength: 8, maxLength: 200}
+  schemas:
+    CreateContext:
+      type: object
+      required: [context_type, scope, owner_principal_id]
+      properties:
+        context_type: {type: string}
+        scope:
+          type: object
+          required: [purpose]
+          properties:
+            purpose: {type: string, minLength: 1}
+            boundaries: {type: array, items: {type: string}}
+            exclusions: {type: array, items: {type: string}}
+            invariants: {type: array, items: {type: string}}
+        owner_principal_id: {type: string}
+    ContextSummary:
+      type: object
+      required: [context_id, context_type, lifecycle_status, current_version]
+      properties:
+        context_id: {type: string}
+        context_type: {type: string}
+        lifecycle_status: {type: string}
+        current_version: {type: integer}
+        content_digest: {type: string}
+    Error:
+      type: object
+      required: [code, message, request_id]
+      properties:
+        code: {type: string}
+        message: {type: string}
+        request_id: {type: string}
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+    Forbidden:
+      description: Authorization denied
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+    NotFound:
+      description: Not found or deliberately concealed
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+    Conflict:
+      description: Stale version or unresolved conflict
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
+    Invalid:
+      description: Schema or invariant validation failed
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/Error'}
