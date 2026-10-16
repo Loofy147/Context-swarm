@@ -1,0 +1,57 @@
+{
+  "schema_version": "scs.input-record.v1",
+  "observed_at": "2026-10-16",
+  "captured_by": "scs.github-adapter.v1",
+  "trust_status": "source_verified",
+  "access_boundary": "Scoped GitHub API observation for Loofy147/Context-swarm; read-only source data.",
+  "linked_work_item_ids": [],
+  "privacy_note": "Only minimal metadata and source evidence pointers are normalized; raw response bodies are not copied wholesale.",
+  "content_digest": null,
+  "input_id": "IN-GH-9CEB8EBAC289D661",
+  "source_kind": "commit_or_branch",
+  "stable_source_id": "repo:Loofy147/Context-swarm",
+  "source_locator": "https://github.com/Loofy147/Context-swarm",
+  "source_revision": "meta:983487345042de7543bb86726f152fdbbb59147882ab0a7b0341b5a4c0557ced",
+  "classification": "repository_metadata_observation",
+  "normalized_claims": [
+    {
+      "claim_id": "CL-GH-496D9DD0F9C4",
+      "text": "GitHub returned repository identity Loofy147/Context-swarm.",
+      "status": "observed",
+      "source_support": "https://github.com/Loofy147/Context-swarm"
+    },
+    {
+      "claim_id": "CL-GH-7FDB425E2A2E",
+      "text": "Repository metadata reports public visibility.",
+      "status": "observed",
+      "source_support": "https://github.com/Loofy147/Context-swarm"
+    },
+    {
+      "claim_id": "CL-GH-755D8AD18D7B",
+      "text": "Repository archived flag is false.",
+      "status": "observed",
+      "source_support": "https://github.com/Loofy147/Context-swarm"
+    },
+    {
+      "claim_id": "CL-GH-972F39C95F6B",
+      "text": "Default branch reported by repository metadata is main.",
+      "status": "observed",
+      "source_support": "https://github.com/Loofy147/Context-swarm"
+    },
+    {
+      "claim_id": "CL-GH-969B4BD23BBE",
+      "text": "Observed default-branch head SHA is de6df318372ed9a009053a23d747f229c4ec2d53.",
+      "status": "observed",
+      "source_support": "https://github.com/Loofy147/Context-swarm"
+    }
+  ],
+  "intake_status": "triaged",
+  "disposition": "record_informational",
+  "linked_context_ids": [
+    "ctx-scs-repository-observation",
+    "ctx-scs-repository-demo"
+  ],
+  "evidence_refs": [
+    "https://github.com/Loofy147/Context-swarm"
+  ]
+}

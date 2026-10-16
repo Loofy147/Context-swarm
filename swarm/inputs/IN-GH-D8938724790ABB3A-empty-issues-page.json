@@ -1,0 +1,33 @@
+{
+  "schema_version": "scs.input-record.v1",
+  "observed_at": "2026-10-16",
+  "captured_by": "scs.github-adapter.v1",
+  "trust_status": "source_verified",
+  "access_boundary": "Scoped GitHub API observation for Loofy147/Context-swarm; read-only source data.",
+  "linked_work_item_ids": [],
+  "privacy_note": "Only minimal metadata and source evidence pointers are normalized; raw response bodies are not copied wholesale.",
+  "content_digest": null,
+  "input_id": "IN-GH-D8938724790ABB3A",
+  "source_kind": "issue_or_pull_request",
+  "stable_source_id": "issues-page:Loofy147/Context-swarm:state=all&per_page=30",
+  "source_locator": "https://api.github.com/repos/Loofy147/Context-swarm/issues?state=all&per_page=30",
+  "source_revision": "empty-page:2026-10-16",
+  "classification": "empty_issue_page_observation",
+  "normalized_claims": [
+    {
+      "claim_id": "CL-GH-BA801B826DB2",
+      "text": "The GitHub issues endpoint returned zero entries for query state=all&per_page=30 in this observation; this does not establish that tasks are absent from other sources.",
+      "status": "observed",
+      "source_support": "https://api.github.com/repos/Loofy147/Context-swarm/issues?state=all&per_page=30"
+    }
+  ],
+  "intake_status": "triaged",
+  "disposition": "record_informational",
+  "linked_context_ids": [
+    "ctx-scs-repository-observation",
+    "ctx-scs-repository-demo"
+  ],
+  "evidence_refs": [
+    "https://api.github.com/repos/Loofy147/Context-swarm/issues?state=all&per_page=30"
+  ]
+}

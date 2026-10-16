@@ -1,0 +1,33 @@
+{
+  "schema_version": "scs.input-record.v1",
+  "observed_at": "2026-10-16",
+  "captured_by": "scs.github-adapter.v1",
+  "trust_status": "source_verified",
+  "access_boundary": "Scoped GitHub API observation for Loofy147/Context-swarm; read-only source data.",
+  "linked_work_item_ids": [],
+  "privacy_note": "Only minimal metadata and source evidence pointers are normalized; raw response bodies are not copied wholesale.",
+  "content_digest": null,
+  "input_id": "IN-GH-EA41ECF1DB08739E",
+  "source_kind": "test_or_workflow_result",
+  "stable_source_id": "workflow-run:38960554903",
+  "source_locator": "https://github.com/Loofy147/Context-swarm/actions/runs/38960554903",
+  "source_revision": "run:2026-10-16T20:12:43Z:completed:success:de6df318372ed9a009053a23d747f229c4ec2d53",
+  "classification": "ci_verification_observation",
+  "normalized_claims": [
+    {
+      "claim_id": "CL-GH-B7D6D57067E3",
+      "text": "GitHub Actions run 38960554903 for commit de6df318372ed9a009053a23d747f229c4ec2d53 has status completed and conclusion success.",
+      "status": "verified",
+      "source_support": "https://github.com/Loofy147/Context-swarm/actions/runs/38960554903"
+    }
+  ],
+  "intake_status": "review",
+  "disposition": "propose_reversible_update",
+  "linked_context_ids": [
+    "ctx-scs-repository-demo",
+    "ctx-scs-repository-observation"
+  ],
+  "evidence_refs": [
+    "https://github.com/Loofy147/Context-swarm/actions/runs/38960554903"
+  ]
+}

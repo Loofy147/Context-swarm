@@ -156,8 +156,16 @@ class GitHubSnapshotRunnerTests(unittest.TestCase):
         self.assertEqual(workflow_plan["proposals"][0]["proposed_status"], "review")
         self.assertTrue(all(p["external_actions"] == [] for p in batch["plans"]))
 
+        persisted_paths = sorted((ROOT / "swarm/inputs").glob("IN-GH-*.json"))
+        self.assertEqual(len(persisted_paths), 4)
+        persisted_records = [json.loads(path.read_text()) for path in persisted_paths]
+        persisted_by_id = {record["input_id"]: record for record in persisted_records}
+        self.assertEqual(set(persisted_by_id), {record["input_id"] for record in new_records})
+        for generated in new_records:
+            self.assertEqual(persisted_by_id[generated["input_id"]], generated)
+
         replay = plan_github_observation_batch(cycle_id="SCS-CYCLE-0006-replay", **{
-            **kwargs, "prior_input_records": prior_records + new_records
+            **kwargs, "prior_input_records": prior_records + persisted_records
         })
         self.assertEqual(replay["summary"]["input_records_proposed"], 0)
         self.assertEqual(replay["summary"]["duplicate_noop"], 4)

@@ -1,11 +1,11 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 8,
-  "reviewed_base_commit": "29d61ddce497bc8c1c814fa9a938a1e2b7b2e71b",
+  "map_version": 9,
+  "reviewed_base_commit": "37b7a7442234458c490bf321356acb0c5f8744d0",
   "derived_from": [
-    "tracked repository tree at 29d61ddce497bc8c1c814fa9a938a1e2b7b2e71b",
-    "pure GitHub adapter and runner sources/tests",
-    "swarm/source-catalog.json"
+    "tracked source tree at 37b7a7442234458c490bf321356acb0c5f8744d0",
+    "captured GitHub snapshot cycle 0006",
+    "persisted normalized inputs and pure runner tests"
   ],
   "note": "Edges are typed and evidence-based. Explicit path references and test imports are stronger than semantic design relationships, which are labeled as contract relationships.",
   "edges": [
@@ -533,6 +533,62 @@
       "relationship": "snapshot_orchestration",
       "basis": "catalog_adapter_status",
       "confidence": "high"
+    },
+    {
+      "source_path": "swarm/sources/github-snapshot-cycle-0006.json",
+      "target_path": "tests/fixtures/registry-source-cycle-0006.json",
+      "relationship": "shares_base_commit",
+      "basis": "snapshot_and_registry_fixture",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_runner.py",
+      "target_path": "swarm/sources/github-snapshot-cycle-0006.json",
+      "relationship": "loads_fresh_snapshot",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_runner.py",
+      "target_path": "tests/fixtures/registry-source-cycle-0006.json",
+      "relationship": "loads_frozen_registry",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_runner.py",
+      "target_path": "swarm/inputs/IN-GH-9CEB8EBAC289D661-repository-metadata.json",
+      "relationship": "compares_planner_output_with_persisted_record",
+      "basis": "input_id_lookup_json_equality",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_runner.py",
+      "target_path": "swarm/inputs/IN-GH-123373305A1649EF-latest-commit.json",
+      "relationship": "compares_planner_output_with_persisted_record",
+      "basis": "input_id_lookup_json_equality",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_runner.py",
+      "target_path": "swarm/inputs/IN-GH-D8938724790ABB3A-empty-issues-page.json",
+      "relationship": "compares_planner_output_with_persisted_record",
+      "basis": "input_id_lookup_json_equality",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_runner.py",
+      "target_path": "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json",
+      "relationship": "compares_planner_output_with_persisted_record",
+      "basis": "input_id_lookup_json_equality",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/cycles/0006-fresh-github-source-ingestion.md",
+      "relationship": "cycle_work_item_evidence",
+      "basis": "SCS_MATURE_012",
+      "confidence": "high"
     }
   ],
   "limitations": [
@@ -543,6 +599,7 @@
     "Cycle planner and test edges added in v5; it generates proposals only and does not execute persistence or external side effects.",
     "Map v6 includes the cycle-plan output contract; refresh after the corrected test run.",
     "Map v7 is reviewed at 6229ddd03f5ced292c4271335f82f18080f5634a and adds source-catalog, tool-surface, durable capture and batch-plan relationships. Files changed by the enclosing metadata commit require a fresh tree snapshot on the next cycle.",
-    "Map v8 reviewed at 29d61ddce497bc8c1c814fa9a938a1e2b7b2e71b adds pure adapter/envelope/runner dependencies. Inventory paths may change when the next metadata update is committed."
+    "Map v8 reviewed at 29d61ddce497bc8c1c814fa9a938a1e2b7b2e71b adds pure adapter/envelope/runner dependencies. Inventory paths may change when the next metadata update is committed.",
+    "Map v9 reviewed at 37b7a7442234458c490bf321356acb0c5f8744d0 adds cycle-0006 captured-snapshot, input-record and replay-test edges."
   ]
 }

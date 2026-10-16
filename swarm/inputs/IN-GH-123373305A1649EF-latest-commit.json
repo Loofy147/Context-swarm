@@ -1,0 +1,33 @@
+{
+  "schema_version": "scs.input-record.v1",
+  "observed_at": "2026-10-16",
+  "captured_by": "scs.github-adapter.v1",
+  "trust_status": "source_verified",
+  "access_boundary": "Scoped GitHub API observation for Loofy147/Context-swarm; read-only source data.",
+  "linked_work_item_ids": [],
+  "privacy_note": "Only minimal metadata and source evidence pointers are normalized; raw response bodies are not copied wholesale.",
+  "content_digest": null,
+  "input_id": "IN-GH-123373305A1649EF",
+  "source_kind": "commit_or_branch",
+  "stable_source_id": "commit:de6df318372ed9a009053a23d747f229c4ec2d53",
+  "source_locator": "https://github.com/Loofy147/Context-swarm/commit/de6df318372ed9a009053a23d747f229c4ec2d53",
+  "source_revision": "de6df318372ed9a009053a23d747f229c4ec2d53",
+  "classification": "commit_observation",
+  "normalized_claims": [
+    {
+      "claim_id": "CL-GH-E12A44474607",
+      "text": "Observed commit de6df318372e with subject: Reconcile GitHub source adapters and define fresh-snapshot ingestion task; author timestamp: 2026-10-16T20:12:27Z",
+      "status": "observed",
+      "source_support": "https://github.com/Loofy147/Context-swarm/commit/de6df318372ed9a009053a23d747f229c4ec2d53"
+    }
+  ],
+  "intake_status": "triaged",
+  "disposition": "record_informational",
+  "linked_context_ids": [
+    "ctx-scs-repository-demo",
+    "ctx-scs-repository-observation"
+  ],
+  "evidence_refs": [
+    "https://github.com/Loofy147/Context-swarm/commit/de6df318372ed9a009053a23d747f229c4ec2d53"
+  ]
+}

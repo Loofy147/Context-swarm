@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.source-catalog.v1",
-  "catalog_version": 2,
+  "catalog_version": 4,
   "execution_mode": "repository_native",
   "scope_boundary": "Only sources and action surfaces observed in this operator run are listed as observed. Other services remain conditional until an exact connector action, resource, and permission are confirmed. This catalog guides discovery and normalization; it does not grant access.",
   "sources": [
@@ -226,6 +226,39 @@
         "Resource IDs and action arguments must not be guessed.",
         "Writes and privileged effects have separate authorization requirements."
       ]
+    },
+    {
+      "source_id": "src-github-snapshot-cycle-0006",
+      "source_kind": "github_source_snapshot",
+      "locator": "swarm/sources/github-snapshot-cycle-0006.json",
+      "availability": "observed_readable",
+      "access_mode": "read_only_observation",
+      "revision_strategy": "Snapshot ID plus base commit, frozen registry blob SHA, per-source revision and capture timestamp.",
+      "data_types": [
+        "repository metadata",
+        "default-branch head",
+        "latest commit object",
+        "issues endpoint response",
+        "Actions result"
+      ],
+      "context_routes": [
+        "ctx-scs-source-catalog",
+        "ctx-scs-repository-observation",
+        "ctx-scs-intake"
+      ],
+      "refresh_steps": [
+        "Read exact endpoints with authorized GitHub tools.",
+        "Record timestamp, URLs, revisions and base commit.",
+        "Normalize against the matching frozen registry fixture.",
+        "Compare generated input records with stored records and replay to verify duplicate no-ops.",
+        "Commit accepted input records and the cycle report with registry links."
+      ],
+      "adapter_status": "pure_adapter_available",
+      "limitations": [
+        "Snapshot was captured at 2026-10-16T20:12:59Z against base commit de6df318372ed9a009053a23d747f229c4ec2d53.",
+        "The empty issue result applies only to state=all&per_page=30.",
+        "The successful workflow is evidence for review, not automatic context acceptance or external authorization."
+      ]
     }
   ],
   "refresh_policy": [
@@ -234,6 +267,7 @@
     "Every accepted input should retain source locator, revision when available, access boundary, trust status, disposition, and linked contexts/tasks.",
     "The registry and catalog describe capability boundaries; they never grant resource permission.",
     "No backend, persistent queue, API service, or deployment is required during the current phase.",
-    "Pure GitHub normalizers and the snapshot runner are implemented at src/scs/adapters/github.py and src/scs/runner.py. They consume caller-supplied API objects and do not fetch the network."
+    "Pure GitHub normalizers and the snapshot runner are implemented at src/scs/adapters/github.py and src/scs/runner.py. They consume caller-supplied API objects and do not fetch the network.",
+    "Cycle 0006 captures a fresh scoped GitHub snapshot; four normalized input records under swarm/inputs/IN-GH-*.json are checked against the pure runner output and replayed for duplicate no-ops."
   ]
 }
