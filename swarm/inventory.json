@@ -99,7 +99,7 @@
     },
     {
       "path": "src/scs/intake.py",
-      "blob_sha": "6c2cc70de90774c5a357982fddcb600c1317f12e",
+      "blob_sha": "c677f3ae717d1860af52665bd4e83bc3a802fc12",
       "role": "intake rule reference",
       "disposition": "current_reference_logic",
       "reason": "Pure deterministic routing decisions; does not fetch, persist, authenticate, or execute external actions."
@@ -113,21 +113,21 @@
     },
     {
       "path": "swarm/contexts/README.md",
-      "blob_sha": null,
+      "blob_sha": "7879de672f9f4fdab2174b550ae669c0872734d2",
       "role": "context dossier convention",
       "disposition": "current",
       "reason": "Defines how detailed context dossiers should be recorded."
     },
     {
       "path": "swarm/inputs/IN-SCS-0001-operating-phase.json",
-      "blob_sha": null,
+      "blob_sha": "0571912066197c0efe6d072db74000087e67c645",
       "role": "captured input",
       "disposition": "current",
       "reason": "Stores user-directed operating requirements as normalized durable input."
     },
     {
       "path": "swarm/inputs/README.md",
-      "blob_sha": null,
+      "blob_sha": "98382ab83d3993a83e881a3d8f0b6e696ca669ee",
       "role": "input capture convention",
       "disposition": "current",
       "reason": "Defines intake record storage and provenance rules."
@@ -143,12 +143,12 @@
       "path": "swarm/registry.json",
       "blob_sha": "1f2d107db4c1ae2cf4b7e30ce829fdcaed807b4b",
       "role": "context and work registry",
-      "disposition": "current_needs_state_update",
-      "reason": "Seed records exist; next update should record inventory evidence and accepted task outcomes."
+      "disposition": "current",
+      "reason": "Seed context and work-item state; later registry versions will record accepted outcomes and new work."
     },
     {
       "path": "tests/fixtures/intake-scenarios.json",
-      "blob_sha": null,
+      "blob_sha": "950d39047d305cc0c1d10ef7a4db99a86edd8112",
       "role": "intake scenarios",
       "disposition": "current",
       "reason": "Replayable examples cover new task, duplicate, conflict, inaccessible source, untrusted instructions, verified derived update, and authorization gate."
@@ -169,7 +169,7 @@
     },
     {
       "path": "tests/test_swarm_intake.py",
-      "blob_sha": "13df52f25fc1c9b11b6ebcfb7ab28a9b24f18e7a",
+      "blob_sha": "817c4a981fd81f8f083f113008024b939fbe23f7",
       "role": "intake behavior tests",
       "disposition": "current",
       "reason": "Tests deterministic routing fixtures and registry relationships."
@@ -225,6 +225,19 @@
       "commit": "481fe14acada05c55cf08166c895c4440725f359",
       "result": "success",
       "scope": "GitHub Actions dependency-free test workflow, including intake fixture tests."
+    }
+  ],
+  "review_note": "Blob SHAs refer to the exact reviewed_tree_commit, not the current branch head. Files created after that baseline are listed in follow_up_artifacts.",
+  "follow_up_artifacts": [
+    {
+      "path": "swarm/inventory.json",
+      "commit": "47903b4cf53801d60e219ebc26e9d1357458b06b",
+      "role": "repository inventory and alignment findings"
+    },
+    {
+      "path": "swarm/sources/github-repository-state.json",
+      "commit": "43db8a6a8caf607aeefd460a842d01135481e8a0",
+      "role": "verified GitHub metadata observation"
     }
   ]
 }
