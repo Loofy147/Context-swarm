@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scs.invalid/schemas/source-catalog.schema.json",
+  "title": "SCS Repository-Native Source Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "catalog_version",
+    "execution_mode",
+    "scope_boundary",
+    "sources",
+    "refresh_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "scs.source-catalog.v1"
+    },
+    "catalog_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "execution_mode": {
+      "const": "repository_native"
+    },
+    "scope_boundary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "source_kind",
+          "locator",
+          "availability",
+          "access_mode",
+          "revision_strategy",
+          "data_types",
+          "context_routes",
+          "refresh_steps",
+          "adapter_status",
+          "limitations"
+        ],
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "minLength": 3
+          },
+          "source_kind": {
+            "type": "string",
+            "minLength": 1
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1
+          },
+          "availability": {
+            "enum": [
+              "observed_readable",
+              "conditionally_available",
+              "session_snapshot",
+              "explicit_user_input"
+            ]
+          },
+          "access_mode": {
+            "enum": [
+              "read_only_observation",
+              "tool_permission_checked_per_resource",
+              "session_metadata_only",
+              "explicit_capture_only"
+            ]
+          },
+          "revision_strategy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "data_types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "context_routes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "refresh_steps": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          },
+          "adapter_status": {
+            "enum": [
+              "direct_observation",
+              "manual_normalization",
+              "pure_adapter_needed",
+              "catalog_only"
+            ]
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "refresh_policy": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    }
+  }
+}

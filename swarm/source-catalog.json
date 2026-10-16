@@ -1,0 +1,238 @@
+{
+  "schema_version": "scs.source-catalog.v1",
+  "catalog_version": 1,
+  "execution_mode": "repository_native",
+  "scope_boundary": "Only sources and action surfaces observed in this operator run are listed as observed. Other services remain conditional until an exact connector action, resource, and permission are confirmed. This catalog guides discovery and normalization; it does not grant access.",
+  "sources": [
+    {
+      "source_id": "src-github-context-swarm-metadata",
+      "source_kind": "github_repository_metadata",
+      "locator": "https://api.github.com/repos/Loofy147/Context-swarm",
+      "availability": "observed_readable",
+      "access_mode": "read_only_observation",
+      "revision_strategy": "Default branch SHA and repository updated_at; recheck in each scoped cycle.",
+      "data_types": [
+        "repository identity",
+        "visibility",
+        "default branch",
+        "archive status"
+      ],
+      "context_routes": [
+        "ctx-scs-repository-demo",
+        "ctx-scs-repository-observation"
+      ],
+      "refresh_steps": [
+        "Read repository metadata from the exact endpoint.",
+        "Record date and source URL.",
+        "Compare the current default branch SHA with the last accepted observation."
+      ],
+      "adapter_status": "direct_observation",
+      "limitations": [
+        "A repository read does not imply access to other repositories or private resources.",
+        "Read access does not authorize writes."
+      ]
+    },
+    {
+      "source_id": "src-github-context-swarm-tree",
+      "source_kind": "github_repository_tree",
+      "locator": "https://api.github.com/repos/Loofy147/Context-swarm/git/trees/main?recursive=1",
+      "availability": "observed_readable",
+      "access_mode": "read_only_observation",
+      "revision_strategy": "Commit SHA, tree SHA, and exact blob SHA per path.",
+      "data_types": [
+        "tracked paths",
+        "blob identities",
+        "file sizes",
+        "artifact inventory"
+      ],
+      "context_routes": [
+        "ctx-scs-repository-demo",
+        "ctx-scs-intake"
+      ],
+      "refresh_steps": [
+        "Resolve current main head.",
+        "Fetch the recursive tree for that exact head.",
+        "Compare each path/blob identity with the accepted inventory."
+      ],
+      "adapter_status": "manual_normalization",
+      "limitations": [
+        "The tree is a snapshot and changes with commits.",
+        "Descriptions of file purpose require source review."
+      ]
+    },
+    {
+      "source_id": "src-github-context-swarm-commits",
+      "source_kind": "github_commit_history",
+      "locator": "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=30",
+      "availability": "observed_readable",
+      "access_mode": "read_only_observation",
+      "revision_strategy": "Commit SHA, parent SHA, subject, and author timestamp.",
+      "data_types": [
+        "commit subjects",
+        "commit URLs",
+        "timestamps",
+        "bounded history sample"
+      ],
+      "context_routes": [
+        "ctx-scs-repository-observation",
+        "ctx-scs-repository-demo"
+      ],
+      "refresh_steps": [
+        "Fetch a bounded recent commit page.",
+        "Record the returned count and page size.",
+        "Label topic classification as inferred."
+      ],
+      "adapter_status": "manual_normalization",
+      "limitations": [
+        "A page limit does not establish complete history.",
+        "Subject-derived categories remain inferred."
+      ]
+    },
+    {
+      "source_id": "src-github-context-swarm-issues",
+      "source_kind": "github_issues_pull_requests",
+      "locator": "https://api.github.com/repos/Loofy147/Context-swarm/issues?state=all&per_page=30",
+      "availability": "observed_readable",
+      "access_mode": "read_only_observation",
+      "revision_strategy": "Repository plus issue/PR number and updated_at.",
+      "data_types": [
+        "issues",
+        "pull requests",
+        "task metadata",
+        "labels/comments when separately queried"
+      ],
+      "context_routes": [
+        "ctx-scs-repository-demo",
+        "ctx-scs-intake"
+      ],
+      "refresh_steps": [
+        "Fetch the endpoint for the explicitly scoped repository.",
+        "Normalize returned items into source envelopes.",
+        "Do not equate an empty response with no tasks outside GitHub."
+      ],
+      "adapter_status": "pure_adapter_needed",
+      "limitations": [
+        "The observed response was empty.",
+        "Other task sources need their own explicit catalog entries."
+      ]
+    },
+    {
+      "source_id": "src-github-context-swarm-actions",
+      "source_kind": "github_actions",
+      "locator": "https://api.github.com/repos/Loofy147/Context-swarm/actions/runs?per_page=30",
+      "availability": "observed_readable",
+      "access_mode": "read_only_observation",
+      "revision_strategy": "Workflow run ID, head SHA, job conclusion.",
+      "data_types": [
+        "workflow runs",
+        "job status",
+        "test results",
+        "failed-step logs"
+      ],
+      "context_routes": [
+        "ctx-scs-intake",
+        "ctx-scs-repository-observation"
+      ],
+      "refresh_steps": [
+        "Fetch recent runs.",
+        "Select the run for the exact target commit.",
+        "Read job conclusions/logs before accepting a verification claim."
+      ],
+      "adapter_status": "manual_normalization",
+      "limitations": [
+        "A success verifies only the named commit and test scope.",
+        "CI success does not establish production readiness."
+      ]
+    },
+    {
+      "source_id": "src-operator-tool-surface",
+      "source_kind": "operator_tool_definitions",
+      "locator": "swarm/sources/connected-tool-surface.json",
+      "availability": "session_snapshot",
+      "access_mode": "session_metadata_only",
+      "revision_strategy": "Observed date and exact tool-name list per namespace.",
+      "data_types": [
+        "visible action names",
+        "integration namespaces",
+        "tool counts"
+      ],
+      "context_routes": [
+        "ctx-scs-capabilities",
+        "ctx-scs-source-catalog"
+      ],
+      "refresh_steps": [
+        "Read the surfaced tool registry at the beginning of a relevant operator run.",
+        "Compare namespace and action names to the snapshot.",
+        "Resolve the current exact action schema and verify resource access for each actual task."
+      ],
+      "adapter_status": "catalog_only",
+      "limitations": [
+        "Tool definitions are not credentials or permissions.",
+        "The surface can change between conversations.",
+        "A catalog entry never authorizes workspace scanning or external writes."
+      ]
+    },
+    {
+      "source_id": "src-user-explicit-requirements",
+      "source_kind": "captured_requirement",
+      "locator": "swarm/inputs/IN-SCS-0001-operating-phase.json",
+      "availability": "explicit_user_input",
+      "access_mode": "explicit_capture_only",
+      "revision_strategy": "Input ID, requirement revision, and Git commit.",
+      "data_types": [
+        "explicit scope",
+        "accepted constraints",
+        "operating decisions"
+      ],
+      "context_routes": [
+        "ctx-scs-charter",
+        "ctx-scs-intake",
+        "ctx-scs-backend-decision"
+      ],
+      "refresh_steps": [
+        "Capture explicit scope changes as minimal normalized input records.",
+        "Separate user statements from assistant inference.",
+        "Link changes to affected contexts and work items."
+      ],
+      "adapter_status": "manual_normalization",
+      "limitations": [
+        "The full conversation transcript is not canonical data.",
+        "Implicit preferences must not become binding rules without review."
+      ]
+    },
+    {
+      "source_id": "src-other-connected-services",
+      "source_kind": "connected_service",
+      "locator": "Resolve provider, resource and exact action from the current tool registry when a task needs that source.",
+      "availability": "conditionally_available",
+      "access_mode": "tool_permission_checked_per_resource",
+      "revision_strategy": "Provider-specific source revision or immutable ID returned by the exact read action.",
+      "data_types": [
+        "Task-relevant records defined per integration task."
+      ],
+      "context_routes": [
+        "ctx-scs-capabilities",
+        "ctx-scs-intake"
+      ],
+      "refresh_steps": [
+        "Discover the exact current tool action/schema.",
+        "Confirm access to the requested resource.",
+        "Read only the task-relevant records and preserve source locator/revision.",
+        "Add a provider-specific catalog entry if the integration becomes recurring."
+      ],
+      "adapter_status": "pure_adapter_needed",
+      "limitations": [
+        "Universal access is not claimed.",
+        "Resource IDs and action arguments must not be guessed.",
+        "Writes and privileged effects have separate authorization requirements."
+      ]
+    }
+  ],
+  "refresh_policy": [
+    "Refresh observations when the source revision changes or when evidence is material to a new decision.",
+    "Prefer append-only dated observations rather than overwriting historical claims; mark affected derived context stale.",
+    "Every accepted input should retain source locator, revision when available, access boundary, trust status, disposition, and linked contexts/tasks.",
+    "The registry and catalog describe capability boundaries; they never grant resource permission.",
+    "No backend, persistent queue, API service, or deployment is required during the current phase."
+  ]
+}

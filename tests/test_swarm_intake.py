@@ -135,6 +135,21 @@ class SwarmIntakeTests(unittest.TestCase):
         self.assertTrue(caps["github.repository.content_write"]["explicit_scope_required"])
         self.assertTrue(caps["connected_service.read"]["limitations"])
 
+    def test_source_catalog_and_tool_surface_are_structured_and_scoped(self):
+        catalog = json.loads((ROOT / "swarm/source-catalog.json").read_text())
+        catalog_schema = schemas["schemas/source-catalog.schema.json"]
+        errors = list(Draft202012Validator(catalog_schema, format_checker=format_checker).iter_errors(catalog))
+        self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+
+        surface = json.loads((ROOT / "swarm/sources/connected-tool-surface.json").read_text())
+        surface_schema = schemas["schemas/tool-surface-observation.schema.json"]
+        errors = list(Draft202012Validator(surface_schema, format_checker=format_checker).iter_errors(surface))
+        self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+        self.assertEqual(sum(group["tool_count"] for group in surface["namespaces"]) + len(surface["non_mcp_tool_names"]), surface["total_tool_definitions"])
+        self.assertFalse(surface["resource_access_confirmed"])
+        self.assertIn("GitHub", [group["namespace"] for group in surface["namespaces"]])
+        self.assertTrue(any(source["source_id"] == "src-other-connected-services" for source in catalog["sources"]))
+
     def test_schema_alignment_record_exists_and_separates_current_from_future(self):
         alignment = (ROOT / "spec/schema-alignment.md").read_text().lower()
         self.assertIn("repository-native", alignment)

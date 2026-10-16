@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scs.invalid/schemas/tool-surface-observation.schema.json",
+  "title": "Session-Bound Exposed Tool Surface Observation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "observation_id",
+    "observed_on",
+    "scope",
+    "total_tool_definitions",
+    "resource_access_confirmed",
+    "namespaces",
+    "non_mcp_tool_names",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "scs.operator-tool-surface.v1"
+    },
+    "observation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observed_on": {
+      "type": "string",
+      "format": "date"
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "total_tool_definitions": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "resource_access_confirmed": {
+      "const": false
+    },
+    "namespaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "namespace",
+          "tool_count",
+          "tool_names"
+        ],
+        "properties": {
+          "namespace": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tool_count": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "tool_names": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "non_mcp_tool_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minItems": 1
+      }
+    }
+  }
+}
