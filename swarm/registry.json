@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 2,
+  "registry_version": 3,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -36,7 +36,7 @@
       "title": "Input and task consumption protocol",
       "purpose": "Specify and test how information enters, is normalized, related, prioritized, processed, verified, and recorded.",
       "lifecycle_status": "accepted",
-      "version": 2,
+      "version": 3,
       "relationships": [
         {
           "type": "depends_on",
@@ -49,7 +49,11 @@
         "tests/fixtures/intake-scenarios.json",
         "src/scs/intake.py",
         "tests/test_swarm_intake.py",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38954032510"
+        "schemas/input-record.schema.json",
+        "schemas/intake-policy.schema.json",
+        "schemas/registry.schema.json",
+        "schemas/work-item.schema.json",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38954749589"
       ],
       "open_questions": [
         "Define and test complete context/task lifecycle transitions; current callable router returns intake decisions but does not itself persist changes.",
@@ -63,7 +67,7 @@
       "title": "Repository engineering swarm demonstrator",
       "purpose": "Use the repository's real source files, Git history, metadata, specs, and tests to exercise context-state workflows without a backend.",
       "lifecycle_status": "active",
-      "version": 2,
+      "version": 3,
       "relationships": [
         {
           "type": "depends_on",
@@ -80,16 +84,19 @@
       ],
       "evidence_refs": [
         "swarm/inventory.json",
+        "swarm/dependency-map.json",
         "swarm/sources/github-repository-state.json",
+        "swarm/sources/recent-commit-history.json",
         "README.md",
         "spec/architecture.md",
         "spec/swarm-operating-model.md",
         "tests/"
       ],
       "open_questions": [
-        "Review legacy/runtime reference artifacts against current context-state contracts.",
-        "Populate commit-history and artifact-dependency observations with precise source pointers.",
-        "Test context/task state transitions, stale dependency propagation, and conflict reconciliation."
+        "Review legacy/runtime reference artifacts against current repository-native contracts.",
+        "Complete and test the context/task state transition function before expanding automation.",
+        "Revisit schema alignment after transition scenarios identify required shared fields.",
+        "Improve batching of related Git changes to reduce CI noise and partial update windows."
       ],
       "change_note": "Version 2 records an artifact inventory, architecture alignment findings, current GitHub repository observations, and verified CI evidence."
     },
@@ -120,7 +127,7 @@
       "title": "Observed GitHub state for Context-swarm",
       "purpose": "Preserve source-backed metadata about the repository's visibility, default branch, branch protection, issue listing, commit history, and CI run.",
       "lifecycle_status": "accepted",
-      "version": 1,
+      "version": 2,
       "relationships": [
         {
           "type": "derived_from",
@@ -129,14 +136,15 @@
       ],
       "evidence_refs": [
         "swarm/sources/github-repository-state.json",
-        "https://api.github.com/repos/Loofy147/Context-swarm",
-        "https://api.github.com/repos/Loofy147/Context-swarm/branches",
-        "https://api.github.com/repos/Loofy147/Context-swarm/issues?state=all&per_page=30",
+        "swarm/sources/recent-commit-history.json",
+        "swarm/dependency-map.json",
+        "swarm/inventory.json",
         "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=30",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38954032510"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38954749589"
       ],
       "open_questions": [
-        "Periodically refresh these observations and distinguish current live facts from historical observations."
+        "Refresh observations when source revisions change and mark stale facts.",
+        "Branch is unprotected; procedural review is not server-enforced."
       ],
       "change_note": "Initial evidence context; recorded facts are scoped to observation date and source response."
     }
@@ -181,7 +189,8 @@
       "history_refs": [
         "https://github.com/Loofy147/Context-swarm/commit/47903b4cf53801d60e219ebc26e9d1357458b06b",
         "https://github.com/Loofy147/Context-swarm/commit/ae9eeb4d6f496e3e48ef79bd667aad9cc3de7313"
-      ]
+      ],
+      "version": 2
     },
     {
       "work_item_id": "SCS-MATURE-002",
@@ -224,7 +233,8 @@
       "history_refs": [
         "https://github.com/Loofy147/Context-swarm/commit/481fe14acada05c55cf08166c895c4440725f359",
         "https://github.com/Loofy147/Context-swarm/actions/runs/38954032510"
-      ]
+      ],
+      "version": 2
     },
     {
       "work_item_id": "SCS-MATURE-003",
@@ -264,13 +274,14 @@
       "history_refs": [
         "https://github.com/Loofy147/Context-swarm/commit/47903b4cf53801d60e219ebc26e9d1357458b06b",
         "https://github.com/Loofy147/Context-swarm/commit/43db8a6a8caf607aeefd460a842d01135481e8a0"
-      ]
+      ],
+      "version": 2
     },
     {
       "work_item_id": "SCS-MATURE-004",
       "kind": "state_machine",
       "title": "Define and test context and task state transitions beyond intake routing",
-      "status": "ready",
+      "status": "in_progress",
       "requested_by": "swarm_observed_gap",
       "source_refs": [
         "spec/swarm-operating-model.md",
@@ -301,8 +312,13 @@
         "Executable tests or replayable fixtures",
         "CI run"
       ],
-      "attempts": 0,
-      "blocked_reason": null
+      "attempts": 1,
+      "blocked_reason": null,
+      "version": 2,
+      "last_outcome": "Transition preconditions are being implemented as a pure reference function with version compare-and-swap checks. This is swarm logic, not a persistent runtime.",
+      "history_refs": [
+        "https://github.com/Loofy147/Context-swarm/commit/bae32e4b4fc1f71e81fd67a5a87a2e09474482d9"
+      ]
     },
     {
       "work_item_id": "SCS-MATURE-005",
@@ -339,13 +355,14 @@
         "Passing tests"
       ],
       "attempts": 0,
-      "blocked_reason": null
+      "blocked_reason": null,
+      "version": 1
     },
     {
       "work_item_id": "SCS-MATURE-006",
       "kind": "evidence_population",
       "title": "Expand repository observations with recent commit details and artifact dependency links",
-      "status": "ready",
+      "status": "review",
       "requested_by": "swarm_observed_gap",
       "source_refs": [
         "swarm/sources/github-repository-state.json",
@@ -373,6 +390,48 @@
         "Committed source observation",
         "Updated inventory or dependency map"
       ],
+      "attempts": 1,
+      "blocked_reason": null,
+      "version": 2,
+      "last_outcome": "Recent commit history and artifact dependency map are captured. Awaiting CI validation of the expanded map.",
+      "history_refs": [
+        "https://github.com/Loofy147/Context-swarm/commit/313cec308846ad4fa9172855ddf38b85ed56fb75",
+        "https://github.com/Loofy147/Context-swarm/commit/0ebadb61df911701930efa64ae4db3a65afa5787"
+      ]
+    },
+    {
+      "work_item_id": "SCS-MATURE-007",
+      "version": 1,
+      "kind": "workflow_efficiency",
+      "title": "Batch related context-state files into coherent Git commits where tooling permits",
+      "status": "ready",
+      "requested_by": "inventory_finding_INV-005",
+      "source_refs": [
+        "swarm/sources/recent-commit-history.json",
+        "swarm/CYCLE.md",
+        ".github/workflows/tests.yml"
+      ],
+      "target_context_ids": [
+        "ctx-scs-repository-demo",
+        "ctx-scs-intake"
+      ],
+      "dependencies": [
+        "SCS-MATURE-004"
+      ],
+      "priority": {
+        "level": "medium",
+        "rationale": "File-by-file commits cause many redundant CI runs and can temporarily leave cross-file state inconsistent."
+      },
+      "acceptance_criteria": [
+        "Documented commit strategy groups related state changes where supported.",
+        "No force-push is used to bypass concurrent state changes.",
+        "CI remains required evidence for the final grouped state.",
+        "Tooling limitation and any required multi-step commit protocol are explicit."
+      ],
+      "required_evidence": [
+        "Updated cycle runbook or tested commit batching procedure",
+        "Observed reduction in unnecessary CI runs on a logical multi-file change"
+      ],
       "attempts": 0,
       "blocked_reason": null
     }
@@ -380,8 +439,9 @@
   "policy_refs": [
     "swarm/intake-policy.json",
     "spec/swarm-operating-model.md",
-    "spec/acceptance.md"
+    "spec/acceptance.md",
+    "swarm/CYCLE.md"
   ],
-  "last_reconciled_commit": "7826370ab162cfaebce5c40f95c48ab5af8e921b",
-  "change_note": "Registry version 2 records repository-native phase correction, completed inventory/intake tasks, current GitHub evidence, and the next state-machine/schema/evidence tasks."
+  "last_reconciled_commit": "bae32e4b4fc1f71e81fd67a5a87a2e09474482d9",
+  "change_note": "Registry v3 records schema validation, sourced commit history and dependency mapping, advances accepted context versions, and opens a bounded context/task transition implementation cycle."
 }
