@@ -1,1 +1,387 @@
-{"schema_version":"scs.repo-registry.v1","registry_version":1,"operating_phase":"repository_native_maturation","canonical_store":"git_tracked_repository_artifacts","definition":"Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.","contexts":[{"context_id":"ctx-scs-charter","context_type":"system_charter","title":"SCS charter and operating boundary","purpose":"Define the swarm as a context-state coordination protocol and keep production implementation deferred until evidence supports it.","lifecycle_status":"accepted","version":1,"relationships":[{"type":"references","target_context_id":"ctx-scs-intake"}],"evidence_refs":["README.md","spec/architecture.md"],"open_questions":[],"change_note":"Seeded from user-confirmed definition and operating-model correction."},{"context_id":"ctx-scs-intake","context_type":"intake_protocol","title":"Input and task consumption protocol","purpose":"Specify how new information enters, is normalized, related, prioritized, processed, verified, and recorded.","lifecycle_status":"accepted","version":1,"relationships":[{"type":"depends_on","target_context_id":"ctx-scs-charter"}],"evidence_refs":["spec/swarm-operating-model.md","swarm/intake-policy.json"],"open_questions":["Add replayable intake scenarios with positive, duplicate, conflict, inaccessible-source, and unsafe-input cases."],"change_note":"Initial operating contract; subject to test-driven improvement."},{"context_id":"ctx-scs-repository-demo","context_type":"project","title":"Repository engineering swarm demonstrator","purpose":"Use this repository's real files, commits, contracts, and tests to exercise the context-state workflow without a backend.","lifecycle_status":"active","version":1,"relationships":[{"type":"depends_on","target_context_id":"ctx-scs-intake"},{"type":"references","target_context_id":"ctx-scs-charter"}],"evidence_refs":["README.md","spec/architecture.md","spec/openapi.yaml","schemas/context.schema.json","schemas/event.schema.json","tests/"],"open_questions":["Build evidence-backed repository inventory and dependency map.","Add replayable task and context transition scenarios.","Identify inconsistencies among reference artifacts and current operating rules."],"change_note":"First target context for ongoing real work."},{"context_id":"ctx-scs-backend-decision","context_type":"deferred_decision","title":"Production backend selection","purpose":"Keep backend choice out of scope until repository-native swarm behavior and implementation contracts have matured.","lifecycle_status":"deferred","version":1,"relationships":[{"type":"references","target_context_id":"ctx-scs-charter"}],"evidence_refs":["spec/backend-decision.md"],"open_questions":["Reopen only after implementation-readiness criteria have evidence."],"change_note":"Deliberately deferred; no provisioning or backend selection."}],"work_items":[{"work_item_id":"SCS-MATURE-001","kind":"specification_review","title":"Audit existing repository artifacts against the repository-native operating model","status":"ready","requested_by":"user_direction","source_refs":["README.md","spec/architecture.md","spec/openapi.yaml","migrations/001_initial_postgres.sql","src/scs/reference_model.py","tests/"],"target_context_ids":["ctx-scs-repository-demo","ctx-scs-charter"],"dependencies":[],"priority":{"level":"high","rationale":"Detect contradictory or premature artifacts before extending the protocol."},"acceptance_criteria":["Every current artifact is classified as current, reference-only, superseded, or deferred.","Contradictions are recorded with paths and a proposed disposition.","No files are silently deleted."],"required_evidence":["Repository tree at reviewed commit","Path-by-path disposition"],"attempts":0,"blocked_reason":null},{"work_item_id":"SCS-MATURE-002","kind":"verification","title":"Add replayable intake and context-state transition cases","status":"ready","requested_by":"swarm_registry_seed","source_refs":["spec/swarm-operating-model.md","swarm/intake-policy.json","swarm/registry.json"],"target_context_ids":["ctx-scs-intake","ctx-scs-repository-demo"],"dependencies":["SCS-MATURE-001"],"priority":{"level":"high","rationale":"Turn the intake contract into observable behavior before implementing a runtime."},"acceptance_criteria":["Duplicate inputs are deterministically dispositioned.","Contradictory claims produce a conflict state.","Inaccessible sources produce a blocked/limited result, not fabricated data.","Accepted context changes record evidence and a new version.","Consequential operations remain separately gated."],"required_evidence":["Executable tests or replayable scenario fixtures","Recorded pass/fail result"],"attempts":0,"blocked_reason":null},{"work_item_id":"SCS-MATURE-003","kind":"context_population","title":"Populate the repository engineering context with evidence-backed inventory","status":"ready","requested_by":"swarm_registry_seed","source_refs":["https://github.com/Loofy147/Context-swarm"],"target_context_ids":["ctx-scs-repository-demo"],"dependencies":["SCS-MATURE-001"],"priority":{"level":"medium","rationale":"Use actual repository artifacts as the initial dataset, rather than synthetic sample data alone."},"acceptance_criteria":["Canonical repository tree and current branch head are recorded.","Each artifact has a path, purpose, and status.","Known limitations and unanswered implementation questions are recorded.","Claims link to source paths or commit evidence."],"required_evidence":["Repository tree evidence","Inventory artifact committed to the repository"],"attempts":0,"blocked_reason":null}],"policy_refs":["swarm/intake-policy.json","spec/swarm-operating-model.md"],"last_reconciled_commit":"e20a441afa080848d5f63fdfcaa026ea9ddb712d"}
+{
+  "schema_version": "scs.repo-registry.v1",
+  "registry_version": 2,
+  "operating_phase": "repository_native_maturation",
+  "canonical_store": "git_tracked_repository_artifacts",
+  "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
+  "contexts": [
+    {
+      "context_id": "ctx-scs-charter",
+      "context_type": "system_charter",
+      "title": "SCS charter and operating boundary",
+      "purpose": "Define the swarm as a context-state coordination protocol; mature its state/data/workflow rules before choosing or building production runtime infrastructure.",
+      "lifecycle_status": "accepted",
+      "version": 2,
+      "relationships": [
+        {
+          "type": "references",
+          "target_context_id": "ctx-scs-intake"
+        },
+        {
+          "type": "references",
+          "target_context_id": "ctx-scs-repository-observation"
+        }
+      ],
+      "evidence_refs": [
+        "README.md",
+        "spec/architecture.md",
+        "swarm/inputs/IN-SCS-0001-operating-phase.json"
+      ],
+      "open_questions": [],
+      "change_note": "Version 2 makes repository-native maturation canonical and defers backend/runtime implementation."
+    },
+    {
+      "context_id": "ctx-scs-intake",
+      "context_type": "intake_protocol",
+      "title": "Input and task consumption protocol",
+      "purpose": "Specify and test how information enters, is normalized, related, prioritized, processed, verified, and recorded.",
+      "lifecycle_status": "accepted",
+      "version": 2,
+      "relationships": [
+        {
+          "type": "depends_on",
+          "target_context_id": "ctx-scs-charter"
+        }
+      ],
+      "evidence_refs": [
+        "spec/swarm-operating-model.md",
+        "swarm/intake-policy.json",
+        "tests/fixtures/intake-scenarios.json",
+        "src/scs/intake.py",
+        "tests/test_swarm_intake.py",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38954032510"
+      ],
+      "open_questions": [
+        "Define and test complete context/task lifecycle transitions; current callable router returns intake decisions but does not itself persist changes.",
+        "Decide whether the future context envelope and repository-native context-state schemas can share a stable core."
+      ],
+      "change_note": "Version 2 adds deterministic intake disposition logic and seven replayable behavior scenarios. CI passes for the named commit."
+    },
+    {
+      "context_id": "ctx-scs-repository-demo",
+      "context_type": "project",
+      "title": "Repository engineering swarm demonstrator",
+      "purpose": "Use the repository's real source files, Git history, metadata, specs, and tests to exercise context-state workflows without a backend.",
+      "lifecycle_status": "active",
+      "version": 2,
+      "relationships": [
+        {
+          "type": "depends_on",
+          "target_context_id": "ctx-scs-intake"
+        },
+        {
+          "type": "references",
+          "target_context_id": "ctx-scs-charter"
+        },
+        {
+          "type": "references",
+          "target_context_id": "ctx-scs-repository-observation"
+        }
+      ],
+      "evidence_refs": [
+        "swarm/inventory.json",
+        "swarm/sources/github-repository-state.json",
+        "README.md",
+        "spec/architecture.md",
+        "spec/swarm-operating-model.md",
+        "tests/"
+      ],
+      "open_questions": [
+        "Review legacy/runtime reference artifacts against current context-state contracts.",
+        "Populate commit-history and artifact-dependency observations with precise source pointers.",
+        "Test context/task state transitions, stale dependency propagation, and conflict reconciliation."
+      ],
+      "change_note": "Version 2 records an artifact inventory, architecture alignment findings, current GitHub repository observations, and verified CI evidence."
+    },
+    {
+      "context_id": "ctx-scs-backend-decision",
+      "context_type": "deferred_decision",
+      "title": "Production backend selection",
+      "purpose": "Keep backend choice out of scope until repository-native swarm behavior and implementation contracts have matured.",
+      "lifecycle_status": "deferred",
+      "version": 2,
+      "relationships": [
+        {
+          "type": "references",
+          "target_context_id": "ctx-scs-charter"
+        }
+      ],
+      "evidence_refs": [
+        "spec/backend-decision.md"
+      ],
+      "open_questions": [
+        "Reopen only after implementation-readiness criteria have evidence and production operational requirements are defined."
+      ],
+      "change_note": "Version 2 explicitly records that no backend selection, project provisioning, or deployment is part of the current phase."
+    },
+    {
+      "context_id": "ctx-scs-repository-observation",
+      "context_type": "evidence",
+      "title": "Observed GitHub state for Context-swarm",
+      "purpose": "Preserve source-backed metadata about the repository's visibility, default branch, branch protection, issue listing, commit history, and CI run.",
+      "lifecycle_status": "accepted",
+      "version": 1,
+      "relationships": [
+        {
+          "type": "derived_from",
+          "target_context_id": "ctx-scs-repository-demo"
+        }
+      ],
+      "evidence_refs": [
+        "swarm/sources/github-repository-state.json",
+        "https://api.github.com/repos/Loofy147/Context-swarm",
+        "https://api.github.com/repos/Loofy147/Context-swarm/branches",
+        "https://api.github.com/repos/Loofy147/Context-swarm/issues?state=all&per_page=30",
+        "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=30",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38954032510"
+      ],
+      "open_questions": [
+        "Periodically refresh these observations and distinguish current live facts from historical observations."
+      ],
+      "change_note": "Initial evidence context; recorded facts are scoped to observation date and source response."
+    }
+  ],
+  "work_items": [
+    {
+      "work_item_id": "SCS-MATURE-001",
+      "kind": "specification_review",
+      "title": "Audit existing repository artifacts against the repository-native operating model",
+      "status": "accepted",
+      "requested_by": "user_direction",
+      "source_refs": [
+        "README.md",
+        "spec/architecture.md",
+        "spec/openapi.yaml",
+        "migrations/001_initial_postgres.sql",
+        "src/scs/reference_model.py",
+        "tests/",
+        "swarm/inventory.json"
+      ],
+      "target_context_ids": [
+        "ctx-scs-repository-demo",
+        "ctx-scs-charter"
+      ],
+      "dependencies": [],
+      "priority": {
+        "level": "high",
+        "rationale": "Detect contradictory or premature artifacts before extending the protocol."
+      },
+      "acceptance_criteria": [
+        "Every artifact in the reviewed tree is classified.",
+        "Contradictions are recorded with paths and a disposition.",
+        "No files are silently deleted."
+      ],
+      "required_evidence": [
+        "swarm/inventory.json reviewed_tree_commit 481fe14acada05c55cf08166c895c4440725f359",
+        "INV-001 through INV-004 findings"
+      ],
+      "attempts": 1,
+      "blocked_reason": null,
+      "last_outcome": "Accepted: inventory classifies current, deferred, reference-only, and alignment-needed artifacts; four findings record disposition and follow-up.",
+      "history_refs": [
+        "https://github.com/Loofy147/Context-swarm/commit/47903b4cf53801d60e219ebc26e9d1357458b06b",
+        "https://github.com/Loofy147/Context-swarm/commit/ae9eeb4d6f496e3e48ef79bd667aad9cc3de7313"
+      ]
+    },
+    {
+      "work_item_id": "SCS-MATURE-002",
+      "kind": "verification",
+      "title": "Add replayable intake and context-state transition cases",
+      "status": "accepted",
+      "requested_by": "swarm_registry_seed",
+      "source_refs": [
+        "spec/swarm-operating-model.md",
+        "swarm/intake-policy.json",
+        "tests/fixtures/intake-scenarios.json",
+        "src/scs/intake.py",
+        "tests/test_swarm_intake.py"
+      ],
+      "target_context_ids": [
+        "ctx-scs-intake",
+        "ctx-scs-repository-demo"
+      ],
+      "dependencies": [
+        "SCS-MATURE-001"
+      ],
+      "priority": {
+        "level": "high",
+        "rationale": "Turn intake rules into observable behavior before implementing a runtime."
+      },
+      "acceptance_criteria": [
+        "Duplicate inputs have deterministic dispositions.",
+        "Contradictory claims create a conflict outcome.",
+        "Inaccessible sources result in blocked/limited outcomes.",
+        "Untrusted embedded instructions remain data.",
+        "Consequential actions lacking authorization are blocked."
+      ],
+      "required_evidence": [
+        "Seven replayable intake cases",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38954032510"
+      ],
+      "attempts": 1,
+      "blocked_reason": null,
+      "last_outcome": "Accepted for the bounded intake-routing scope. CI run 38954032510 passed. Full persistence and context-state transitions remain separate open work.",
+      "history_refs": [
+        "https://github.com/Loofy147/Context-swarm/commit/481fe14acada05c55cf08166c895c4440725f359",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38954032510"
+      ]
+    },
+    {
+      "work_item_id": "SCS-MATURE-003",
+      "kind": "context_population",
+      "title": "Populate the repository engineering context with evidence-backed inventory",
+      "status": "accepted",
+      "requested_by": "swarm_registry_seed",
+      "source_refs": [
+        "https://github.com/Loofy147/Context-swarm",
+        "swarm/inventory.json",
+        "swarm/sources/github-repository-state.json"
+      ],
+      "target_context_ids": [
+        "ctx-scs-repository-demo",
+        "ctx-scs-repository-observation"
+      ],
+      "dependencies": [
+        "SCS-MATURE-001"
+      ],
+      "priority": {
+        "level": "medium",
+        "rationale": "Use actual repository artifacts and connected GitHub source data, not synthetic examples alone."
+      },
+      "acceptance_criteria": [
+        "Repository tree and reviewed commit are recorded.",
+        "Artifacts are classified with paths and blob identities where verified.",
+        "Known limitations and unresolved questions are recorded.",
+        "Claims link to source paths or API evidence."
+      ],
+      "required_evidence": [
+        "swarm/inventory.json",
+        "swarm/sources/github-repository-state.json"
+      ],
+      "attempts": 1,
+      "blocked_reason": null,
+      "last_outcome": "Accepted: repository inventory includes reviewed tree, artifact roles, source-backed metadata, CI evidence, and explicit limitations.",
+      "history_refs": [
+        "https://github.com/Loofy147/Context-swarm/commit/47903b4cf53801d60e219ebc26e9d1357458b06b",
+        "https://github.com/Loofy147/Context-swarm/commit/43db8a6a8caf607aeefd460a842d01135481e8a0"
+      ]
+    },
+    {
+      "work_item_id": "SCS-MATURE-004",
+      "kind": "state_machine",
+      "title": "Define and test context and task state transitions beyond intake routing",
+      "status": "ready",
+      "requested_by": "swarm_observed_gap",
+      "source_refs": [
+        "spec/swarm-operating-model.md",
+        "schemas/context-state.schema.json",
+        "schemas/work-item.schema.json",
+        "src/scs/intake.py"
+      ],
+      "target_context_ids": [
+        "ctx-scs-intake",
+        "ctx-scs-repository-demo"
+      ],
+      "dependencies": [
+        "SCS-MATURE-002"
+      ],
+      "priority": {
+        "level": "high",
+        "rationale": "The router resolves input disposition, but the swarm also needs tested rules for proposing, validating, accepting, blocking, superseding, and versioning context/task state."
+      },
+      "acceptance_criteria": [
+        "Every allowed task transition has preconditions and expected side effects.",
+        "Every allowed context transition has preconditions and expected side effects.",
+        "Illegal transitions fail closed.",
+        "A proposal cannot be confused with accepted state.",
+        "Tests cover accepted, blocked, conflicted, stale, and superseded outcomes."
+      ],
+      "required_evidence": [
+        "Transition table",
+        "Executable tests or replayable fixtures",
+        "CI run"
+      ],
+      "attempts": 0,
+      "blocked_reason": null
+    },
+    {
+      "work_item_id": "SCS-MATURE-005",
+      "kind": "schema_alignment",
+      "title": "Resolve the relationship between current context-state schema and deferred runtime envelope",
+      "status": "ready",
+      "requested_by": "inventory_finding_INV-002",
+      "source_refs": [
+        "schemas/context-state.schema.json",
+        "schemas/context.schema.json",
+        "swarm/registry.json",
+        "swarm/inventory.json"
+      ],
+      "target_context_ids": [
+        "ctx-scs-intake",
+        "ctx-scs-repository-demo"
+      ],
+      "dependencies": [
+        "SCS-MATURE-004"
+      ],
+      "priority": {
+        "level": "medium",
+        "rationale": "Avoid two incompatible canonical models while preserving a separate future runtime contract until evidence supports consolidation."
+      },
+      "acceptance_criteria": [
+        "List field-level overlap and semantic differences.",
+        "Select the canonical repository-native state schema for current phase.",
+        "Document which runtime-only fields remain deferred.",
+        "Add schema consistency tests without introducing a database."
+      ],
+      "required_evidence": [
+        "Field comparison",
+        "Decision record",
+        "Passing tests"
+      ],
+      "attempts": 0,
+      "blocked_reason": null
+    },
+    {
+      "work_item_id": "SCS-MATURE-006",
+      "kind": "evidence_population",
+      "title": "Expand repository observations with recent commit details and artifact dependency links",
+      "status": "ready",
+      "requested_by": "swarm_observed_gap",
+      "source_refs": [
+        "swarm/sources/github-repository-state.json",
+        "swarm/inventory.json",
+        "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=30"
+      ],
+      "target_context_ids": [
+        "ctx-scs-repository-demo",
+        "ctx-scs-repository-observation"
+      ],
+      "dependencies": [
+        "SCS-MATURE-003"
+      ],
+      "priority": {
+        "level": "medium",
+        "rationale": "Make the first swarm data set more useful for real repository maintenance and context impact analysis."
+      },
+      "acceptance_criteria": [
+        "Relevant recent commits are summarized with exact commit links.",
+        "Artifact dependencies are linked to source paths and tests.",
+        "Observed facts are separated from inferences.",
+        "Each observation records its date and limitations."
+      ],
+      "required_evidence": [
+        "Committed source observation",
+        "Updated inventory or dependency map"
+      ],
+      "attempts": 0,
+      "blocked_reason": null
+    }
+  ],
+  "policy_refs": [
+    "swarm/intake-policy.json",
+    "spec/swarm-operating-model.md",
+    "spec/acceptance.md"
+  ],
+  "last_reconciled_commit": "7826370ab162cfaebce5c40f95c48ab5af8e921b",
+  "change_note": "Registry version 2 records repository-native phase correction, completed inventory/intake tasks, current GitHub evidence, and the next state-machine/schema/evidence tasks."
+}
