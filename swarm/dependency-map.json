@@ -1,13 +1,13 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 12,
-  "reviewed_base_commit": "f90d064455bab412e43763fbacd40be60128f0f9",
+  "map_version": 13,
+  "reviewed_base_commit": "d1e0751851c548c4cefdaad5b90484dfa051b0f7",
   "derived_from": [
     "exact tree at d8482f02af7a7e11487491869948cad91037e1d7",
     "cycle-0006 captured source snapshot and normalized input records",
     "CI run 38961446352"
   ],
-  "note": "Map v12 reconciles the exact merged main baseline f90d064455bab412e43763fbacd40be60128f0f9. It includes the context-impact planner/schema/tests and links the cycle report and user-facing README. The next planner invocation must provide this reviewed baseline for these artifact edges to count as direct; uncertain semantic edges remain possible.",
+  "note": "Map v13 reconciles main at exact baseline d1e0751851c548c4cefdaad5b90484dfa051b0f7 after the impact-test helper was aligned to this map's reviewed_base_commit. The stale-map regression supplies an older base explicitly.",
   "edges": [
     {
       "source_path": "tests/test_swarm_intake.py",
@@ -705,9 +705,9 @@
   ],
   "limitations": [
     "This is a repository artifact dependency map, not a runtime call graph.",
-    "Only edges with an explicit code/test/schema/workflow basis and high confidence can be direct when the map reviewed_base_commit exactly matches the supplied plan base.",
+    "Only edges with an explicit code/test/schema/workflow basis and high confidence can be direct when reviewed_base_commit exactly matches the plan base.",
     "Markdown/documentation edges establish traceability, not runtime execution. Semantic, planned registry links, unknown relationships, and all edges from a stale map are possible impact only.",
-    "Map v12 was reviewed against merged main commit f90d064455bab412e43763fbacd40be60128f0f9; changes after that baseline may make its edge snapshot stale.",
+    "Map v13 reviews the exact main baseline d1e0751851c548c4cefdaad5b90484dfa051b0f7. Changes after that baseline may make the map stale.",
     "The impact planner emits proposals only. It does not persist, accept, deploy, or execute external actions."
   ]
 }
