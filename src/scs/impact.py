@@ -339,8 +339,10 @@ def plan_impact(
 
     all_direct_paths = set(direct_causes)
     all_possible_paths = set(possible_causes) - all_direct_paths
-    for path, causes in sorted(direct_edges.items()):
+    for path, edge_refs in sorted(direct_edges.items()):
+        causes = direct_causes[path]
         refs = {f"path:{path}"}
+        refs.update(edge_refs)
         refs.update(ref for row in source_changes if row["stable_source_id"] in causes for ref in row["evidence_refs"])
         _add_impact(
             direct_impacts, "artifact", path, causes, refs,
