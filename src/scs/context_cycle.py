@@ -50,12 +50,12 @@ def _context_conflicts(batch: Mapping[str, Any], impact: Mapping[str, Any]) -> l
         for item in impact.get(field, []):
             if item.get("target_type") == "context" and isinstance(item.get("target_id"), str):
                 impacted.setdefault(item["target_id"], {}).setdefault(kind, set()).update(
-                    x for x in item.get("changed_source_ids", []) if isinstance(x, str))
+                    x for x in item.get("source_ids", []) if isinstance(x, str))
     for field, kind in (("stale_proposals", "stale_context"), ("stale_claim_proposals", "stale_claim")):
         for item in impact.get(field, []):
             if isinstance(item.get("context_id"), str):
                 impacted.setdefault(item["context_id"], {}).setdefault(kind, set()).update(
-                    x for x in item.get("changed_source_ids", []) if isinstance(x, str))
+                    x for x in item.get("source_ids", []) if isinstance(x, str))
 
     conflicts = []
     for context_id in sorted(set(updates) & set(impacted)):
