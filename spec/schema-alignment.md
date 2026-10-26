@@ -12,6 +12,7 @@
 | Captured input | `schemas/input-record.schema.json` | Normalized source/requirement record with origin, trust, access boundary, claims, disposition, and links |
 | Intake policy | `swarm/intake-policy.json` validated by `schemas/intake-policy.schema.json` | Allowed source kinds, intake order, duplicate strategy, routing dispositions, and safety gates |
 | Evidence snapshot | `swarm/sources/*.json` | Source-backed repository observations with date, source locator, claims, and limitations |
+| Resource capability verification | `swarm/sources/capability-verification-2026-10-26.json` validated by `schemas/capability-verification.schema.json` | Exact action contracts, per-resource read/write evidence, write scope, blocked/approval-gated examples, and explicit unverified scopes |
 | Cycle record | `swarm/cycles/*.md` | Human-auditable account of a bounded processing cycle |
 | Context impact plan | `schemas/impact-plan.schema.json` | Deterministic proposed impacts, dependency confidence, stale-state proposals, evidence, blockers, and no-side-effect guarantees |
 
@@ -56,3 +57,10 @@ Context relationships are evaluated separately from file edges. Directly affecte
 Keep repository-native and future-runtime schemas separate while the state machine, intake fixtures, and real repository examples mature. Use test failures and concrete field gaps to justify consolidation. A future adapter may map the stable common concepts without forcing a single storage representation.
 
 Revisit this record when a schema migration or new use case exposes a real contract conflict—not just because two schemas describe related concepts.
+
+
+## Capability validation (SCS-MATURE-008)
+
+The exposed tool surface is a dated inventory of action definitions, not an access grant. Resource-scoped verification records exact successful GitHub and Notion actions, separately documents repository read and write flags, and keeps other repositories, private resources, settings, secrets, release/deployment operations, and unrelated connectors unverified until a task requires them. The replayable examples link to the existing reference-model and cycle tests that reject denied writes and require current authorization before consequential external effects.
+
+The repository policy matrix remains the reusable policy contract. This dated verification is evidence for one operator session and named resources only; it does not claim universal access or relax privileged-action approval gates.
