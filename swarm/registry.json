@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 11,
+  "registry_version": 12,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -833,10 +833,10 @@
     },
     {
       "work_item_id": "SCS-MATURE-013",
-      "version": 1,
+      "version": 2,
       "kind": "dependency_freshness",
       "title": "Compute context impact from changed source revisions and propose stale-state updates",
-      "status": "ready",
+      "status": "review",
       "requested_by": "swarm_observed_gap",
       "source_refs": [
         "swarm/dependency-map.json",
@@ -864,15 +864,27 @@
         "Unknown/semantic dependencies are reported as possible impact, not asserted as direct dependency.",
         "Multiple changed sources produce a deduplicated impact set.",
         "The result is an uncommitted plan with evidence refs and no external actions.",
-        "Tests cover no-change replay, changed revision, fan-out and ambiguous dependencies."
+        "Tests cover no-change replay, changed revision, fan-out and ambiguous dependencies.",
+        "The dedicated impact-plan output validates against schemas/impact-plan.schema.json.",
+        "Dependency graph/context IDs are validated, and stale graph metadata downgrades artifact edges to possible impacts."
       ],
       "required_evidence": [
         "src/scs/impact.py",
         "tests/test_swarm_impact.py",
-        "CI run for the resulting commit"
+        "CI run for the resulting commit",
+        "schemas/impact-plan.schema.json",
+        "spec/schema-alignment.md",
+        "swarm/cycles/0007-context-impact-planning.md",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40397829928"
       ],
-      "attempts": 0,
-      "blocked_reason": null
+      "attempts": 1,
+      "blocked_reason": null,
+      "history_refs": [
+        "base-commit:e73d521e8d246691888d656419457d5b0eedd055",
+        "https://github.com/Loofy147/Context-swarm/commit/f5cd28fe740c65a848d64cdab79169a8a9251c0e",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40397829928"
+      ],
+      "last_outcome": "Implementation candidate created in feature/scs-mature-013-context-impact. Initial GitHub Actions run 40397829928 passed 72 tests at f5cd28fe740c65a848d64cdab79169a8a9251c0e. Added explicit dangling-context-reference validation; awaiting repeat CI for the complete candidate before acceptance."
     }
   ],
   "policy_refs": [
@@ -888,6 +900,6 @@
     "src/scs/adapters/github.py",
     "src/scs/runner.py"
   ],
-  "last_reconciled_commit": "d8482f02af7a7e11487491869948cad91037e1d7",
-  "change_note": "Registry v11 accepts cycle-0006 ingestion after 62 tests passed: four source records match pure runner output and duplicate replay is idempotent. SCS-MATURE-013 is now the next ready work item for dependency freshness and stale-state impact planning."
+  "last_reconciled_commit": "e73d521e8d246691888d656419457d5b0eedd055",
+  "change_note": "Registry v12 records SCS-MATURE-013 implementation in review: pure impact planner, dedicated schema, 11 focused regression tests, and dependency-map v11 reconciled to exact base e73d521. Initial candidate CI run 40397829928 passed 72 tests at commit f5cd28fe; the fuller candidate is awaiting rerun before merge/acceptance."
 }
