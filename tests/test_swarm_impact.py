@@ -208,6 +208,27 @@ class SwarmImpactTests(unittest.TestCase):
         self.assertEqual(proposal["proposed_status"], "stale")
         self.assertEqual(derived["lifecycle_status"], "accepted")
 
+    def test_missing_revision_is_unresolved_not_a_no_change(self):
+        previous = [source("doc:unknown", None, "docs/unknown.md")]
+        result = plan(previous, copy.deepcopy(previous))
+        self.assert_schema_valid(result)
+        self.assertEqual(result["plan_status"], "review_required")
+        self.assertEqual(result["unresolved_source_ids"], ["doc:unknown"])
+        self.assertTrue(any(x["target_type"] == "source" and x["target_id"] == "doc:unknown"
+                            for x in result["possible_impacts"]))
+        self.assertEqual(result["stale_proposals"], [])
+
+    def test_indirect_import_basis_cannot_become_direct_by_substring(self):
+        previous = [source("doc:core", "r1", "src/core.py")]
+        current = [source("doc:core", "r2", "src/core.py")]
+        result = plan(previous, current, edges=[
+            edge("docs/decision.md", "src/core.py", basis="indirect_import",
+                 confidence="high", relationship="possibly_related"),
+        ])
+        self.assert_schema_valid(result)
+        self.assertFalse(any(x["target_id"] == "docs/decision.md" for x in result["direct_impacts"]))
+        self.assertTrue(any(x["target_id"] == "docs/decision.md" for x in result["possible_impacts"]))
+
     def test_unknown_revision_and_duplicate_identity_fail_closed(self):
         previous = [source("doc:source", None, "docs/source.md"),
                     source("doc:source", "r2", "docs/other.md")]
