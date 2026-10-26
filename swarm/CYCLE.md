@@ -91,3 +91,10 @@ Validate the candidate envelopes and returned batch plan. Commit accepted input 
 The captured source is `swarm/sources/github-snapshot-cycle-0006.json`; its matching registry is frozen at `tests/fixtures/registry-source-cycle-0006.json`. Four normalized inputs are stored under `swarm/inputs/IN-GH-*.json`: repository metadata, latest commit, a scoped empty issues page, and a successful Actions run.
 
 The integration test regenerates the batch with `plan_github_observation_batch`, compares the proposed input records field-for-field with the persisted JSON files, then replays the same source revisions. Cycle 0006 remains in review until these checks pass on the exact repository commit. The successful workflow observation creates only a proposed context update; do not accept it automatically.
+
+
+## Integrated context-cycle planning (SCS-MATURE-014)
+
+Use `scs.context_cycle.plan_context_cycle` when normalized inputs and source-revision observations should be reviewed in one bounded cycle. Use `compose_context_cycle_plan` when a batch already exists, including one returned by `plan_github_observation_batch`.
+
+The coordinator requires the same cycle ID, base commit, and registry version across both plans. It preserves the child plans, sorts proposed work items by their explicitly supplied priority only, and flags an intake context update that overlaps direct/possible impact or stale-state proposals for review before commit. A stale dependency-map baseline blocks direct impact claims. The combined output is always uncommitted with no external actions; it neither applies stale updates nor rewrites accepted history.
