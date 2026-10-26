@@ -1,7 +1,7 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 10,
-  "reviewed_base_commit": "d8482f02af7a7e11487491869948cad91037e1d7",
+  "map_version": 11,
+  "reviewed_base_commit": "e73d521e8d246691888d656419457d5b0eedd055",
   "derived_from": [
     "exact tree at d8482f02af7a7e11487491869948cad91037e1d7",
     "cycle-0006 captured source snapshot and normalized input records",
@@ -589,18 +589,61 @@
       "relationship": "cycle_work_item_evidence",
       "basis": "SCS_MATURE_012",
       "confidence": "high"
+    },
+    {
+      "source_path": "src/scs/impact.py",
+      "target_path": "src/scs/transitions.py",
+      "relationship": "uses",
+      "basis": "direct_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_impact.py",
+      "target_path": "src/scs/impact.py",
+      "relationship": "imports",
+      "basis": "direct_test_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_impact.py",
+      "target_path": "schemas/impact-plan.schema.json",
+      "relationship": "validates_impact_plan_output",
+      "basis": "direct_schema_validation",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_impact.py",
+      "target_path": "swarm/registry.json",
+      "relationship": "loads_registry_snapshot",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_impact.py",
+      "target_path": "swarm/dependency-map.json",
+      "relationship": "loads_dependency_snapshot",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "spec/schema-alignment.md",
+      "target_path": "schemas/impact-plan.schema.json",
+      "relationship": "documents_impact_plan_contract",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "tests/test_swarm_impact.py",
+      "relationship": "work_item_test_evidence",
+      "basis": "work_item_SCS_MATURE_013",
+      "confidence": "high"
     }
   ],
   "limitations": [
     "This is a repository artifact dependency map, not a runtime call graph.",
-    "Semantic relationships are hypotheses and must be revalidated when files change.",
-    "Capability targets added in the current change set are verified against the resulting tree.",
-    "This map version is reconciled against commit 8f0a4c597a9eef7ba24dd50bcde8fd68a2e6737f; changes committed afterward may make it stale.",
-    "Cycle planner and test edges added in v5; it generates proposals only and does not execute persistence or external side effects.",
-    "Map v6 includes the cycle-plan output contract; refresh after the corrected test run.",
-    "Map v7 is reviewed at 6229ddd03f5ced292c4271335f82f18080f5634a and adds source-catalog, tool-surface, durable capture and batch-plan relationships. Files changed by the enclosing metadata commit require a fresh tree snapshot on the next cycle.",
-    "Map v8 reviewed at 29d61ddce497bc8c1c814fa9a938a1e2b7b2e71b adds pure adapter/envelope/runner dependencies. Inventory paths may change when the next metadata update is committed.",
-    "Map v9 reviewed at 37b7a7442234458c490bf321356acb0c5f8744d0 adds cycle-0006 captured-snapshot, input-record and replay-test edges.",
-    "Map v10 reconciles the persisted cycle-0006 input records and passing output-equivalence/idempotency test; later commits may make it stale."
+    "Only edges with an explicit, code/test/schema/workflow basis and high confidence are eligible for direct impact when reviewed_base_commit matches the plan base commit.",
+    "Semantic, planned registry links, unknown relationships, and all edges from a stale map are possible impact only.",
+    "Map v11 reviewed the exact base snapshot e73d521e8d246691888d656419457d5b0eedd055 and adds context-impact planner, schema, test, and transition dependencies for this change set; refresh when later relevant changes alter the tree."
   ]
 }

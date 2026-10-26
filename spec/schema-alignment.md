@@ -13,6 +13,7 @@
 | Intake policy | `swarm/intake-policy.json` validated by `schemas/intake-policy.schema.json` | Allowed source kinds, intake order, duplicate strategy, routing dispositions, and safety gates |
 | Evidence snapshot | `swarm/sources/*.json` | Source-backed repository observations with date, source locator, claims, and limitations |
 | Cycle record | `swarm/cycles/*.md` | Human-auditable account of a bounded processing cycle |
+| Context impact plan | `schemas/impact-plan.schema.json` | Deterministic proposed impacts, dependency confidence, stale-state proposals, evidence, blockers, and no-side-effect guarantees |
 
 These are the contracts used in the repository-native maturation phase. CI validates the schemas and the canonical registry, intake policy, and captured input against them.
 
@@ -41,6 +42,14 @@ The future `schemas/context.schema.json` and `schemas/event.schema.json`, `spec/
 3. The repository's `main` branch is unprotected. A procedural approval described in a file does not equal a server-enforced permission control.
 4. Git history records accepted repository changes but does not independently record every read or every rejected input. Input/cycle records must preserve those dispositions when they matter.
 5. Content digests and Git object IDs establish integrity of bytes/history, not truth, authorship identity beyond the host's claims, or authorization.
+
+
+## Context impact planning (SCS-MATURE-013)
+
+The pure planner in `src/scs/impact.py` compares a stable source identity's previous and current revision, then walks the repository dependency map backward from changed artifacts. It treats only high-confidence edges with an explicit basis as direct, and only when the map's reviewed base commit exactly matches the plan's base commit. Semantic, uncertain, or stale-map edges are retained as possible impacts and cannot independently drive stale-state proposals.
+
+Context relationships are evaluated separately from file edges. Directly affected active/accepted contexts receive versioned proposals to move to stale using the existing transition reference logic. Verified/accepted claims are proposed stale only when their own evidence references intersect changed/affected paths. The plan is deterministic, schema-validated in tests, uncommitted, and has no external actions; it never rewrites accepted history.
+
 
 ## Decision
 
