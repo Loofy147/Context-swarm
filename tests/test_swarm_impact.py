@@ -34,12 +34,14 @@ def source(stable_id="repo-file:src/scs/intake.py", previous="sha-old",
     }
 
 
-def plan(observations, registry=None, dependency_map=None, base=BASE_COMMIT):
+def plan(observations, registry=None, dependency_map=None, base=None):
+    selected_map = dependency_map if dependency_map is not None else load_dependency_map()
+    selected_base = base if base is not None else selected_map["reviewed_base_commit"]
     return plan_context_impact(
         cycle_id="impact-test-001",
-        base_commit=base,
+        base_commit=selected_base,
         registry_snapshot=registry if registry is not None else load_registry(),
-        dependency_map=dependency_map if dependency_map is not None else load_dependency_map(),
+        dependency_map=selected_map,
         source_observations=observations,
     )
 
@@ -129,8 +131,9 @@ class ContextImpactTests(unittest.TestCase):
 
     def test_stale_dependency_map_blocks_direct_artifact_claims(self):
         dependency_map = load_dependency_map()
+        current_base = dependency_map["reviewed_base_commit"]
         dependency_map["reviewed_base_commit"] = "d8482f02af7a7e11487491869948cad91037e1d7"
-        result = plan([source()], dependency_map=dependency_map)
+        result = plan([source()], dependency_map=dependency_map, base=current_base)
         direct_artifacts = {item["target_id"] for item in result["direct_impacts"]
                             if item["target_type"] == "artifact"}
         possible_artifacts = {item["target_id"] for item in result["possible_impacts"]
