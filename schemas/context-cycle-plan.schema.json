@@ -1,0 +1,309 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scs.invalid/schemas/context-cycle-plan.schema.json",
+  "title": "SCS Integrated Context Cycle Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "cycle_id",
+    "base_commit",
+    "base_registry_version",
+    "plan_status",
+    "batch_plan",
+    "impact_plan",
+    "priority_summary",
+    "context_conflicts",
+    "summary",
+    "blockers",
+    "external_actions",
+    "committed"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "scs.context-cycle-plan.v1"
+    },
+    "cycle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_commit": {
+      "type": "string",
+      "minLength": 7
+    },
+    "base_registry_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "plan_status": {
+      "enum": [
+        "no_change",
+        "proposed",
+        "review_required",
+        "blocked"
+      ]
+    },
+    "batch_plan": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "cycle_id",
+        "base_commit",
+        "base_registry_version",
+        "input_count",
+        "plans",
+        "summary",
+        "external_actions",
+        "committed"
+      ]
+    },
+    "impact_plan": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "cycle_id",
+        "base_commit",
+        "base_registry_version",
+        "plan_status",
+        "source_comparisons",
+        "direct_impacts",
+        "possible_impacts",
+        "stale_proposals",
+        "stale_claim_proposals",
+        "blockers",
+        "external_actions",
+        "committed"
+      ]
+    },
+    "priority_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "proposed_work_items",
+        "counts_by_level"
+      ],
+      "properties": {
+        "proposed_work_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "input_id",
+              "work_item_id",
+              "title",
+              "priority_level",
+              "priority_rationale"
+            ],
+            "properties": {
+              "input_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "work_item_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "priority_level": {
+                "enum": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low",
+                  "unranked"
+                ]
+              },
+              "priority_rationale": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "counts_by_level": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "critical",
+            "high",
+            "medium",
+            "low",
+            "unranked"
+          ],
+          "properties": {
+            "critical": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "high": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "medium": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "low": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unranked": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "context_conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context_id",
+          "input_ids",
+          "impact_kinds",
+          "stale_claim_ids",
+          "changed_source_ids",
+          "evidence_refs",
+          "resolution",
+          "reason"
+        ],
+        "properties": {
+          "context_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "impact_kinds": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "direct",
+                "possible",
+                "stale_context",
+                "stale_claim"
+              ]
+            },
+            "uniqueItems": true
+          },
+          "stale_claim_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "changed_source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "resolution": {
+            "const": "review_required_before_commit"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_count",
+        "input_records_proposed",
+        "input_duplicate_noops",
+        "state_change_proposals",
+        "changed_sources",
+        "direct_impact_count",
+        "possible_impact_count",
+        "stale_context_proposals",
+        "stale_claim_proposals",
+        "priority_proposals",
+        "context_conflicts"
+      ],
+      "properties": {
+        "input_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "input_records_proposed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "input_duplicate_noops": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "state_change_proposals": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "changed_sources": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "direct_impact_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "possible_impact_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stale_context_proposals": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stale_claim_proposals": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "priority_proposals": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "context_conflicts": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "external_actions": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "committed": {
+      "const": false
+    }
+  }
+}
