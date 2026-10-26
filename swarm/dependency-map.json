@@ -1,89 +1,21 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 13,
-  "reviewed_base_commit": "ef73b8a1712697525d20f934083fa55a619186d6",
+  "map_version": 14,
+  "reviewed_base_commit": "ac2b9124daf557ae9242e46f8a89eff98b2856e9",
   "derived_from": [
     "exact tree at d8482f02af7a7e11487491869948cad91037e1d7",
     "cycle-0006 captured source snapshot and normalized input records",
-    "CI run 38961446352"
+    "CI run 38961446352",
+    "SCS-MATURE-008 merge PR #6 at ac2b9124daf557ae9242e46f8a89eff98b2856e9",
+    "CI run 40401948275 (74 tests passed)"
   ],
-  "note": "Map v13 is grounded in verified main commit ef73b8a1712697525d20f934083fa55a619186d6. The impact regression helper now derives its base from this field by default, and the stale-map test supplies an explicit older base. Subsequent metadata-only commits do not change the source/test dependency edges.",
+  "note": "Map v14 reconciles the exact source tree at ac2b9124daf557ae9242e46f8a89eff98b2856e9 after SCS-MATURE-008. It adds explicit test and documentation edges for the resource-scoped capability verification schema and dated evidence record. The latest verified candidate CI run 40401948275 passed all 74 tests. Later registry, inventory and map-record commits are metadata-only unless their edge-bearing source/test contracts change.",
   "edges": [
     {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "src/scs/intake.py",
-      "relationship": "imports",
-      "basis": "direct_test_import",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "tests/fixtures/intake-scenarios.json",
-      "relationship": "loads_test_fixture",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "swarm/registry.json",
-      "relationship": "validates_registry_references",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "swarm/intake-policy.json",
-      "relationship": "checks_policy_contract",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "swarm/inputs/IN-SCS-0001-operating-phase.json",
-      "relationship": "checks_input_record",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_reference_model.py",
-      "target_path": "src/scs/reference_model.py",
-      "relationship": "imports",
-      "basis": "direct_test_import",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_contract_files.py",
-      "target_path": "schemas/context.schema.json",
-      "relationship": "checks_schema_structure",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_contract_files.py",
-      "target_path": "schemas/event.schema.json",
-      "relationship": "checks_schema_structure",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_contract_files.py",
-      "target_path": "migrations/001_initial_postgres.sql",
-      "relationship": "checks_reference_sql_structure",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_contract_files.py",
-      "target_path": "spec/openapi.yaml",
-      "relationship": "checks_api_contract_structure",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
       "source_path": ".github/workflows/tests.yml",
-      "target_path": "tests/test_swarm_intake.py",
-      "relationship": "executes_via_unittest_discovery",
-      "basis": "workflow_command_and_discovery",
+      "target_path": "requirements-dev.txt",
+      "relationship": "installs_JSON_Schema_validator",
+      "basis": "explicit_workflow_command",
       "confidence": "high"
     },
     {
@@ -101,9 +33,72 @@
       "confidence": "high"
     },
     {
+      "source_path": ".github/workflows/tests.yml",
+      "target_path": "tests/test_swarm_intake.py",
+      "relationship": "executes_via_unittest_discovery",
+      "basis": "workflow_command_and_discovery",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "schemas/capability-verification.schema.json",
+      "relationship": "documents_capability_verification_schema",
+      "basis": "explicit_markdown_link",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "schemas/cycle-plan.schema.json",
+      "relationship": "documents_cycle_plan_schema",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "schemas/impact-plan.schema.json",
+      "relationship": "documents_impact_output_schema",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
       "source_path": "README.md",
       "target_path": "spec/swarm-operating-model.md",
       "relationship": "documents_as_primary_protocol",
+      "basis": "explicit_markdown_link",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "src/scs/cycle.py",
+      "relationship": "documents_cycle_planner",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "src/scs/impact.py",
+      "relationship": "documents_source_revision_impact",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "swarm/CYCLE.md",
+      "relationship": "documents_operator_runbook",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "swarm/cycles/0007-context-impact-planning.md",
+      "relationship": "links_cycle_report",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "swarm/intake-policy.json",
+      "relationship": "documents_as_intake_policy",
       "basis": "explicit_markdown_link",
       "confidence": "high"
     },
@@ -116,136 +111,17 @@
     },
     {
       "source_path": "README.md",
-      "target_path": "swarm/intake-policy.json",
-      "relationship": "documents_as_intake_policy",
+      "target_path": "swarm/sources/capability-verification-2026-10-26.json",
+      "relationship": "documents_capability_verification_record",
       "basis": "explicit_markdown_link",
       "confidence": "high"
     },
     {
-      "source_path": "spec/swarm-operating-model.md",
-      "target_path": "swarm/registry.json",
-      "relationship": "defines_registry_consumption",
-      "basis": "operating_contract",
-      "confidence": "high"
-    },
-    {
-      "source_path": "spec/swarm-operating-model.md",
-      "target_path": "swarm/intake-policy.json",
-      "relationship": "defines_intake_steps",
-      "basis": "operating_contract",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/registry.json",
-      "target_path": "schemas/context-state.schema.json",
-      "relationship": "context_record_contract",
-      "basis": "schema_type_alignment",
-      "confidence": "medium"
-    },
-    {
-      "source_path": "swarm/registry.json",
+      "source_path": "schemas/cycle-plan.schema.json",
       "target_path": "schemas/work-item.schema.json",
-      "relationship": "work_item_record_contract",
-      "basis": "schema_type_alignment",
+      "relationship": "describes_proposed_work_item_payload",
+      "basis": "cycle_plan_contract",
       "confidence": "medium"
-    },
-    {
-      "source_path": "swarm/registry.json",
-      "target_path": "swarm/inventory.json",
-      "relationship": "evidence_reference",
-      "basis": "registry_evidence_refs",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/registry.json",
-      "target_path": "swarm/sources/github-repository-state.json",
-      "relationship": "evidence_reference",
-      "basis": "registry_evidence_refs",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/registry.json",
-      "target_path": "swarm/sources/recent-commit-history.json",
-      "relationship": "evidence_reference",
-      "basis": "planned_registry_link",
-      "confidence": "medium"
-    },
-    {
-      "source_path": "swarm/inventory.json",
-      "target_path": "spec/architecture.md",
-      "relationship": "classifies_artifact",
-      "basis": "explicit_inventory_item",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/inventory.json",
-      "target_path": "spec/openapi.yaml",
-      "relationship": "classifies_artifact",
-      "basis": "explicit_inventory_item",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/inventory.json",
-      "target_path": "migrations/001_initial_postgres.sql",
-      "relationship": "classifies_artifact",
-      "basis": "explicit_inventory_item",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/sources/recent-commit-history.json",
-      "target_path": "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=30",
-      "relationship": "captured_from",
-      "basis": "source_locator",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "schemas/context-state.schema.json",
-      "relationship": "validates_registry_context_records",
-      "basis": "direct_schema_validation",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "schemas/work-item.schema.json",
-      "relationship": "validates_registry_work_items",
-      "basis": "direct_schema_validation",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "schemas/registry.schema.json",
-      "relationship": "validates_canonical_registry",
-      "basis": "direct_schema_validation",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "schemas/input-record.schema.json",
-      "relationship": "validates_captured_input",
-      "basis": "direct_schema_validation",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "schemas/intake-policy.schema.json",
-      "relationship": "validates_intake_policy",
-      "basis": "direct_schema_validation",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "swarm/dependency-map.json",
-      "relationship": "checks_dependency_map_targets",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": ".github/workflows/tests.yml",
-      "target_path": "requirements-dev.txt",
-      "relationship": "installs_JSON_Schema_validator",
-      "basis": "explicit_workflow_command",
-      "confidence": "high"
     },
     {
       "source_path": "schemas/registry.schema.json",
@@ -262,38 +138,10 @@
       "confidence": "high"
     },
     {
-      "source_path": "swarm/registry.json",
-      "target_path": "swarm/sources/recent-commit-history.json",
-      "relationship": "repository_history_evidence",
-      "basis": "planned_registry_link",
-      "confidence": "medium"
-    },
-    {
-      "source_path": "swarm/registry.json",
-      "target_path": "swarm/dependency-map.json",
-      "relationship": "repository_dependency_evidence",
-      "basis": "planned_registry_link",
-      "confidence": "medium"
-    },
-    {
-      "source_path": "tests/test_swarm_transitions.py",
-      "target_path": "src/scs/transitions.py",
-      "relationship": "imports",
-      "basis": "direct_test_import",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "schemas/capability-matrix.schema.json",
-      "relationship": "validates_capability_matrix_schema",
-      "basis": "direct_schema_validation",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "swarm/capability-matrix.json",
-      "relationship": "validates_capability_record",
-      "basis": "direct_schema_validation",
+      "source_path": "spec/schema-alignment.md",
+      "target_path": "schemas/capability-verification.schema.json",
+      "relationship": "documents_capability_verification_contract",
+      "basis": "explicit_markdown_reference",
       "confidence": "high"
     },
     {
@@ -311,45 +159,52 @@
       "confidence": "high"
     },
     {
-      "source_path": "swarm/registry.json",
-      "target_path": "swarm/capability-matrix.json",
-      "relationship": "policy_reference",
-      "basis": "registry_policy_refs",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/capability-matrix.json",
-      "target_path": "schemas/capability-matrix.schema.json",
-      "relationship": "validated_by_schema",
-      "basis": "test_contract",
-      "confidence": "high"
-    },
-    {
-      "source_path": "README.md",
-      "target_path": "swarm/CYCLE.md",
-      "relationship": "documents_operator_runbook",
+      "source_path": "spec/schema-alignment.md",
+      "target_path": "schemas/impact-plan.schema.json",
+      "relationship": "documents_impact_plan_contract",
       "basis": "explicit_markdown_reference",
       "confidence": "high"
     },
     {
-      "source_path": "swarm/CYCLE.md",
+      "source_path": "spec/schema-alignment.md",
+      "target_path": "swarm/sources/capability-verification-2026-10-26.json",
+      "relationship": "documents_capability_verification_evidence",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "spec/swarm-operating-model.md",
+      "target_path": "swarm/intake-policy.json",
+      "relationship": "defines_intake_steps",
+      "basis": "operating_contract",
+      "confidence": "high"
+    },
+    {
+      "source_path": "spec/swarm-operating-model.md",
       "target_path": "swarm/registry.json",
-      "relationship": "reads_canonical_state",
-      "basis": "operating_runbook",
+      "relationship": "defines_registry_consumption",
+      "basis": "operating_contract",
       "confidence": "high"
     },
     {
-      "source_path": "swarm/cycles/0002-state-machine-and-capability.md",
-      "target_path": "https://github.com/Loofy147/Context-swarm/actions/runs/38956067934",
-      "relationship": "verified_by_ci",
-      "basis": "successful_GitHub_Actions_run",
+      "source_path": "src/scs/adapters/github.py",
+      "target_path": "schemas/intake-envelope.schema.json",
+      "relationship": "emits_normalized_envelope",
+      "basis": "schema_validation_in_adapter_tests",
       "confidence": "high"
     },
     {
-      "source_path": "tests/test_swarm_cycle.py",
-      "target_path": "src/scs/cycle.py",
-      "relationship": "imports",
-      "basis": "direct_test_import",
+      "source_path": "src/scs/cycle.py",
+      "target_path": "schemas/batch-cycle-plan.schema.json",
+      "relationship": "batch_output_contract",
+      "basis": "schema_contract_test",
+      "confidence": "high"
+    },
+    {
+      "source_path": "src/scs/cycle.py",
+      "target_path": "schemas/input-record.schema.json",
+      "relationship": "produces_input_record_proposal",
+      "basis": "schema_contract_test",
       "confidence": "high"
     },
     {
@@ -374,108 +229,10 @@
       "confidence": "high"
     },
     {
-      "source_path": "README.md",
-      "target_path": "src/scs/cycle.py",
-      "relationship": "documents_cycle_planner",
-      "basis": "explicit_markdown_reference",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/registry.json",
-      "target_path": "tests/test_swarm_cycle.py",
-      "relationship": "work_item_test_evidence",
-      "basis": "work_item_SCS_MATURE_009",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_cycle.py",
-      "target_path": "schemas/cycle-plan.schema.json",
-      "relationship": "validates_cycle_plan_output",
-      "basis": "direct_schema_validation",
-      "confidence": "high"
-    },
-    {
-      "source_path": "schemas/cycle-plan.schema.json",
-      "target_path": "schemas/work-item.schema.json",
-      "relationship": "describes_proposed_work_item_payload",
-      "basis": "cycle_plan_contract",
-      "confidence": "medium"
-    },
-    {
-      "source_path": "README.md",
-      "target_path": "schemas/cycle-plan.schema.json",
-      "relationship": "documents_cycle_plan_schema",
-      "basis": "explicit_markdown_reference",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/registry.json",
-      "target_path": "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056",
-      "relationship": "records_failed_test_evidence",
-      "basis": "work_item_SCS_MATURE_009_history",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/source-catalog.json",
-      "target_path": "schemas/source-catalog.schema.json",
-      "relationship": "validated_by_schema",
-      "basis": "source_catalog_test",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/sources/connected-tool-surface.json",
-      "target_path": "schemas/tool-surface-observation.schema.json",
-      "relationship": "validated_by_schema",
-      "basis": "tool_surface_test",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "swarm/source-catalog.json",
-      "relationship": "validates_source_catalog",
-      "basis": "explicit_test_read",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_swarm_intake.py",
-      "target_path": "swarm/sources/connected-tool-surface.json",
-      "relationship": "validates_tool_surface_observation",
-      "basis": "explicit_test_read",
-      "confidence": "high"
-    },
-    {
-      "source_path": "src/scs/cycle.py",
-      "target_path": "schemas/input-record.schema.json",
-      "relationship": "produces_input_record_proposal",
-      "basis": "schema_contract_test",
-      "confidence": "high"
-    },
-    {
-      "source_path": "src/scs/cycle.py",
-      "target_path": "schemas/batch-cycle-plan.schema.json",
-      "relationship": "batch_output_contract",
-      "basis": "schema_contract_test",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/registry.json",
-      "target_path": "swarm/source-catalog.json",
-      "relationship": "source_catalog_context_evidence",
-      "basis": "ctx_scs_source_catalog",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/registry.json",
-      "target_path": "swarm/cycles/0004-batch-input-capture-and-source-catalog.md",
-      "relationship": "cycle_evidence",
-      "basis": "registry_context_and_work_item_refs",
-      "confidence": "high"
-    },
-    {
-      "source_path": "src/scs/adapters/github.py",
-      "target_path": "schemas/intake-envelope.schema.json",
-      "relationship": "emits_normalized_envelope",
-      "basis": "schema_validation_in_adapter_tests",
+      "source_path": "src/scs/impact.py",
+      "target_path": "src/scs/transitions.py",
+      "relationship": "uses",
+      "basis": "direct_import",
       "confidence": "high"
     },
     {
@@ -490,6 +247,279 @@
       "target_path": "src/scs/cycle.py",
       "relationship": "calls_batch_planner",
       "basis": "direct_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/capability-matrix.json",
+      "target_path": "schemas/capability-matrix.schema.json",
+      "relationship": "validated_by_schema",
+      "basis": "test_contract",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/CYCLE.md",
+      "target_path": "swarm/registry.json",
+      "relationship": "reads_canonical_state",
+      "basis": "operating_runbook",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0002-state-machine-and-capability.md",
+      "target_path": "https://github.com/Loofy147/Context-swarm/actions/runs/38956067934",
+      "relationship": "verified_by_ci",
+      "basis": "successful_GitHub_Actions_run",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "target_path": "schemas/impact-plan.schema.json",
+      "relationship": "documents_output_schema",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "target_path": "spec/schema-alignment.md",
+      "relationship": "documents_contract",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "target_path": "src/scs/impact.py",
+      "relationship": "documents_implementation",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "target_path": "swarm/dependency-map.json",
+      "relationship": "documents_dependency_map",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "target_path": "tests/test_swarm_impact.py",
+      "relationship": "documents_regression_tests",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0008-capability-validation.md",
+      "target_path": "schemas/capability-verification.schema.json",
+      "relationship": "records_validated_contract",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0008-capability-validation.md",
+      "target_path": "swarm/sources/capability-verification-2026-10-26.json",
+      "relationship": "records_resource_scoped_evidence",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0008-capability-validation.md",
+      "target_path": "tests/test_swarm_intake.py",
+      "relationship": "records_validation_suite",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/inventory.json",
+      "target_path": "migrations/001_initial_postgres.sql",
+      "relationship": "classifies_artifact",
+      "basis": "explicit_inventory_item",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/inventory.json",
+      "target_path": "spec/architecture.md",
+      "relationship": "classifies_artifact",
+      "basis": "explicit_inventory_item",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/inventory.json",
+      "target_path": "spec/openapi.yaml",
+      "relationship": "classifies_artifact",
+      "basis": "explicit_inventory_item",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "https://github.com/Loofy147/Context-swarm/actions/runs/38956865056",
+      "relationship": "records_failed_test_evidence",
+      "basis": "work_item_SCS_MATURE_009_history",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "schemas/context-state.schema.json",
+      "relationship": "context_record_contract",
+      "basis": "schema_type_alignment",
+      "confidence": "medium"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "schemas/work-item.schema.json",
+      "relationship": "work_item_record_contract",
+      "basis": "schema_type_alignment",
+      "confidence": "medium"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/capability-matrix.json",
+      "relationship": "policy_reference",
+      "basis": "registry_policy_refs",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/cycles/0004-batch-input-capture-and-source-catalog.md",
+      "relationship": "cycle_evidence",
+      "basis": "registry_context_and_work_item_refs",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/cycles/0006-fresh-github-source-ingestion.md",
+      "relationship": "cycle_work_item_evidence",
+      "basis": "SCS_MATURE_012",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/cycles/0007-context-impact-planning.md",
+      "relationship": "cycle_work_item_evidence",
+      "basis": "SCS_MATURE_013",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/dependency-map.json",
+      "relationship": "repository_dependency_evidence",
+      "basis": "planned_registry_link",
+      "confidence": "medium"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/inventory.json",
+      "relationship": "evidence_reference",
+      "basis": "registry_evidence_refs",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/source-catalog.json",
+      "relationship": "source_catalog_context_evidence",
+      "basis": "ctx_scs_source_catalog",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/sources/github-repository-state.json",
+      "relationship": "evidence_reference",
+      "basis": "registry_evidence_refs",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/sources/recent-commit-history.json",
+      "relationship": "evidence_reference",
+      "basis": "planned_registry_link",
+      "confidence": "medium"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/sources/recent-commit-history.json",
+      "relationship": "repository_history_evidence",
+      "basis": "planned_registry_link",
+      "confidence": "medium"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "tests/test_swarm_cycle.py",
+      "relationship": "work_item_test_evidence",
+      "basis": "work_item_SCS_MATURE_009",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "tests/test_swarm_impact.py",
+      "relationship": "work_item_test_evidence",
+      "basis": "work_item_SCS_MATURE_013",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/source-catalog.json",
+      "target_path": "schemas/source-catalog.schema.json",
+      "relationship": "validated_by_schema",
+      "basis": "source_catalog_test",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/source-catalog.json",
+      "target_path": "src/scs/adapters/github.py",
+      "relationship": "adapter_implementation",
+      "basis": "catalog_adapter_status",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/source-catalog.json",
+      "target_path": "src/scs/runner.py",
+      "relationship": "snapshot_orchestration",
+      "basis": "catalog_adapter_status",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/sources/connected-tool-surface.json",
+      "target_path": "schemas/tool-surface-observation.schema.json",
+      "relationship": "validated_by_schema",
+      "basis": "tool_surface_test",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/sources/github-snapshot-cycle-0006.json",
+      "target_path": "tests/fixtures/registry-source-cycle-0006.json",
+      "relationship": "shares_base_commit",
+      "basis": "snapshot_and_registry_fixture",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/sources/recent-commit-history.json",
+      "target_path": "https://api.github.com/repos/Loofy147/Context-swarm/commits?per_page=30",
+      "relationship": "captured_from",
+      "basis": "source_locator",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_contract_files.py",
+      "target_path": "migrations/001_initial_postgres.sql",
+      "relationship": "checks_reference_sql_structure",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_contract_files.py",
+      "target_path": "schemas/context.schema.json",
+      "relationship": "checks_schema_structure",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_contract_files.py",
+      "target_path": "schemas/event.schema.json",
+      "relationship": "checks_schema_structure",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_contract_files.py",
+      "target_path": "spec/openapi.yaml",
+      "relationship": "checks_api_contract_structure",
+      "basis": "explicit_test_path",
       "confidence": "high"
     },
     {
@@ -508,6 +538,13 @@
     },
     {
       "source_path": "tests/test_github_runner.py",
+      "target_path": "schemas/batch-cycle-plan.schema.json",
+      "relationship": "validates_batch_plan",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_github_runner.py",
       "target_path": "src/scs/runner.py",
       "relationship": "tests_snapshot_runner",
       "basis": "direct_import",
@@ -515,56 +552,14 @@
     },
     {
       "source_path": "tests/test_github_runner.py",
-      "target_path": "schemas/batch-cycle-plan.schema.json",
-      "relationship": "validates_batch_plan",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/source-catalog.json",
-      "target_path": "src/scs/adapters/github.py",
-      "relationship": "adapter_implementation",
-      "basis": "catalog_adapter_status",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/source-catalog.json",
-      "target_path": "src/scs/runner.py",
-      "relationship": "snapshot_orchestration",
-      "basis": "catalog_adapter_status",
-      "confidence": "high"
-    },
-    {
-      "source_path": "swarm/sources/github-snapshot-cycle-0006.json",
-      "target_path": "tests/fixtures/registry-source-cycle-0006.json",
-      "relationship": "shares_base_commit",
-      "basis": "snapshot_and_registry_fixture",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_github_runner.py",
-      "target_path": "swarm/sources/github-snapshot-cycle-0006.json",
-      "relationship": "loads_fresh_snapshot",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_github_runner.py",
-      "target_path": "tests/fixtures/registry-source-cycle-0006.json",
-      "relationship": "loads_frozen_registry",
-      "basis": "explicit_test_path",
-      "confidence": "high"
-    },
-    {
-      "source_path": "tests/test_github_runner.py",
-      "target_path": "swarm/inputs/IN-GH-9CEB8EBAC289D661-repository-metadata.json",
+      "target_path": "swarm/inputs/IN-GH-123373305A1649EF-latest-commit.json",
       "relationship": "compares_planner_output_with_persisted_record",
       "basis": "input_id_lookup_json_equality",
       "confidence": "high"
     },
     {
       "source_path": "tests/test_github_runner.py",
-      "target_path": "swarm/inputs/IN-GH-123373305A1649EF-latest-commit.json",
+      "target_path": "swarm/inputs/IN-GH-9CEB8EBAC289D661-repository-metadata.json",
       "relationship": "compares_planner_output_with_persisted_record",
       "basis": "input_id_lookup_json_equality",
       "confidence": "high"
@@ -584,22 +579,36 @@
       "confidence": "high"
     },
     {
-      "source_path": "swarm/registry.json",
-      "target_path": "swarm/cycles/0006-fresh-github-source-ingestion.md",
-      "relationship": "cycle_work_item_evidence",
-      "basis": "SCS_MATURE_012",
+      "source_path": "tests/test_github_runner.py",
+      "target_path": "swarm/sources/github-snapshot-cycle-0006.json",
+      "relationship": "loads_fresh_snapshot",
+      "basis": "explicit_test_path",
       "confidence": "high"
     },
     {
-      "source_path": "src/scs/impact.py",
-      "target_path": "src/scs/transitions.py",
-      "relationship": "uses",
-      "basis": "direct_import",
+      "source_path": "tests/test_github_runner.py",
+      "target_path": "tests/fixtures/registry-source-cycle-0006.json",
+      "relationship": "loads_frozen_registry",
+      "basis": "explicit_test_path",
       "confidence": "high"
     },
     {
-      "source_path": "tests/test_swarm_impact.py",
-      "target_path": "src/scs/impact.py",
+      "source_path": "tests/test_reference_model.py",
+      "target_path": "src/scs/reference_model.py",
+      "relationship": "imports",
+      "basis": "direct_test_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_cycle.py",
+      "target_path": "schemas/cycle-plan.schema.json",
+      "relationship": "validates_cycle_plan_output",
+      "basis": "direct_schema_validation",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_cycle.py",
+      "target_path": "src/scs/cycle.py",
       "relationship": "imports",
       "basis": "direct_test_import",
       "confidence": "high"
@@ -613,9 +622,9 @@
     },
     {
       "source_path": "tests/test_swarm_impact.py",
-      "target_path": "swarm/registry.json",
-      "relationship": "loads_registry_snapshot",
-      "basis": "explicit_test_path",
+      "target_path": "src/scs/impact.py",
+      "relationship": "imports",
+      "basis": "direct_test_import",
       "confidence": "high"
     },
     {
@@ -626,80 +635,150 @@
       "confidence": "high"
     },
     {
-      "source_path": "spec/schema-alignment.md",
-      "target_path": "schemas/impact-plan.schema.json",
-      "relationship": "documents_impact_plan_contract",
-      "basis": "explicit_markdown_reference",
+      "source_path": "tests/test_swarm_impact.py",
+      "target_path": "swarm/registry.json",
+      "relationship": "loads_registry_snapshot",
+      "basis": "explicit_test_path",
       "confidence": "high"
     },
     {
-      "source_path": "swarm/registry.json",
-      "target_path": "tests/test_swarm_impact.py",
-      "relationship": "work_item_test_evidence",
-      "basis": "work_item_SCS_MATURE_013",
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/capability-matrix.schema.json",
+      "relationship": "validates_capability_matrix_schema",
+      "basis": "direct_schema_validation",
       "confidence": "high"
     },
     {
-      "source_path": "README.md",
-      "target_path": "src/scs/impact.py",
-      "relationship": "documents_source_revision_impact",
-      "basis": "explicit_markdown_reference",
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/capability-verification.schema.json",
+      "relationship": "validates_capability_verification_schema",
+      "basis": "explicit_test_path",
       "confidence": "high"
     },
     {
-      "source_path": "README.md",
-      "target_path": "schemas/impact-plan.schema.json",
-      "relationship": "documents_impact_output_schema",
-      "basis": "explicit_markdown_reference",
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/context-state.schema.json",
+      "relationship": "validates_registry_context_records",
+      "basis": "direct_schema_validation",
       "confidence": "high"
     },
     {
-      "source_path": "README.md",
-      "target_path": "swarm/cycles/0007-context-impact-planning.md",
-      "relationship": "links_cycle_report",
-      "basis": "explicit_markdown_reference",
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/input-record.schema.json",
+      "relationship": "validates_captured_input",
+      "basis": "direct_schema_validation",
       "confidence": "high"
     },
     {
-      "source_path": "swarm/cycles/0007-context-impact-planning.md",
-      "target_path": "src/scs/impact.py",
-      "relationship": "documents_implementation",
-      "basis": "explicit_markdown_reference",
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/intake-policy.schema.json",
+      "relationship": "validates_intake_policy",
+      "basis": "direct_schema_validation",
       "confidence": "high"
     },
     {
-      "source_path": "swarm/cycles/0007-context-impact-planning.md",
-      "target_path": "schemas/impact-plan.schema.json",
-      "relationship": "documents_output_schema",
-      "basis": "explicit_markdown_reference",
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/registry.schema.json",
+      "relationship": "validates_canonical_registry",
+      "basis": "direct_schema_validation",
       "confidence": "high"
     },
     {
-      "source_path": "swarm/cycles/0007-context-impact-planning.md",
-      "target_path": "tests/test_swarm_impact.py",
-      "relationship": "documents_regression_tests",
-      "basis": "explicit_markdown_reference",
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "schemas/work-item.schema.json",
+      "relationship": "validates_registry_work_items",
+      "basis": "direct_schema_validation",
       "confidence": "high"
     },
     {
-      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "src/scs/intake.py",
+      "relationship": "imports",
+      "basis": "direct_test_import",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/capability-matrix.json",
+      "relationship": "checks_capability_ids_against_policy",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/capability-matrix.json",
+      "relationship": "validates_capability_record",
+      "basis": "direct_schema_validation",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
       "target_path": "swarm/dependency-map.json",
-      "relationship": "documents_dependency_map",
-      "basis": "explicit_markdown_reference",
+      "relationship": "checks_dependency_map_targets",
+      "basis": "explicit_test_path",
       "confidence": "high"
     },
     {
-      "source_path": "swarm/cycles/0007-context-impact-planning.md",
-      "target_path": "spec/schema-alignment.md",
-      "relationship": "documents_contract",
-      "basis": "explicit_markdown_reference",
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/inputs/IN-SCS-0001-operating-phase.json",
+      "relationship": "checks_input_record",
+      "basis": "explicit_test_path",
       "confidence": "high"
     },
     {
-      "source_path": "swarm/registry.json",
-      "target_path": "swarm/cycles/0007-context-impact-planning.md",
-      "relationship": "cycle_work_item_evidence",
-      "basis": "SCS_MATURE_013",
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/intake-policy.json",
+      "relationship": "checks_policy_contract",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/registry.json",
+      "relationship": "validates_registry_references",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/source-catalog.json",
+      "relationship": "validates_source_catalog",
+      "basis": "explicit_test_read",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/sources/capability-verification-2026-10-26.json",
+      "relationship": "loads_capability_verification_record",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/sources/connected-tool-surface.json",
+      "relationship": "checks_tool_actions_against_observed_surface",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "swarm/sources/connected-tool-surface.json",
+      "relationship": "validates_tool_surface_observation",
+      "basis": "explicit_test_read",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_intake.py",
+      "target_path": "tests/fixtures/intake-scenarios.json",
+      "relationship": "loads_test_fixture",
+      "basis": "explicit_test_path",
+      "confidence": "high"
+    },
+    {
+      "source_path": "tests/test_swarm_transitions.py",
+      "target_path": "src/scs/transitions.py",
+      "relationship": "imports",
+      "basis": "direct_test_import",
       "confidence": "high"
     }
   ],
