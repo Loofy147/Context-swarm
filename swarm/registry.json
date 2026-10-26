@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 14,
+  "registry_version": 15,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -833,7 +833,7 @@
     },
     {
       "work_item_id": "SCS-MATURE-013",
-      "version": 4,
+      "version": 5,
       "kind": "dependency_freshness",
       "title": "Compute context impact from changed source revisions and propose stale-state updates",
       "status": "accepted",
@@ -882,9 +882,13 @@
         "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552",
         "https://github.com/Loofy147/Context-swarm/commit/d1e0751851c548c4cefdaad5b90484dfa051b0f7",
         "https://github.com/Loofy147/Context-swarm/actions/runs/40399177569",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/40399818363"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40399818363",
+        "https://github.com/Loofy147/Context-swarm/commit/ef73b8a1712697525d20f934083fa55a619186d6",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40400844325",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40400918044",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40400955054"
       ],
-      "attempts": 2,
+      "attempts": 3,
       "blocked_reason": null,
       "history_refs": [
         "base-commit:e73d521e8d246691888d656419457d5b0eedd055",
@@ -897,9 +901,13 @@
         "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552",
         "https://github.com/Loofy147/Context-swarm/commit/d1e0751851c548c4cefdaad5b90484dfa051b0f7",
         "https://github.com/Loofy147/Context-swarm/actions/runs/40399177569",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/40399818363"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40399818363",
+        "https://github.com/Loofy147/Context-swarm/commit/ef73b8a1712697525d20f934083fa55a619186d6",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40400844325",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40400918044",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40400955054"
       ],
-      "last_outcome": "Accepted after regression repair: run 40399177569 exposed three stale-baseline test assumptions; commit d1e0751851c548c4cefdaad5b90484dfa051b0f7 made the test helper consume dependency_map.reviewed_base_commit and retained explicit mismatched-baseline coverage. Main CI run 40399818363 passed all 73 tests. Planner remains deterministic, proposal-only and conservative with uncertain edges."
+      "last_outcome": "Accepted after the baseline regression was fully repaired. The test helper now defaults to dependency_map.reviewed_base_commit, while the stale-map test supplies an older base explicitly. Main CI run 40400844325 passed all 73 tests; subsequent dependency-map and inventory commits also passed CI (runs 40400918044 and 40400955054). Earlier failures remain recorded as regression evidence. Planner is deterministic, proposal-only, validates context relationships, preserves accepted history, and keeps uncertain edges as possible impact."
     }
   ],
   "policy_refs": [
@@ -915,6 +923,6 @@
     "src/scs/adapters/github.py",
     "src/scs/runner.py"
   ],
-  "last_reconciled_commit": "d1e0751851c548c4cefdaad5b90484dfa051b0f7",
-  "change_note": "Registry v14 reconciles SCS-MATURE-013 acceptance with the baseline-fix evidence. Commit d1e0751851c548c4cefdaad5b90484dfa051b0f7 aligns impact tests to the dependency map's reviewed_base_commit; GitHub Actions run 40399818363 passed all 73 tests. The earlier run 40399177569 is retained as regression history."
+  "last_reconciled_commit": "ef73b8a1712697525d20f934083fa55a619186d6",
+  "change_note": "Registry v15 records final SCS-MATURE-013 acceptance after making the impact test helper read dependency_map.reviewed_base_commit by default. Main commit ef73b8a1712697525d20f934083fa55a619186d6 and CI run 40400844325 passed all 73 tests; the stale-map test explicitly supplies an older base. The baseline failure and repair history remain in evidence; current dependency map v13 and inventory v10 are reviewed against the fixed source/test baseline."
 }
