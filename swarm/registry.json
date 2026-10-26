@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 16,
+  "registry_version": 17,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -92,7 +92,7 @@
       "title": "Repository engineering swarm demonstrator",
       "purpose": "Use the repository's real source files, Git history, metadata, specs, and tests to exercise context-state workflows without a backend.",
       "lifecycle_status": "active",
-      "version": 11,
+      "version": 12,
       "relationships": [
         {
           "type": "depends_on",
@@ -137,13 +137,13 @@
         "swarm/inputs/IN-GH-D8938724790ABB3A-empty-issues-page.json",
         "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json",
         "swarm/cycles/0006-fresh-github-source-ingestion.md",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38961446352"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38961446352",
+        "src/scs/context_cycle.py",
+        "tests/test_context_cycle.py",
+        "schemas/context-cycle-plan.schema.json"
       ],
-      "open_questions": [
-        "Verify CI and accept the grouped-change workflow only with exact evidence.",
-        "Use new real inputs to improve prioritization, conflict handling, and downstream invalidation."
-      ],
-      "change_note": "Version 11 records the successful cycle-0006 ingestion test. Workflow success remains a proposed context claim until a separate review."
+      "open_questions": [],
+      "change_note": "Version 12 routes the previously open prioritization/conflict/downstream-invalidation question into SCS-MATURE-014: integrated bounded input and source-impact planning with proposal-only semantics."
     },
     {
       "context_id": "ctx-scs-backend-decision",
@@ -944,6 +944,63 @@
         "https://github.com/Loofy147/Context-swarm/actions/runs/40400955054"
       ],
       "last_outcome": "Accepted after the baseline regression was fully repaired. The test helper now defaults to dependency_map.reviewed_base_commit, while the stale-map test supplies an older base explicitly. Main CI run 40400844325 passed all 73 tests; subsequent dependency-map and inventory commits also passed CI (runs 40400918044 and 40400955054). Earlier failures remain recorded as regression evidence. Planner is deterministic, proposal-only, validates context relationships, preserves accepted history, and keeps uncertain edges as possible impact."
+    },
+    {
+      "work_item_id": "SCS-MATURE-014",
+      "version": 1,
+      "kind": "context_cycle_integration",
+      "title": "Integrate bounded multi-input intake with source revision impact proposals",
+      "description": "Compose existing batch intake and impact planners on one pinned baseline, surface explicit task priority, and detect context-update/invalidation conflicts without adding a backend or mutation side effects.",
+      "status": "in_progress",
+      "requested_by": "swarm_observed_gap",
+      "source_refs": [
+        "src/scs/cycle.py",
+        "src/scs/impact.py",
+        "src/scs/runner.py",
+        "swarm/sources/github-snapshot-cycle-0006.json",
+        "swarm/registry.json",
+        "swarm/dependency-map.json"
+      ],
+      "target_context_ids": [
+        "ctx-scs-repository-demo",
+        "ctx-scs-intake"
+      ],
+      "dependencies": [
+        "SCS-MATURE-009",
+        "SCS-MATURE-012",
+        "SCS-MATURE-013"
+      ],
+      "priority": {
+        "level": "medium",
+        "rationale": "The intake and impact engines are individually accepted; composing them reduces manual coordination and exposes conflicts without a backend or side effects."
+      },
+      "acceptance_criteria": [
+        "A pure coordinator composes a bounded multi-input cycle plan with source revision impact analysis.",
+        "Both subplans share the exact cycle ID, base commit and registry version; mismatches fail closed.",
+        "The existing GitHub snapshot adapter output can be composed with source-impact observations.",
+        "Only explicitly declared priority metadata is summarized; no priorities are invented.",
+        "Overlapping intake context updates and impact/stale proposals remain visible and force review_required before commit.",
+        "Duplicate source/input revisions remain no-ops with no duplicate priority/state proposals.",
+        "Stale dependency maps block direct-impact claims and preserve possible impacts.",
+        "The combined output validates against a dedicated schema and remains uncommitted with no external actions.",
+        "Tests cover captured input composition, conflict handling, explicit-priority ordering, duplicate inputs, stale map, mismatched baselines, schema contracts and input immutability."
+      ],
+      "required_evidence": [
+        "src/scs/context_cycle.py",
+        "schemas/context-cycle-plan.schema.json",
+        "tests/test_context_cycle.py",
+        "README.md",
+        "swarm/CYCLE.md",
+        "spec/schema-alignment.md",
+        "green CI run on candidate commit",
+        "swarm/cycles/0009-integrated-context-cycle.md"
+      ],
+      "attempts": 0,
+      "blocked_reason": null,
+      "last_outcome": "Implementation in progress; acceptance requires schema-valid integrated-planner tests and green CI.",
+      "history_refs": [
+        "base-commit:2ff451719cbc1b7806826fc1bd5d0f6729a6d8e1"
+      ]
     }
   ],
   "policy_refs": [
@@ -960,5 +1017,5 @@
     "src/scs/runner.py"
   ],
   "last_reconciled_commit": "ac2b9124daf557ae9242e46f8a89eff98b2856e9",
-  "change_note": "Registry v16 records SCS-MATURE-008 accepted after PR #6 merge e9858f1fa7126f53970cb0cd82bddc4b9aed5ea9. Candidate CI run 40401948275 passed all 74 tests and post-merge main run 40402090116 passed. Capability evidence is resource-scoped and does not grant permissions; current exposed tool definitions are not universal access proof. Repository metadata updates follow the reviewed source baseline ac2b9124daf557ae9242e46f8a89eff98b2856e9."
+  "change_note": "Registry v17 starts SCS-MATURE-014 for integrated batch intake and source-impact planning. The coordinator is proposal-only, pins baselines, surfaces context invalidation collisions and keeps all external actions empty. Source baseline remains ac2b9124daf557ae9242e46f8a89eff98b2856e9 until implementation is accepted."
 }
