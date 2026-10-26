@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 13,
+  "registry_version": 14,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -833,10 +833,10 @@
     },
     {
       "work_item_id": "SCS-MATURE-013",
-      "version": 3,
+      "version": 4,
       "kind": "dependency_freshness",
       "title": "Compute context impact from changed source revisions and propose stale-state updates",
-      "status": "accepted",
+      "status": "review",
       "requested_by": "swarm_observed_gap",
       "source_refs": [
         "swarm/dependency-map.json",
@@ -879,9 +879,11 @@
         "https://github.com/Loofy147/Context-swarm/pull/1",
         "https://github.com/Loofy147/Context-swarm/commit/f90d064455bab412e43763fbacd40be60128f0f9",
         "https://github.com/Loofy147/Context-swarm/actions/runs/40398482504",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40399177569",
+        "https://github.com/Loofy147/Context-swarm/commit/f684b10baef778824ae1c2f7f9f520075128a2aa"
       ],
-      "attempts": 1,
+      "attempts": 2,
       "blocked_reason": null,
       "history_refs": [
         "base-commit:e73d521e8d246691888d656419457d5b0eedd055",
@@ -891,9 +893,11 @@
         "https://github.com/Loofy147/Context-swarm/pull/1",
         "https://github.com/Loofy147/Context-swarm/commit/f90d064455bab412e43763fbacd40be60128f0f9",
         "https://github.com/Loofy147/Context-swarm/actions/runs/40398482504",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40399177569",
+        "https://github.com/Loofy147/Context-swarm/commit/f684b10baef778824ae1c2f7f9f520075128a2aa"
       ],
-      "last_outcome": "Accepted 2026-10-26. SCS-MATURE-013 is implemented and merged via PR #1 as f90d064455bab412e43763fbacd40be60128f0f9. CI run 40398482504 passed all 73 tests on the final candidate; the post-merge main run 40398648552 also passed all 73 tests. The planner compares stable source revisions, walks explicit dependencies conservatively, deduplicates impact, checks dangling context references, proposes versioned stale transitions with evidence, and always returns uncommitted output with no external actions. Semantic/unknown/stale-map edges remain possible impacts."
+      "last_outcome": "Reopened after run 40399177569 failed three tests because the test helper hard-coded e73d521 while dependency-map v12's reviewed base was f90d064. The repair defaults to the map's reviewed_base_commit and supplies BASE_COMMIT explicitly in the stale-map test. Re-accept only after follow-up CI passes."
     }
   ],
   "policy_refs": [
@@ -909,6 +913,6 @@
     "src/scs/adapters/github.py",
     "src/scs/runner.py"
   ],
-  "last_reconciled_commit": "f90d064455bab412e43763fbacd40be60128f0f9",
-  "change_note": "Registry v13 accepts SCS-MATURE-013 after PR #1 merged as f90d064455bab412e43763fbacd40be60128f0f9. The implementation candidate passed 73 tests in CI run 40398482504 and main passed 73 tests after merge in run 40398648552. Planner output remains proposal-only; dependency map v12 and inventory v8 are refreshed against the exact merged baseline."
+  "last_reconciled_commit": "f684b10baef778824ae1c2f7f9f520075128a2aa",
+  "change_note": "Registry v14 reopens SCS-MATURE-013 after post-merge CI run 40399177569 found three failures: tests had a hard-coded e73 base while dependency-map v12 was reviewed at f90d064. Follow-up test fix defaults to dependency_map.reviewed_base_commit and explicitly tests mismatched/stale baseline; re-accept only after the repair candidate passes."
 }
