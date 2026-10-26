@@ -1,13 +1,13 @@
 {
   "schema_version": "scs.dependency-map.v1",
-  "map_version": 11,
-  "reviewed_base_commit": "e73d521e8d246691888d656419457d5b0eedd055",
+  "map_version": 12,
+  "reviewed_base_commit": "f90d064455bab412e43763fbacd40be60128f0f9",
   "derived_from": [
     "exact tree at d8482f02af7a7e11487491869948cad91037e1d7",
     "cycle-0006 captured source snapshot and normalized input records",
     "CI run 38961446352"
   ],
-  "note": "Edges are typed and evidence-based. Explicit path references and test imports are stronger than semantic design relationships, which are labeled as contract relationships.",
+  "note": "Map v12 reconciles the exact merged main baseline f90d064455bab412e43763fbacd40be60128f0f9. It includes the context-impact planner/schema/tests and links the cycle report and user-facing README. The next planner invocation must provide this reviewed baseline for these artifact edges to count as direct; uncertain semantic edges remain possible.",
   "edges": [
     {
       "source_path": "tests/test_swarm_intake.py",
@@ -638,12 +638,76 @@
       "relationship": "work_item_test_evidence",
       "basis": "work_item_SCS_MATURE_013",
       "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "src/scs/impact.py",
+      "relationship": "documents_source_revision_impact",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "schemas/impact-plan.schema.json",
+      "relationship": "documents_impact_output_schema",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "README.md",
+      "target_path": "swarm/cycles/0007-context-impact-planning.md",
+      "relationship": "links_cycle_report",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "target_path": "src/scs/impact.py",
+      "relationship": "documents_implementation",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "target_path": "schemas/impact-plan.schema.json",
+      "relationship": "documents_output_schema",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "target_path": "tests/test_swarm_impact.py",
+      "relationship": "documents_regression_tests",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "target_path": "swarm/dependency-map.json",
+      "relationship": "documents_dependency_map",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/cycles/0007-context-impact-planning.md",
+      "target_path": "spec/schema-alignment.md",
+      "relationship": "documents_contract",
+      "basis": "explicit_markdown_reference",
+      "confidence": "high"
+    },
+    {
+      "source_path": "swarm/registry.json",
+      "target_path": "swarm/cycles/0007-context-impact-planning.md",
+      "relationship": "cycle_work_item_evidence",
+      "basis": "SCS_MATURE_013",
+      "confidence": "high"
     }
   ],
   "limitations": [
     "This is a repository artifact dependency map, not a runtime call graph.",
-    "Only edges with an explicit, code/test/schema/workflow basis and high confidence are eligible for direct impact when reviewed_base_commit matches the plan base commit.",
-    "Semantic, planned registry links, unknown relationships, and all edges from a stale map are possible impact only.",
-    "Map v11 reviewed the exact base snapshot e73d521e8d246691888d656419457d5b0eedd055 and adds context-impact planner, schema, test, and transition dependencies for this change set; refresh when later relevant changes alter the tree."
+    "Only edges with an explicit code/test/schema/workflow basis and high confidence can be direct when the map reviewed_base_commit exactly matches the supplied plan base.",
+    "Markdown/documentation edges establish traceability, not runtime execution. Semantic, planned registry links, unknown relationships, and all edges from a stale map are possible impact only.",
+    "Map v12 was reviewed against merged main commit f90d064455bab412e43763fbacd40be60128f0f9; changes after that baseline may make its edge snapshot stale.",
+    "The impact planner emits proposals only. It does not persist, accept, deploy, or execute external actions."
   ]
 }

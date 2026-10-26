@@ -1,30 +1,36 @@
 # Cycle 0007 — source revision impact planning
 
-- **Started:** 2026-10-26
+- **Status:** Accepted
+- **Date:** 2026-10-26
 - **Work item:** `SCS-MATURE-013`
 - **Base commit:** [e73d521e](https://github.com/Loofy147/Context-swarm/commit/e73d521e8d246691888d656419457d5b0eedd055)
-- **Candidate commit (initial implementation):** [f5cd28fe](https://github.com/Loofy147/Context-swarm/commit/f5cd28fe740c65a848d64cdab79169a8a9251c0e)
-- **Candidate branch:** [feature/scs-mature-013-context-impact](https://github.com/Loofy147/Context-swarm/tree/feature/scs-mature-013-context-impact)
-- **PR:** [#1 — Implement deterministic source revision impact planning](https://github.com/Loofy147/Context-swarm/pull/1)
-- **Initial CI:** [Run 40397829928 — success](https://github.com/Loofy147/Context-swarm/actions/runs/40397829928), 72 tests passed. This run validates the initial implementation commit; a follow-up guard/test is in the current candidate and must be rerun before merge.
+- **Merged main commit:** [f90d0644](https://github.com/Loofy147/Context-swarm/commit/f90d064455bab412e43763fbacd40be60128f0f9)
+- **Pull request:** [#1 — Implement deterministic source revision impact planning](https://github.com/Loofy147/Context-swarm/pull/1) — merged
+- **Candidate CI:** [Run 40398482504 — success](https://github.com/Loofy147/Context-swarm/actions/runs/40398482504), 73 tests passed.
+- **Post-merge main CI:** [Run 40398648552 — success](https://github.com/Loofy147/Context-swarm/actions/runs/40398648552), 73 tests passed.
 
-## Scope implemented
+## Scope delivered
 
-1. Added `src/scs/impact.py`, a deterministic, side-effect-free comparison of stable source identities and previous/current revisions. Inputs require source identity, source kind, known revisions, artifact paths, and evidence references.
-2. Added `schemas/impact-plan.schema.json`. Plans include registry/map baseline metadata, source comparisons, deduplicated direct/possible impacts, stale-state proposals, blockers, and explicit `committed: false` / `external_actions: []`.
-3. Added `tests/test_swarm_impact.py` for no-change replay, revision changes, graph fan-out, multi-source deduplication, semantic-edge uncertainty, stale dependency-map metadata, stale-claim proposals, missing mapping, duplicate identity and malformed source observations. A dangling-context-reference guard was added after initial CI and remains pending repeat validation.
-4. Refreshed `swarm/dependency-map.json` to v11, reviewed against the exact base commit. Only explicit high-confidence dependency bases are eligible for direct impact while the map matches the supplied base; semantic, uncertain, and stale-map relationships stay possible.
-5. Documented the output contract and scope in `spec/schema-alignment.md`.
+1. Added `src/scs/impact.py`, a deterministic, pure comparison of stable source IDs and previous/current revisions with repository-relative artifact references and evidence.
+2. Added `schemas/impact-plan.schema.json`. A plan includes base commit and registry/map versions, source comparison results, deduplicated direct and possible impacts, stale-state proposals, blockers, and explicit `committed: false` / `external_actions: []`.
+3. Added `tests/test_swarm_impact.py`, including no-change replay, changed revision, fan-out, multi-source deduplication, semantic dependency uncertainty, stale map metadata, stale claim proposals, missing source-path mapping, duplicate/malformed source observations, dangling context relationships, and JSON Schema validation.
+4. Refreshed `swarm/dependency-map.json` to v12 against the exact merged tree. High-confidence edges with explicit code/test/schema/workflow bases are direct only when the input base matches the map baseline. Semantic, documentation-only, unknown, or stale-map edges remain possible impact.
+5. Updated schema alignment, README, repository inventory and registry evidence.
 
-## Safety and state semantics
+## State and safety semantics
 
-The planner proposes consequences; it does not write registry state or run external effects. Context state transitions use the existing transition preconditions and include base/result versions. Accepted history is preserved. Only claims whose own evidence references intersect changed/affected paths can be proposed stale. Uncertain graph paths require review rather than being asserted as direct dependencies.
+The planner proposes consequences and does not mutate the supplied registry, write files, persist outputs or execute external actions. It preserves accepted history and emits versioned context-stale proposals through the existing transition reference logic. A verified/accepted claim is proposed stale only if its own evidence intersects changed/affected paths. Uncertain relationships are not asserted as direct dependencies. The source observation caller must provide stable identity, prior/current revisions, mapped artifact paths and evidence; automatic persistence/backend integration remains deferred in the repository-native phase.
 
-## Acceptance gate
+## Acceptance evidence
 
-- [x] Implementation, schema and initial regression tests committed to feature branch.
-- [x] Initial CI passed 72 tests on the initial candidate.
-- [ ] Repeat CI after dangling-context-reference validation and inventory/registry evidence refresh.
-- [ ] Review and merge PR after all required checks pass.
-- [ ] Mark SCS-MATURE-013 accepted only after final candidate verification; refresh inventory against merged tree.
+- [x] Implementation and dedicated output schema merged.
+- [x] Dependency graph and context IDs validated; dangling context relationship rejected.
+- [x] No-change replay, changed revision, graph fan-out, multi-source deduplication and ambiguous dependency cases tested.
+- [x] Candidate CI passed 73 tests (run 40398482504).
+- [x] Post-merge main CI passed 73 tests (run 40398648552).
+- [x] PR #1 merged as commit f90d064455bab412e43763fbacd40be60128f0f9.
+- [x] Registry SCS-MATURE-013 accepted and evidence inventory/dependency map refreshed.
 
+## Remaining boundary
+
+This is repository-native reference logic, not a deployed runtime. It does not fetch source systems itself, automatically run on new commits, persist its plans, or apply proposed stale transitions. Those require a separately scoped caller/runtime and its own authorization, persistence, and verification design.

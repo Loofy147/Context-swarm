@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 12,
+  "registry_version": 13,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -833,10 +833,10 @@
     },
     {
       "work_item_id": "SCS-MATURE-013",
-      "version": 2,
+      "version": 3,
       "kind": "dependency_freshness",
       "title": "Compute context impact from changed source revisions and propose stale-state updates",
-      "status": "review",
+      "status": "accepted",
       "requested_by": "swarm_observed_gap",
       "source_refs": [
         "swarm/dependency-map.json",
@@ -875,16 +875,25 @@
         "schemas/impact-plan.schema.json",
         "spec/schema-alignment.md",
         "swarm/cycles/0007-context-impact-planning.md",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/40397829928"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40397829928",
+        "https://github.com/Loofy147/Context-swarm/pull/1",
+        "https://github.com/Loofy147/Context-swarm/commit/f90d064455bab412e43763fbacd40be60128f0f9",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40398482504",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552"
       ],
       "attempts": 1,
       "blocked_reason": null,
       "history_refs": [
         "base-commit:e73d521e8d246691888d656419457d5b0eedd055",
         "https://github.com/Loofy147/Context-swarm/commit/f5cd28fe740c65a848d64cdab79169a8a9251c0e",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/40397829928"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40397829928",
+        "https://github.com/Loofy147/Context-swarm/commit/086be4328b616a45d09fdccfce6c33bf0d96f4db",
+        "https://github.com/Loofy147/Context-swarm/pull/1",
+        "https://github.com/Loofy147/Context-swarm/commit/f90d064455bab412e43763fbacd40be60128f0f9",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40398482504",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552"
       ],
-      "last_outcome": "Implementation candidate created in feature/scs-mature-013-context-impact. Initial GitHub Actions run 40397829928 passed 72 tests at f5cd28fe740c65a848d64cdab79169a8a9251c0e. Added explicit dangling-context-reference validation; awaiting repeat CI for the complete candidate before acceptance."
+      "last_outcome": "Accepted 2026-10-26. SCS-MATURE-013 is implemented and merged via PR #1 as f90d064455bab412e43763fbacd40be60128f0f9. CI run 40398482504 passed all 73 tests on the final candidate; the post-merge main run 40398648552 also passed all 73 tests. The planner compares stable source revisions, walks explicit dependencies conservatively, deduplicates impact, checks dangling context references, proposes versioned stale transitions with evidence, and always returns uncommitted output with no external actions. Semantic/unknown/stale-map edges remain possible impacts."
     }
   ],
   "policy_refs": [
@@ -900,6 +909,6 @@
     "src/scs/adapters/github.py",
     "src/scs/runner.py"
   ],
-  "last_reconciled_commit": "e73d521e8d246691888d656419457d5b0eedd055",
-  "change_note": "Registry v12 records SCS-MATURE-013 implementation in review: pure impact planner, dedicated schema, 11 focused regression tests, and dependency-map v11 reconciled to exact base e73d521. Initial candidate CI run 40397829928 passed 72 tests at commit f5cd28fe; the fuller candidate is awaiting rerun before merge/acceptance."
+  "last_reconciled_commit": "f90d064455bab412e43763fbacd40be60128f0f9",
+  "change_note": "Registry v13 accepts SCS-MATURE-013 after PR #1 merged as f90d064455bab412e43763fbacd40be60128f0f9. The implementation candidate passed 73 tests in CI run 40398482504 and main passed 73 tests after merge in run 40398648552. Planner output remains proposal-only; dependency map v12 and inventory v8 are refreshed against the exact merged baseline."
 }
