@@ -1,10 +1,10 @@
 {
   "schema_version": "scs.repository-inventory.v1",
-  "inventory_version": 8,
+  "inventory_version": 9,
   "reviewed_branch": "main",
-  "reviewed_tree_commit": "f90d064455bab412e43763fbacd40be60128f0f9",
+  "reviewed_tree_commit": "f684b10baef778824ae1c2f7f9f520075128a2aa",
   "reviewed_at": "2026-10-26",
-  "review_scope": "All 72 tracked blobs and exact Git object identities at merged main commit f90d064455bab412e43763fbacd40be60128f0f9. The registry, dependency map, inventory, README and cycle report are being refreshed in the enclosing evidence-finalization commit and are therefore represented as follow-up artifacts.",
+  "review_scope": "All 72 tracked blobs and exact Git object identities at main commit f684b10baef778824ae1c2f7f9f520075128a2aa. The test-baseline correction and its evidence/registry refresh are candidate follow-up changes, listed in follow_up_artifacts.",
   "item_count": 72,
   "items": [
     {
@@ -16,7 +16,7 @@
     },
     {
       "path": "README.md",
-      "blob_sha": "b86461fdd86da452164371496ef807a71adb3f14",
+      "blob_sha": "6d456543b32523012b448e49cc0e3c39a337375c",
       "role": "project entrypoint",
       "disposition": "current",
       "reason": "Defines repository-native maturation."
@@ -310,14 +310,14 @@
     },
     {
       "path": "swarm/cycles/0007-context-impact-planning.md",
-      "blob_sha": "933f6f99704f046366fc66f76ab6710abc3f24e1",
+      "blob_sha": "1277226726cbdc1505c2ef897bc94e27ce6394d9",
       "role": "cycle report",
       "disposition": "current",
       "reason": "Implementation, merge and CI evidence for SCS-MATURE-013."
     },
     {
       "path": "swarm/dependency-map.json",
-      "blob_sha": "8b015c47009d095944317b71029785a80e1b616c",
+      "blob_sha": "77fd78ff97f21629ec23b6db18e33332838f9473",
       "role": "dependency map",
       "disposition": "current_snapshot",
       "reason": "Typed file/test relationships, not a runtime call graph."
@@ -373,14 +373,14 @@
     },
     {
       "path": "swarm/inventory.json",
-      "blob_sha": "f15866a399d9f8b60ccc43fe7e9acebe2a689c3b",
+      "blob_sha": "a8bcbba640c3628be80980974c95175dfb400366",
       "role": "repository inventory",
       "disposition": "current_snapshot",
       "reason": "Dated file/blob identity snapshot."
     },
     {
       "path": "swarm/registry.json",
-      "blob_sha": "fa01363ef7137abae7e6fd6575a5f459851169ed",
+      "blob_sha": "84b855a784541308ca76c3d642a61c60af5c11ad",
       "role": "canonical registry",
       "disposition": "current",
       "reason": "Contexts, work items, evidence and lifecycle states."
@@ -558,15 +558,25 @@
     },
     {
       "finding_id": "INV-005",
-      "severity": "low",
+      "severity": "medium",
       "paths": [
         "src/scs/impact.py",
         "schemas/impact-plan.schema.json",
         "tests/test_swarm_impact.py",
         "swarm/dependency-map.json"
       ],
-      "finding": "SCS-MATURE-013 is merged into main; its pure impact planner and schema passed the 73-test candidate run and the 73-test post-merge main run.",
-      "disposition": "Accepted in registry v13. Follow-up runtime/storage integration remains out of scope for repository-native maturation."
+      "finding": "Post-merge evidence refresh exposed a mismatch between a hard-coded impact-test base and the map's declared reviewed base.",
+      "disposition": "Acceptance reopened pending the fix to derive default test base from dependency-map metadata and preserve an explicit stale-map test."
+    },
+    {
+      "finding_id": "INV-006",
+      "severity": "medium",
+      "paths": [
+        "tests/test_swarm_impact.py",
+        "swarm/dependency-map.json"
+      ],
+      "finding": "Regression tests must consume dependency-map reviewed_base_commit by default; hard-coded historical SHAs fail when map evidence is refreshed.",
+      "disposition": "Fix on the follow-up PR and require successful CI before re-acceptance."
     }
   ],
   "test_evidence": [
@@ -592,29 +602,35 @@
       "run_url": "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552",
       "commit": "f90d064455bab412e43763fbacd40be60128f0f9",
       "result": "success",
-      "scope": "73 tests on main after PR #1 was merged."
+      "scope": "Post-merge main run: 73 tests passed on merge commit f90d064; later evidence refresh exposed three stale-base test assumptions in run 40399177569."
+    },
+    {
+      "run_url": "https://github.com/Loofy147/Context-swarm/actions/runs/40399177569",
+      "commit": "f684b10baef778824ae1c2f7f9f520075128a2aa",
+      "result": "failure",
+      "scope": "73 tests executed; three impact tests failed because the helper's fixed base did not match dependency-map reviewed_base_commit. This result reopened SCS-MATURE-013 and motivated the repair PR."
     }
   ],
   "follow_up_artifacts": [
     {
+      "path": "tests/test_swarm_impact.py",
+      "status": "updated_in_candidate_change"
+    },
+    {
+      "path": "swarm/dependency-map.json",
+      "status": "updated_in_candidate_change"
+    },
+    {
       "path": "swarm/registry.json",
-      "status": "updated_in_enclosing_commit"
+      "status": "updated_in_candidate_change"
     },
     {
       "path": "swarm/inventory.json",
       "status": "updated_in_enclosing_commit"
     },
     {
-      "path": "swarm/dependency-map.json",
-      "status": "updated_in_enclosing_commit"
-    },
-    {
       "path": "swarm/cycles/0007-context-impact-planning.md",
-      "status": "updated_in_enclosing_commit"
-    },
-    {
-      "path": "README.md",
-      "status": "updated_in_enclosing_commit"
+      "status": "updated_in_candidate_change"
     }
   ]
 }
