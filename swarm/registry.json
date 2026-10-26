@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 15,
+  "registry_version": 16,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -36,7 +36,7 @@
       "title": "Input and task consumption protocol",
       "purpose": "Specify and test how information enters, is normalized, related, prioritized, processed, verified, and recorded.",
       "lifecycle_status": "accepted",
-      "version": 11,
+      "version": 12,
       "relationships": [
         {
           "type": "depends_on",
@@ -74,13 +74,17 @@
         "swarm/inputs/IN-GH-123373305A1649EF-latest-commit.json",
         "swarm/inputs/IN-GH-D8938724790ABB3A-empty-issues-page.json",
         "swarm/inputs/IN-GH-EA41ECF1DB08739E-actions-run.json",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38961446352"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38961446352",
+        "schemas/capability-verification.schema.json",
+        "swarm/sources/capability-verification-2026-10-26.json",
+        "swarm/cycles/0008-capability-validation.md",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40401948275"
       ],
       "open_questions": [
         "Validate exact source/adapter capabilities as concrete tasks arise.",
         "Revisit schema consolidation only when real examples justify a shared core."
       ],
-      "change_note": "Version 11 records cycle-0006 input capture/output equality and duplicate replay passing in CI run 38961446352 (62 tests). Durable records remain triaged/review based on source disposition."
+      "change_note": "Version 12 records resource-scoped capability validation for SCS-MATURE-008. The inventory of exposed actions is distinct from resource access; exact read/write capabilities and evidence are recorded for named targets, with unverified sources retained as limited/not_checked."
     },
     {
       "context_id": "ctx-scs-repository-demo",
@@ -210,7 +214,7 @@
       "title": "Source and operation capability boundaries",
       "purpose": "Define which reads, repository writes, connected-service operations, and privileged actions may be considered in a specific operator run.",
       "lifecycle_status": "accepted",
-      "version": 4,
+      "version": 5,
       "relationships": [
         {
           "type": "depends_on",
@@ -234,12 +238,19 @@
         "src/scs/adapters/github.py",
         "src/scs/runner.py",
         "schemas/intake-envelope.schema.json",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/38960068848"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/38960068848",
+        "schemas/capability-verification.schema.json",
+        "swarm/sources/capability-verification-2026-10-26.json",
+        "tests/test_swarm_intake.py",
+        "https://github.com/Loofy147/Context-swarm/pull/6",
+        "https://github.com/Loofy147/Context-swarm/commit/e9858f1fa7126f53970cb0cd82bddc4b9aed5ea9",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40401948275",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40402090116"
       ],
       "open_questions": [
         "For each future non-repository source, verify its exact current tool action, resource scope and read/write permission before processing a task."
       ],
-      "change_note": "Version 4 distinguishes source fetching through an authorized caller from pure adapter/runner logic, which has no network capability."
+      "change_note": "Version 5 adds SCS-MATURE-008's dated resource-scoped capability verification evidence and its schema/test/PR/CI proof. The exact repository and Notion page have observed read/write actions; other repositories, settings, secrets, deployments and unrelated resources remain unverified. This is evidence, not a permission grant."
     },
     {
       "context_id": "ctx-scs-source-catalog",
@@ -592,14 +603,19 @@
     },
     {
       "work_item_id": "SCS-MATURE-008",
-      "version": 1,
+      "version": 2,
       "kind": "capability_validation",
       "title": "Validate capability boundaries against exact connected tools as real tasks require them",
-      "status": "ready",
+      "status": "accepted",
       "requested_by": "swarm_observed_gap",
       "source_refs": [
         "swarm/capability-matrix.json",
-        "spec/swarm-operating-model.md"
+        "spec/swarm-operating-model.md",
+        "swarm/source-catalog.json",
+        "swarm/sources/connected-tool-surface.json",
+        "schemas/capability-verification.schema.json",
+        "swarm/sources/capability-verification-2026-10-26.json",
+        "tests/test_swarm_intake.py"
       ],
       "target_context_ids": [
         "ctx-scs-capabilities",
@@ -622,10 +638,30 @@
       ],
       "required_evidence": [
         "Exact tool/action references",
-        "Replayable read-only and blocked/approval-gated examples"
+        "Replayable read-only and blocked/approval-gated examples",
+        "schemas/capability-verification.schema.json",
+        "swarm/sources/capability-verification-2026-10-26.json",
+        "swarm/cycles/0008-capability-validation.md",
+        "https://github.com/Loofy147/Context-swarm/pull/6",
+        "https://github.com/Loofy147/Context-swarm/commit/e9858f1fa7126f53970cb0cd82bddc4b9aed5ea9",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40401948275",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40402090116",
+        "tests/test_reference_model.py",
+        "tests/test_swarm_cycle.py"
       ],
-      "attempts": 0,
-      "blocked_reason": null
+      "attempts": 1,
+      "blocked_reason": null,
+      "last_outcome": "Accepted on 2026-10-26 after PR #6 merged as e9858f1fa7126f53970cb0cd82bddc4b9aed5ea9 and CI run 40401948275 passed all 74 tests. The resource-scoped verification schema and test cover current exact action names, separate read/write outcomes, task scopes, provider evidence, replayable denied/approval-gated examples, and explicitly unverified scopes. Main post-merge CI run 40402090116 also passed.",
+      "history_refs": [
+        "base-commit:ac2b9124daf557ae9242e46f8a89eff98b2856e9",
+        "schemas/capability-verification.schema.json",
+        "swarm/sources/capability-verification-2026-10-26.json",
+        "swarm/cycles/0008-capability-validation.md",
+        "https://github.com/Loofy147/Context-swarm/pull/6",
+        "https://github.com/Loofy147/Context-swarm/commit/e9858f1fa7126f53970cb0cd82bddc4b9aed5ea9",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40401948275",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40402090116"
+      ]
     },
     {
       "work_item_id": "SCS-MATURE-009",
@@ -923,6 +959,6 @@
     "src/scs/adapters/github.py",
     "src/scs/runner.py"
   ],
-  "last_reconciled_commit": "ef73b8a1712697525d20f934083fa55a619186d6",
-  "change_note": "Registry v15 records final SCS-MATURE-013 acceptance after making the impact test helper read dependency_map.reviewed_base_commit by default. Main commit ef73b8a1712697525d20f934083fa55a619186d6 and CI run 40400844325 passed all 73 tests; the stale-map test explicitly supplies an older base. The baseline failure and repair history remain in evidence; current dependency map v13 and inventory v10 are reviewed against the fixed source/test baseline."
+  "last_reconciled_commit": "ac2b9124daf557ae9242e46f8a89eff98b2856e9",
+  "change_note": "Registry v16 records SCS-MATURE-008 accepted after PR #6 merge e9858f1fa7126f53970cb0cd82bddc4b9aed5ea9. Candidate CI run 40401948275 passed all 74 tests and post-merge main run 40402090116 passed. Capability evidence is resource-scoped and does not grant permissions; current exposed tool definitions are not universal access proof. Repository metadata updates follow the reviewed source baseline ac2b9124daf557ae9242e46f8a89eff98b2856e9."
 }
