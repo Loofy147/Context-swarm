@@ -1,11 +1,11 @@
 {
   "schema_version": "scs.repository-inventory.v1",
-  "inventory_version": 10,
+  "inventory_version": 11,
   "reviewed_branch": "main",
-  "reviewed_tree_commit": "ef73b8a1712697525d20f934083fa55a619186d6",
+  "reviewed_tree_commit": "ac2b9124daf557ae9242e46f8a89eff98b2856e9",
   "reviewed_at": "2026-10-26",
-  "review_scope": "All 72 tracked blob paths and exact blob object identities at verified source/test baseline ef73b8a1712697525d20f934083fa55a619186d6. Subsequent commits only reconcile dependency/registry/inventory/cycle evidence.",
-  "item_count": 72,
+  "review_scope": "All tracked repository artifacts at exact tree commit ac2b9124daf557ae9242e46f8a89eff98b2856e9 after SCS-MATURE-008 implementation merge; inventory metadata and dependency-map reconciliation follow in later metadata-only commits.",
+  "item_count": 75,
   "items": [
     {
       "path": ".github/workflows/tests.yml",
@@ -15,18 +15,18 @@
       "reason": "Runs repository-native contract and reference tests."
     },
     {
-      "path": "README.md",
-      "blob_sha": "6d456543b32523012b448e49cc0e3c39a337375c",
-      "role": "project entrypoint",
-      "disposition": "current",
-      "reason": "Defines repository-native maturation."
-    },
-    {
       "path": "migrations/001_initial_postgres.sql",
       "blob_sha": "2f19da0ca59736ae3a340d0c06ae310ba322f2a5",
       "role": "future database artifact",
       "disposition": "reference_only_deferred",
       "reason": "Do not apply in current phase."
+    },
+    {
+      "path": "README.md",
+      "blob_sha": "75c0484d56fd79da446ac2f89400c1e61f22212c",
+      "role": "project entrypoint",
+      "disposition": "current",
+      "reason": "Defines repository-native maturation."
     },
     {
       "path": "requirements-dev.txt",
@@ -48,6 +48,13 @@
       "role": "contract schema",
       "disposition": "current",
       "reason": "Defines context/input/source/capability/cycle planning contracts."
+    },
+    {
+      "path": "schemas/capability-verification.schema.json",
+      "blob_sha": "e41d731cfb6c21bbe294bebdfd7c68a7f5423923",
+      "role": "capability verification schema",
+      "disposition": "current",
+      "reason": "Validates the dated resource-scoped capability evidence record and explicitly rejects universal-access claims."
     },
     {
       "path": "schemas/context-state.schema.json",
@@ -170,7 +177,7 @@
     },
     {
       "path": "spec/schema-alignment.md",
-      "blob_sha": "6f2cb773f4418232ec2b72b2f4856fdbed0c25b3",
+      "blob_sha": "07c560e260de5c707b9c71ceecc70732fe780aa8",
       "role": "operating specification",
       "disposition": "current_with_future_sections",
       "reason": "Current rules are repository-native; production gates remain future."
@@ -246,13 +253,6 @@
       "reason": "Produces proposals; no persistence or external side effects."
     },
     {
-      "path": "swarm/CYCLE.md",
-      "blob_sha": "a84cb7c796e3eece79c10d6b83baf48fd3cc6363",
-      "role": "cycle runbook",
-      "disposition": "current",
-      "reason": "Operator protocol."
-    },
-    {
       "path": "swarm/capability-matrix.json",
       "blob_sha": "24546b1ed86618321be98dc425b536ff4f9d9751",
       "role": "capability policy",
@@ -265,6 +265,13 @@
       "role": "context record convention",
       "disposition": "current",
       "reason": "Guidance for detail records."
+    },
+    {
+      "path": "swarm/CYCLE.md",
+      "blob_sha": "a84cb7c796e3eece79c10d6b83baf48fd3cc6363",
+      "role": "cycle runbook",
+      "disposition": "current",
+      "reason": "Operator protocol."
     },
     {
       "path": "swarm/cycles/0001-bootstrap-and-intake.md",
@@ -310,14 +317,21 @@
     },
     {
       "path": "swarm/cycles/0007-context-impact-planning.md",
-      "blob_sha": "7f69a00ddb0ed3ee76d85e67acc387783e9998d1",
+      "blob_sha": "86de76106d141db8441b9da70b1764d0b24a8a23",
       "role": "cycle report",
       "disposition": "current",
       "reason": "Implementation, merge and CI evidence for SCS-MATURE-013."
     },
     {
+      "path": "swarm/cycles/0008-capability-validation.md",
+      "blob_sha": "7c5946b966f5b8cc743cb3a2d6f5b2cf8a4bf90b",
+      "role": "cycle report",
+      "disposition": "current",
+      "reason": "Documents SCS-MATURE-008 merge, 74-test CI evidence, scope boundaries, and acceptance rationale."
+    },
+    {
       "path": "swarm/dependency-map.json",
-      "blob_sha": "6ee61258cdfc9e7a898a8be247963ddbf3dbb1f5",
+      "blob_sha": "cdda201a85b21728681e50de6ca4e0eba460c127",
       "role": "dependency map",
       "disposition": "current_snapshot",
       "reason": "Typed file/test relationships, not a runtime call graph."
@@ -373,28 +387,35 @@
     },
     {
       "path": "swarm/inventory.json",
-      "blob_sha": "3ab154b7d44b58cfcb57c37cd81d948d78769bd7",
+      "blob_sha": "3c85254d629d2cf7ee86f4519f68eb83470bb51f",
       "role": "repository inventory",
       "disposition": "current_snapshot",
       "reason": "Dated file/blob identity snapshot."
     },
     {
       "path": "swarm/registry.json",
-      "blob_sha": "240466bcdf185f4cdaa8b48a42abb34e79eda5f8",
+      "blob_sha": "131660127b8852f866ca1be0a90e066f906e5015",
       "role": "canonical registry",
       "disposition": "current",
       "reason": "Contexts, work items, evidence and lifecycle states."
     },
     {
       "path": "swarm/source-catalog.json",
-      "blob_sha": "2446c7b477c57018520ace8382d1d5bd61b50eca",
+      "blob_sha": "f493f2967f4536cd264f9299860322d251d0ce03",
       "role": "source catalog",
       "disposition": "current",
       "reason": "Source locators, revisions, adapter status and refresh policy."
     },
     {
+      "path": "swarm/sources/capability-verification-2026-10-26.json",
+      "blob_sha": "dc4a71e549da69bb31bfbce8d11ede66345831a8",
+      "role": "resource-scoped capability evidence",
+      "disposition": "current_snapshot",
+      "reason": "Records observed read/write actions, exact resource scope, evidence links, replayable policy examples and unverified scopes; this record does not grant permissions."
+    },
+    {
       "path": "swarm/sources/connected-tool-surface.json",
-      "blob_sha": "5436334d4544d1f5edb12224ac6052d0f6a94fd8",
+      "blob_sha": "5d9278ee1554cf91374d24b4184873b96c674b91",
       "role": "session-bound tool catalog",
       "disposition": "current_snapshot",
       "reason": "Visible tool definitions, not proof of access."
@@ -499,7 +520,7 @@
     },
     {
       "path": "tests/test_swarm_intake.py",
-      "blob_sha": "5a28b7ec54ea01a0c66ce77a03f2af825c2f8797",
+      "blob_sha": "5790f0a1660213ba9a8c1bd6f00177b0a52d3e72",
       "role": "test/fixture artifact",
       "disposition": "current",
       "reason": "Executable tests or replayable fixtures."
@@ -542,8 +563,8 @@
         "swarm/sources/connected-tool-surface.json",
         "swarm/source-catalog.json"
       ],
-      "finding": "Exposed tool definitions are not evidence of resource permissions.",
-      "disposition": "Resolve exact action and resource permissions per task."
+      "finding": "Exposed tool definitions are not evidence of universal resource permissions. A dated resource-scoped verification now covers named GitHub and Notion targets, while other repositories, settings, secrets, deployments and unrelated sources remain unverified.",
+      "disposition": "Use swarm/sources/capability-verification-2026-10-26.json as task-scoped evidence only; independently verify each future source/action and keep untested scopes limited or not_checked."
     },
     {
       "finding_id": "INV-004",
@@ -629,6 +650,24 @@
     {
       "path": "swarm/cycles/0007-context-impact-planning.md",
       "status": "updated_in_enclosing_commit"
+    }
+  ],
+  "follow_up": [
+    {
+      "path": "swarm/registry.json",
+      "status": "updated_after_verified_source_baseline"
+    },
+    {
+      "path": "swarm/inventory.json",
+      "status": "updated_in_enclosing_commit"
+    },
+    {
+      "path": "swarm/dependency-map.json",
+      "status": "updated_after_verified_source_baseline"
+    },
+    {
+      "path": "swarm/cycles/0008-capability-validation.md",
+      "status": "cycle_report_recorded; accepted evidence points to PR #6 and CI run 40401948275"
     }
   ]
 }
