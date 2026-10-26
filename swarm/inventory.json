@@ -1,10 +1,10 @@
 {
   "schema_version": "scs.repository-inventory.v1",
-  "inventory_version": 9,
+  "inventory_version": 10,
   "reviewed_branch": "main",
-  "reviewed_tree_commit": "d1e0751851c548c4cefdaad5b90484dfa051b0f7",
+  "reviewed_tree_commit": "ef73b8a1712697525d20f934083fa55a619186d6",
   "reviewed_at": "2026-10-26",
-  "review_scope": "All 72 tracked blobs and exact Git object identities at main commit d1e0751851c548c4cefdaad5b90484dfa051b0f7. Later acceptance-registry, inventory and dependency-map refreshes are listed as follow-up artifacts.",
+  "review_scope": "All 72 tracked blob paths and exact blob object identities at verified source/test baseline ef73b8a1712697525d20f934083fa55a619186d6. Subsequent commits only reconcile dependency/registry/inventory/cycle evidence.",
   "item_count": 72,
   "items": [
     {
@@ -310,14 +310,14 @@
     },
     {
       "path": "swarm/cycles/0007-context-impact-planning.md",
-      "blob_sha": "1277226726cbdc1505c2ef897bc94e27ce6394d9",
+      "blob_sha": "7f69a00ddb0ed3ee76d85e67acc387783e9998d1",
       "role": "cycle report",
       "disposition": "current",
       "reason": "Implementation, merge and CI evidence for SCS-MATURE-013."
     },
     {
       "path": "swarm/dependency-map.json",
-      "blob_sha": "77fd78ff97f21629ec23b6db18e33332838f9473",
+      "blob_sha": "6ee61258cdfc9e7a898a8be247963ddbf3dbb1f5",
       "role": "dependency map",
       "disposition": "current_snapshot",
       "reason": "Typed file/test relationships, not a runtime call graph."
@@ -373,14 +373,14 @@
     },
     {
       "path": "swarm/inventory.json",
-      "blob_sha": "a8bcbba640c3628be80980974c95175dfb400366",
+      "blob_sha": "3ab154b7d44b58cfcb57c37cd81d948d78769bd7",
       "role": "repository inventory",
       "disposition": "current_snapshot",
       "reason": "Dated file/blob identity snapshot."
     },
     {
       "path": "swarm/registry.json",
-      "blob_sha": "84b855a784541308ca76c3d642a61c60af5c11ad",
+      "blob_sha": "240466bcdf185f4cdaa8b48a42abb34e79eda5f8",
       "role": "canonical registry",
       "disposition": "current",
       "reason": "Contexts, work items, evidence and lifecycle states."
@@ -492,7 +492,7 @@
     },
     {
       "path": "tests/test_swarm_impact.py",
-      "blob_sha": "16f0cf5cd812369a0baa28c07247f3f04f1102ba",
+      "blob_sha": "6d845c84a680515e660b7a2fe7121d91d3fe8f19",
       "role": "test/fixture artifact",
       "disposition": "current",
       "reason": "Regression tests for replay, changed revisions, fan-out, deduplication, uncertainty, stale map, dangling context refs, claim proposals and output schema."
@@ -565,8 +565,8 @@
         "tests/test_swarm_impact.py",
         "swarm/dependency-map.json"
       ],
-      "finding": "SCS-MATURE-013 is implemented and merged. After an evidence-refresh regression exposed stale test baseline assumptions, main commit d1e075 corrected the helper; 73 tests passed in run 40399818363.",
-      "disposition": "Accepted; dependency map v13 and inventory v9 are refreshed against the verified d1e075 baseline. Runtime/storage integration remains out of scope."
+      "finding": "SCS-MATURE-013 is implemented; the test-helper baseline has now been made map-driven and the 73-test suite passed again.",
+      "disposition": "Resolved by ef73b8a; dependency map v13 aligns to the same source/test baseline. Runtime/storage integration remains deferred."
     }
   ],
   "test_evidence": [
@@ -598,19 +598,25 @@
       "run_url": "https://github.com/Loofy147/Context-swarm/actions/runs/40399177569",
       "commit": "f684b10baef778824ae1c2f7f9f520075128a2aa",
       "result": "failure",
-      "scope": "73 tests executed; three impact tests failed because the default test baseline was hard-coded and did not match the dependency map's reviewed_base_commit."
+      "scope": "Historical regression evidence: three tests failed because test helper base e73d521 did not match dependency-map v12 reviewed base f90d064. Fixed by commit ef73b8a and verified in run 40400844325."
     },
     {
       "run_url": "https://github.com/Loofy147/Context-swarm/actions/runs/40399818363",
       "commit": "d1e0751851c548c4cefdaad5b90484dfa051b0f7",
       "result": "success",
       "scope": "73 tests passed on main after the test helper was changed to use dependency_map.reviewed_base_commit and the stale-map test supplied an explicit older base."
+    },
+    {
+      "run_url": "https://github.com/Loofy147/Context-swarm/actions/runs/40400844325",
+      "commit": "ef73b8a1712697525d20f934083fa55a619186d6",
+      "result": "success",
+      "scope": "73 tests passed after test helper defaults to dependency_map.reviewed_base_commit and the stale-map case uses an explicit older base."
     }
   ],
   "follow_up_artifacts": [
     {
       "path": "swarm/registry.json",
-      "status": "updated_after_reviewed_baseline"
+      "status": "updated_after_verified_source_baseline"
     },
     {
       "path": "swarm/inventory.json",
@@ -618,7 +624,7 @@
     },
     {
       "path": "swarm/dependency-map.json",
-      "status": "updated_in_enclosing_commit"
+      "status": "updated_after_verified_source_baseline"
     },
     {
       "path": "swarm/cycles/0007-context-impact-planning.md",
