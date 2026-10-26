@@ -11,7 +11,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 from scs.impact import ImpactPlanningError, plan_context_impact
 
 
-BASE_COMMIT = "e73d521e8d246691888d656419457d5b0eedd055"
+BASE_COMMIT = "f90d064455bab412e43763fbacd40be60128f0f9"
 
 
 def load_registry():
