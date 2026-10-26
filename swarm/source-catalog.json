@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.source-catalog.v1",
-  "catalog_version": 4,
+  "catalog_version": 5,
   "execution_mode": "repository_native",
   "scope_boundary": "Only sources and action surfaces observed in this operator run are listed as observed. Other services remain conditional until an exact connector action, resource, and permission are confirmed. This catalog guides discovery and normalization; it does not grant access.",
   "sources": [
@@ -259,6 +259,40 @@
         "The empty issue result applies only to state=all&per_page=30.",
         "The successful workflow is evidence for review, not automatic context acceptance or external authorization."
       ]
+    },
+    {
+      "source_id": "src-capability-verification-2026-10-26",
+      "source_kind": "resource_scoped_capability_verification",
+      "locator": "swarm/sources/capability-verification-2026-10-26.json",
+      "availability": "observed_readable",
+      "access_mode": "tool_permission_checked_per_resource",
+      "revision_strategy": "Verification ID, timestamp, exact resource identity, tool/action names, evidence references and commit/run IDs; refresh after session, permission, or provider changes.",
+      "data_types": [
+        "Exact current tool action names",
+        "Resource-scoped read and write outcomes",
+        "Provider-reported repository permission flags",
+        "Task scope and authorization basis per write",
+        "Replayable read-only, blocked, and approval-gated examples",
+        "Explicit unverified-resource dispositions"
+      ],
+      "context_routes": [
+        "ctx-scs-capabilities",
+        "ctx-scs-intake"
+      ],
+      "refresh_steps": [
+        "Resolve current exact action schemas from the surfaced tool registry.",
+        "Check read and write permissions separately against a specific resource.",
+        "Record exact targets, scope, authorization basis, and evidence for each successful action.",
+        "Keep unrequested resources in a not_checked or limited disposition.",
+        "Run the replayable policy examples and refresh the record when tool or permission state changes."
+      ],
+      "adapter_status": "direct_observation",
+      "limitations": [
+        "Access is proven only for the named resources and successful actions.",
+        "Visible tool definitions are not resource permissions.",
+        "The record does not grant any permission or authorize a new action.",
+        "Repository settings, secrets, deployments, private repositories, and other connected-service resources remain unverified unless separately checked."
+      ]
     }
   ],
   "refresh_policy": [
@@ -268,6 +302,7 @@
     "The registry and catalog describe capability boundaries; they never grant resource permission.",
     "No backend, persistent queue, API service, or deployment is required during the current phase.",
     "Pure GitHub normalizers and the snapshot runner are implemented at src/scs/adapters/github.py and src/scs/runner.py. They consume caller-supplied API objects and do not fetch the network.",
-    "Cycle 0006 captures a fresh scoped GitHub snapshot; four normalized input records under swarm/inputs/IN-GH-*.json are checked against the pure runner output and replayed for duplicate no-ops."
+    "Cycle 0006 captures a fresh scoped GitHub snapshot; four normalized input records under swarm/inputs/IN-GH-*.json are checked against the pure runner output and replayed for duplicate no-ops.",
+    "SCS-MATURE-008 records exact resource-specific tool actions and separates read access, scoped writes, and privileged effects. Use swarm/sources/capability-verification-2026-10-26.json as dated evidence, not as a permission grant."
   ]
 }

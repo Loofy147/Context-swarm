@@ -95,6 +95,7 @@ class SwarmIntakeTests(unittest.TestCase):
             "schemas/input-record.schema.json",
             "schemas/intake-policy.schema.json",
             "schemas/capability-matrix.schema.json",
+            "schemas/capability-verification.schema.json",
         ]
         schemas = {p: json.loads((ROOT / p).read_text()) for p in schema_paths}
         for path, schema in schemas.items():
@@ -149,6 +150,42 @@ class SwarmIntakeTests(unittest.TestCase):
         self.assertFalse(surface["resource_access_confirmed"])
         self.assertIn("GitHub", [group["namespace"] for group in surface["namespaces"]])
         self.assertTrue(any(source["source_id"] == "src-other-connected-services" for source in catalog["sources"]))
+
+    def test_resource_scoped_capability_verification_is_schema_valid_and_not_universal(self):
+        verification = json.loads((ROOT / "swarm/sources/capability-verification-2026-10-26.json").read_text())
+        verification_schema = json.loads((ROOT / "schemas/capability-verification.schema.json").read_text())
+        errors = list(Draft202012Validator(verification_schema, format_checker=FormatChecker()).iter_errors(verification))
+        self.assertEqual([], [f"{'/'.join(str(p) for p in e.absolute_path)}: {e.message}" for e in errors])
+        self.assertFalse(verification["universal_access_claim"])
+
+        surface = json.loads((ROOT / "swarm/sources/connected-tool-surface.json").read_text())
+        available_actions = {
+            action
+            for group in surface["namespaces"]
+            for action in group["tool_names"]
+        } | set(surface["non_mcp_tool_names"])
+        matrix = json.loads((ROOT / "swarm/capability-matrix.json").read_text())
+        capability_ids = {item["capability_id"] for item in matrix["capabilities"]}
+        resources = {item["resource_id"]: item for item in verification["resources"]}
+        github = resources["Loofy147/Context-swarm"]
+        self.assertEqual(github["access_status"], "verified_read_write")
+        self.assertTrue(github["permission_snapshot"]["pull"])
+        self.assertTrue(github["permission_snapshot"]["push"])
+        self.assertTrue(any(check["permission_class"] == "read" for check in github["checks"]))
+        self.assertTrue(any(check["permission_class"] == "write" for check in github["checks"]))
+        for resource in verification["resources"]:
+            for check in resource["checks"]:
+                with self.subTest(action=check["action_name"], target=check["target"]):
+                    self.assertIn(check["action_name"], available_actions)
+                    self.assertIn(check["capability_id"], capability_ids)
+                    self.assertTrue(check["current_schema_resolved"])
+                    self.assertTrue(check["target"])
+                    self.assertTrue(check["task_scope"])
+
+        example_kinds = {item["kind"] for item in verification["replayable_examples"]}
+        self.assertTrue({"read_only", "blocked", "approval_gated"}.issubset(example_kinds))
+        self.assertTrue(verification["unverified_scopes"])
+        self.assertFalse(surface["resource_access_confirmed"])
 
     def test_schema_alignment_record_exists_and_separates_current_from_future(self):
         alignment = (ROOT / "spec/schema-alignment.md").read_text().lower()
