@@ -11,9 +11,6 @@ from jsonschema import Draft202012Validator, FormatChecker
 from scs.impact import ImpactPlanningError, plan_context_impact
 
 
-BASE_COMMIT = "f90d064455bab412e43763fbacd40be60128f0f9"
-
-
 def load_registry():
     return json.loads((ROOT / "swarm/registry.json").read_text())
 
@@ -31,7 +28,8 @@ def source(stable_id="repo-file:src/scs/intake.py", previous="sha-old",
         "current_revision": current,
         "artifact_paths": paths if paths is not None else ["src/scs/intake.py"],
         "evidence_refs": evidence if evidence is not None else [
-            "https://github.com/Loofy147/Context-swarm/commit/" + BASE_COMMIT
+            "https://github.com/Loofy147/Context-swarm/commit/"
+            + load_dependency_map()["reviewed_base_commit"]
         ],
     }
 
