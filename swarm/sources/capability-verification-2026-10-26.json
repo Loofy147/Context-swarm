@@ -1,0 +1,217 @@
+{
+  "schema_version": "scs.capability-verification.v1",
+  "verification_id": "CAP-VERIFY-2026-10-26-SCS-008",
+  "observed_at": "2026-10-26T20:54:58Z",
+  "scope": {
+    "work_item_id": "SCS-MATURE-008",
+    "project": "Loofy147/Context-swarm",
+    "baseline_commit": "d1e0751851c548c4cefdaad5b90484dfa051b0f7",
+    "purpose": "Resolve exact current action contracts and independently verify reads, scoped writes, and approval gates at named resources."
+  },
+  "universal_access_claim": false,
+  "resources": [
+    {
+      "provider": "GitHub",
+      "resource_id": "Loofy147/Context-swarm",
+      "access_status": "verified_read_write",
+      "observed_ref": "https://github.com/Loofy147/Context-swarm/commit/d1e0751851c548c4cefdaad5b90484dfa051b0f7",
+      "permission_snapshot": {
+        "admin": true,
+        "maintain": true,
+        "pull": true,
+        "push": true,
+        "triage": true
+      },
+      "checks": [
+        {
+          "action_name": "mcp__GitHub__get_repo",
+          "capability_id": "github.repository.read",
+          "permission_class": "read",
+          "operation": "Read exact repository metadata and repository-scoped permission flags.",
+          "target": "Loofy147/Context-swarm",
+          "task_scope": "Capability validation for this exact public repository; no other repository is implied.",
+          "authorization_basis": "User-directed in-scope project work; read only.",
+          "result": "success",
+          "current_schema_resolved": true,
+          "evidence_ref": "https://api.github.com/repos/Loofy147/Context-swarm"
+        },
+        {
+          "action_name": "mcp__GitHub__fetch_file",
+          "capability_id": "github.repository.read",
+          "permission_class": "read",
+          "operation": "Read repository artifacts at an exact branch or commit.",
+          "target": "swarm/registry.json@d1e0751851c548c4cefdaad5b90484dfa051b0f7",
+          "task_scope": "Read current registry and exact project task; no file changes from this operation.",
+          "authorization_basis": "User-directed in-scope project work; read only.",
+          "result": "success",
+          "current_schema_resolved": true,
+          "evidence_ref": "https://github.com/Loofy147/Context-swarm/blob/d1e0751851c548c4cefdaad5b90484dfa051b0f7/swarm/registry.json"
+        },
+        {
+          "action_name": "mcp__GitHub__create_branch",
+          "capability_id": "github.repository.content_write",
+          "permission_class": "write",
+          "operation": "Create a task-scoped branch from an exact known commit.",
+          "target": "fix/scs-impact-current-baseline",
+          "task_scope": "Isolate the one-line fixture-baseline correction for SCS-MATURE-013; branch created from the then-current main commit f684b10baef778824ae1c2f7f9f520075128a2aa.",
+          "authorization_basis": "User instructed to enable repository read/write operations and continue the project; change scope limited to the failing regression.",
+          "result": "success",
+          "current_schema_resolved": true,
+          "evidence_ref": "https://github.com/Loofy147/Context-swarm/pull/4"
+        },
+        {
+          "action_name": "mcp__GitHub__update_file",
+          "capability_id": "github.repository.content_write",
+          "permission_class": "write",
+          "operation": "Update one existing UTF-8 text file on the named branch with a supplied content SHA.",
+          "target": "tests/test_swarm_impact.py on fix/scs-impact-current-baseline",
+          "task_scope": "Change only BASE_COMMIT in the impact test fixture from e73d521e8d246691888d656419457d5b0eedd055 to f90d064455bab412e43763fbacd40be60128f0f9; no production source change.",
+          "authorization_basis": "User-directed scoped regression fix; the current tool schema required the exact path, branch and existing blob SHA.",
+          "result": "success",
+          "current_schema_resolved": true,
+          "evidence_ref": "https://github.com/Loofy147/Context-swarm/commit/5c685d46a3a2b2ee457586d0b420a7259634a026"
+        },
+        {
+          "action_name": "mcp__GitHub__create_pull_request",
+          "capability_id": "github.repository.content_write",
+          "permission_class": "write",
+          "operation": "Open a reviewable pull request against main.",
+          "target": "Pull request #4: Fix impact planner tests against reviewed dependency baseline",
+          "task_scope": "One test-file change; no unrelated repository changes.",
+          "authorization_basis": "User-directed in-scope fix, isolated for CI verification before merge.",
+          "result": "success",
+          "current_schema_resolved": true,
+          "evidence_ref": "https://github.com/Loofy147/Context-swarm/pull/4"
+        },
+        {
+          "action_name": "mcp__GitHub__merge_pull_request",
+          "capability_id": "github.repository.privileged",
+          "permission_class": "privileged",
+          "operation": "Merge the one-file test-only PR after the PR was mergeable and its CI run completed successfully.",
+          "target": "Pull request #4, expected head 5c685d46a3a2b2ee457586d0b420a7259634a026",
+          "task_scope": "Merge only the scoped test baseline fix; no settings, secrets, release, deployment, or branch-protection changes.",
+          "authorization_basis": "The user explicitly directed the current repository work to proceed with read/write capability; this specific one-line regression fix had a clean PR and successful CI before merging.",
+          "result": "success",
+          "current_schema_resolved": true,
+          "evidence_ref": "https://github.com/Loofy147/Context-swarm/commit/d1e0751851c548c4cefdaad5b90484dfa051b0f7"
+        },
+        {
+          "action_name": "mcp__GitHub__fetch",
+          "capability_id": "github.repository.read",
+          "permission_class": "read",
+          "operation": "Read the exact post-merge GitHub Actions result for the merged commit.",
+          "target": "GitHub Actions run 40399818363",
+          "task_scope": "Verify CI on the current main commit after merge.",
+          "authorization_basis": "Read-only postcondition check.",
+          "result": "success",
+          "current_schema_resolved": true,
+          "evidence_ref": "https://github.com/Loofy147/Context-swarm/actions/runs/40399818363"
+        }
+      ],
+      "limitations": [
+        "Successful read/write access and permission flags apply only to Loofy147/Context-swarm and this connected GitHub account at the time observed.",
+        "The only privileged operation demonstrated was merging the scoped test-only PR after CI success; repository settings, secrets, releases, deployment, access changes, and branch-protection changes were not tested and remain separately gated."
+      ]
+    },
+    {
+      "provider": "Notion",
+      "resource_id": "https://app.notion.com/p/3f84508c33af815fa0fed2f0d4fa20bb",
+      "access_status": "verified_read_write",
+      "observed_ref": "https://app.notion.com/p/3f84508c33af815fa0fed2f0d4fa20bb",
+      "checks": [
+        {
+          "action_name": "mcp__Notion__fetch",
+          "capability_id": "connected_service.read",
+          "permission_class": "read",
+          "operation": "Fetch the existing operating-contract page and current enabled-skill records.",
+          "target": "MCP Operating Contract — Workflow Logic, Safety & Readiness",
+          "task_scope": "Read this existing canonical page only; no broad workspace scan.",
+          "authorization_basis": "Explicit user request to modify the existing operating contract.",
+          "result": "success",
+          "current_schema_resolved": true,
+          "evidence_ref": "https://app.notion.com/p/3f84508c33af815fa0fed2f0d4fa20bb"
+        },
+        {
+          "action_name": "mcp__Notion__notion_update_page",
+          "capability_id": "connected_service.write",
+          "permission_class": "write",
+          "operation": "Update targeted content in the existing operating-contract page and verify by fetching it back.",
+          "target": "MCP Operating Contract — Workflow Logic, Safety & Readiness",
+          "task_scope": "Change operation scope and cross-system read/write/action guidance only; no sharing settings, credentials, or Notion permission changes.",
+          "authorization_basis": "Direct user request: modify the operating contract to allow read/write and other available permissions.",
+          "result": "success",
+          "current_schema_resolved": true,
+          "evidence_ref": "https://app.notion.com/p/3f84508c33af815fa0fed2f0d4fa20bb"
+        }
+      ],
+      "limitations": [
+        "The page content was successfully updated, but no Notion workspace sharing or permission settings were modified.",
+        "Page-level write evidence does not imply access to every page, database, or workspace."
+      ]
+    }
+  ],
+  "replayable_examples": [
+    {
+      "example_id": "read-exact-commit-artifact",
+      "kind": "read_only",
+      "scenario": "Read a frozen GitHub artifact at the exact known commit; do not invoke a write action.",
+      "action_or_test": "mcp__GitHub__fetch_file",
+      "replay_command": "Fetch swarm/registry.json from Loofy147/Context-swarm at d1e0751851c548c4cefdaad5b90484dfa051b0f7.",
+      "expected_disposition": "read_succeeds_without_mutation",
+      "evidence_ref": "https://github.com/Loofy147/Context-swarm/blob/d1e0751851c548c4cefdaad5b90484dfa051b0f7/swarm/registry.json"
+    },
+    {
+      "example_id": "deny-write-without-authorization",
+      "kind": "blocked",
+      "scenario": "The reference model rejects a write decision when authorization is absent and preserves prior state.",
+      "action_or_test": "tests/test_reference_model.py::ReferenceModelAcceptanceTests.test_denied_write_does_not_change_state",
+      "replay_command": "python -m unittest discover -s tests -p test_reference_model.py -v",
+      "expected_disposition": "blocked_no_state_change",
+      "evidence_ref": "https://github.com/Loofy147/Context-swarm/blob/d1e0751851c548c4cefdaad5b90484dfa051b0f7/tests/test_reference_model.py"
+    },
+    {
+      "example_id": "gate-external-effect-on-current-authorization",
+      "kind": "approval_gated",
+      "scenario": "The reference model requires approval and current authorization before an external effect is permitted.",
+      "action_or_test": "tests/test_reference_model.py::ReferenceModelAcceptanceTests.test_external_effect_requires_approval_and_current_authorization",
+      "replay_command": "python -m unittest discover -s tests -p test_reference_model.py -v",
+      "expected_disposition": "approval_required_before_effect",
+      "evidence_ref": "https://github.com/Loofy147/Context-swarm/blob/d1e0751851c548c4cefdaad5b90484dfa051b0f7/tests/test_reference_model.py"
+    },
+    {
+      "example_id": "block-unauthorized-consequential-action",
+      "kind": "blocked",
+      "scenario": "The cycle planner produces a blocked disposition for an unauthorized consequential action.",
+      "action_or_test": "tests/test_swarm_cycle.py::SwarmCycleTests.test_unauthorized_consequential_action_is_blocked",
+      "replay_command": "python -m unittest discover -s tests -p test_swarm_cycle.py -v",
+      "expected_disposition": "blocked_no_state_change",
+      "evidence_ref": "https://github.com/Loofy147/Context-swarm/blob/d1e0751851c548c4cefdaad5b90484dfa051b0f7/tests/test_swarm_cycle.py"
+    }
+  ],
+  "unverified_scopes": [
+    {
+      "provider": "GitHub",
+      "resource_scope": "Private repositories or repositories other than Loofy147/Context-swarm",
+      "disposition": "not_checked",
+      "rationale": "Repository-scoped permission flags and successful actions for one public repository do not establish access to any other repository."
+    },
+    {
+      "provider": "GitHub",
+      "resource_scope": "Repository settings, secrets, branch-protection, releases and deployments",
+      "disposition": "limited",
+      "rationale": "No settings/secret/release/deployment operation was attempted; these remain explicit per-action authorization and impact gates."
+    },
+    {
+      "provider": "Other connected services",
+      "resource_scope": "Resources not required by this bounded task",
+      "disposition": "not_checked",
+      "rationale": "A current tool definition alone is not evidence that a specific data resource is readable or writable."
+    }
+  ],
+  "limitations": [
+    "Permission checks are scoped to the exact resources and actions recorded here and the time of observation.",
+    "Current tool definitions were resolved from the live operator tool registry; action definitions are not themselves proof of target permission.",
+    "The successful CI run verifies the named repository commit and its test suite, not production readiness.",
+    "Consequential actions must continue to follow the capability matrix and current tool-specific approval requirements."
+  ]
+}
