@@ -1,6 +1,6 @@
 {
   "schema_version": "scs.repo-registry.v1",
-  "registry_version": 13,
+  "registry_version": 14,
   "operating_phase": "repository_native_maturation",
   "canonical_store": "git_tracked_repository_artifacts",
   "definition": "Coordinated network of independent, bounded, versioned contexts. Context states, not agents, are the fundamental units.",
@@ -833,7 +833,7 @@
     },
     {
       "work_item_id": "SCS-MATURE-013",
-      "version": 3,
+      "version": 4,
       "kind": "dependency_freshness",
       "title": "Compute context impact from changed source revisions and propose stale-state updates",
       "status": "accepted",
@@ -879,9 +879,12 @@
         "https://github.com/Loofy147/Context-swarm/pull/1",
         "https://github.com/Loofy147/Context-swarm/commit/f90d064455bab412e43763fbacd40be60128f0f9",
         "https://github.com/Loofy147/Context-swarm/actions/runs/40398482504",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552",
+        "https://github.com/Loofy147/Context-swarm/commit/d1e0751851c548c4cefdaad5b90484dfa051b0f7",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40399177569",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40399818363"
       ],
-      "attempts": 1,
+      "attempts": 2,
       "blocked_reason": null,
       "history_refs": [
         "base-commit:e73d521e8d246691888d656419457d5b0eedd055",
@@ -891,9 +894,12 @@
         "https://github.com/Loofy147/Context-swarm/pull/1",
         "https://github.com/Loofy147/Context-swarm/commit/f90d064455bab412e43763fbacd40be60128f0f9",
         "https://github.com/Loofy147/Context-swarm/actions/runs/40398482504",
-        "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552"
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40398648552",
+        "https://github.com/Loofy147/Context-swarm/commit/d1e0751851c548c4cefdaad5b90484dfa051b0f7",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40399177569",
+        "https://github.com/Loofy147/Context-swarm/actions/runs/40399818363"
       ],
-      "last_outcome": "Accepted 2026-10-26. SCS-MATURE-013 is implemented and merged via PR #1 as f90d064455bab412e43763fbacd40be60128f0f9. CI run 40398482504 passed all 73 tests on the final candidate; the post-merge main run 40398648552 also passed all 73 tests. The planner compares stable source revisions, walks explicit dependencies conservatively, deduplicates impact, checks dangling context references, proposes versioned stale transitions with evidence, and always returns uncommitted output with no external actions. Semantic/unknown/stale-map edges remain possible impacts."
+      "last_outcome": "Accepted after regression repair: run 40399177569 exposed three stale-baseline test assumptions; commit d1e0751851c548c4cefdaad5b90484dfa051b0f7 made the test helper consume dependency_map.reviewed_base_commit and retained explicit mismatched-baseline coverage. Main CI run 40399818363 passed all 73 tests. Planner remains deterministic, proposal-only and conservative with uncertain edges."
     }
   ],
   "policy_refs": [
@@ -909,6 +915,6 @@
     "src/scs/adapters/github.py",
     "src/scs/runner.py"
   ],
-  "last_reconciled_commit": "f90d064455bab412e43763fbacd40be60128f0f9",
-  "change_note": "Registry v13 accepts SCS-MATURE-013 after PR #1 merged as f90d064455bab412e43763fbacd40be60128f0f9. The implementation candidate passed 73 tests in CI run 40398482504 and main passed 73 tests after merge in run 40398648552. Planner output remains proposal-only; dependency map v12 and inventory v8 are refreshed against the exact merged baseline."
+  "last_reconciled_commit": "d1e0751851c548c4cefdaad5b90484dfa051b0f7",
+  "change_note": "Registry v14 reconciles SCS-MATURE-013 acceptance with the baseline-fix evidence. Commit d1e0751851c548c4cefdaad5b90484dfa051b0f7 aligns impact tests to the dependency map's reviewed_base_commit; GitHub Actions run 40399818363 passed all 73 tests. The earlier run 40399177569 is retained as regression history."
 }
