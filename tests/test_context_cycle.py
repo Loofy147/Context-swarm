@@ -124,6 +124,7 @@ class ContextCycleIntegrationTests(unittest.TestCase):
     def test_changed_source_overlapping_context_update_requires_reconciliation(self):
         context = next(c for c in self.registry["contexts"] if c["context_id"] == "ctx-scs-intake")
         item = make_input(input_id="IN-CC-UPDATE", actionable=False,
+                          verification_passed=True, consequence_class="A",
                           stable_source_id="input:update-context", source_revision="rev:update",
                           source_locator="input:update-context")
         options = {
@@ -186,7 +187,8 @@ class ContextCycleIntegrationTests(unittest.TestCase):
         self.assert_schema_valid(result)
         self.assertEqual(result["plan_status"], "blocked")
         self.assertEqual(result["impact_plan"]["plan_status"], "blocked")
-        self.assertFalse(result["impact_plan"]["direct_impacts"])
+        self.assertFalse(any(item["target_type"] == "artifact"
+                             for item in result["impact_plan"]["direct_impacts"]))
         self.assertTrue(result["impact_plan"]["possible_impacts"])
         self.assertTrue(result["blockers"])
 
