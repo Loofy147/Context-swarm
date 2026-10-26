@@ -103,17 +103,25 @@ def _source_index(records: Iterable[Mapping[str, Any]], label: str) -> dict[str,
 
 
 def _is_explicit_edge(edge: Mapping[str, Any]) -> bool:
-    basis = str(edge.get("basis", "")).lower()
-    confidence = str(edge.get("confidence", "")).lower()
-    uncertain_markers = ("semantic", "contract", "planned", "hypothes", "relationship", "design")
-    direct_markers = ("direct", "explicit", "imports", "loads", "validates",
-                      "workflow_command", "json_equality", "schema_ref",
-                      "schema_validation", "exact_path")
-    return (
-        confidence == "high"
-        and any(marker in basis for marker in direct_markers)
-        and not any(marker in basis for marker in uncertain_markers)
-    )
+    """Recognize only reviewed evidence classes; substring matches are unsafe."""
+    basis = str(edge.get("basis", "")).strip().lower()
+    confidence = str(edge.get("confidence", "")).strip().lower()
+    direct_bases = {
+        "direct_test_import",
+        "explicit_test_path",
+        "workflow_command_and_discovery",
+        "explicit_markdown_link",
+        "explicit_inventory_item",
+        "direct_schema_validation",
+        "explicit_workflow_command",
+        "json_schema_ref",
+        "explicit_markdown_reference",
+        "explicit_test_read",
+        "input_id_lookup_json_equality",
+        "schema_validation_in_adapter_tests",
+        "direct_import",
+    }
+    return confidence == "high" and basis in direct_bases
 
 
 def _edge_index(dependency_map: Mapping[str, Any]) -> list[dict[str, Any]]:
