@@ -64,3 +64,8 @@ Revisit this record when a schema migration or new use case exposes a real contr
 The exposed tool surface is a dated inventory of action definitions, not an access grant. Resource-scoped verification records exact successful GitHub and Notion actions, separately documents repository read and write flags, and keeps other repositories, private resources, settings, secrets, release/deployment operations, and unrelated connectors unverified until a task requires them. The replayable examples link to the existing reference-model and cycle tests that reject denied writes and require current authorization before consequential external effects.
 
 The repository policy matrix remains the reusable policy contract. This dated verification is evidence for one operator session and named resources only; it does not claim universal access or relax privileged-action approval gates.
+
+
+## Integrated context-cycle contract (SCS-MATURE-014)
+
+`src/scs/context_cycle.py` composes the batch-cycle planner and source-impact planner against one pinned cycle ID, base commit and registry version. It retains both child plans and evidence, summarizes explicit input-derived priorities, and surfaces intake-update/source-invalidation collisions requiring review. The result validates against `schemas/context-cycle-plan.schema.json`; child outputs retain their own schema contracts. Duplicate inputs remain no-ops, stale dependency metadata cannot create direct impact claims, and the combined plan contains no external actions or state mutation.
