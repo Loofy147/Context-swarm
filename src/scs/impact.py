@@ -248,7 +248,9 @@ def _context_graph(contexts: Sequence[Mapping[str, Any]]) -> tuple[
             target_id = relationship.get("target_context_id")
             relation_type = relationship.get("type")
             if target_id not in context_ids:
-                continue
+                raise ImpactPlanningError(
+                    f"context {source_id} has dangling relationship target: {target_id!r}"
+                )
             if relation_type not in _DIRECT_CONTEXT_RELATIONS | _POSSIBLE_CONTEXT_RELATIONS:
                 continue
             ref = f"{source_id} --{relation_type}--> {target_id}"
@@ -434,7 +436,6 @@ def plan_context_impact(
                     except (InvalidTransition, StaleStateVersion, TransitionPreconditionError) as exc:
                         blockers.append(f"Context {context_id} could not propose stale transition: {exc}")
                     else:
-                        add_impact  # Keep the pure planner visibly side-effect free.
                         proposal_key = context_id
                         proposal_store = stale_claims.setdefault(
                             ("__context__", proposal_key),

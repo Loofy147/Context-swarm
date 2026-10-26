@@ -1,10 +1,10 @@
 {
   "schema_version": "scs.repository-inventory.v1",
-  "inventory_version": 6,
+  "inventory_version": 7,
   "reviewed_branch": "main",
-  "reviewed_tree_commit": "d8482f02af7a7e11487491869948cad91037e1d7",
-  "reviewed_at": "2026-10-16",
-  "review_scope": "All tracked blob paths and exact Git object identities at this base tree. The enclosing commit refreshes registry/evidence metadata and closes the cycle-0006 review item; those modified artifact versions are listed as follow-up artifacts.",
+  "reviewed_tree_commit": "e73d521e8d246691888d656419457d5b0eedd055",
+  "reviewed_at": "2026-10-26",
+  "review_scope": "All tracked blob paths and exact Git object identities at main HEAD e73d521e8d246691888d656419457d5b0eedd055. Candidate-only artifacts and metadata changes in the feature branch are listed in follow_up_artifacts; this inventory is explicitly a base-tree snapshot, not a claim that those new paths were in the base.",
   "item_count": 68,
   "items": [
     {
@@ -135,7 +135,7 @@
     },
     {
       "path": "spec/acceptance.md",
-      "blob_sha": "06164a0d4dd72540895f5336c9911780f384800a",
+      "blob_sha": "9898909734cdabd12ba407b549276237dabaffc1",
       "role": "operating specification",
       "disposition": "current_with_future_sections",
       "reason": "Current rules are repository-native; production gates remain future."
@@ -289,14 +289,14 @@
     },
     {
       "path": "swarm/cycles/0006-fresh-github-source-ingestion.md",
-      "blob_sha": "e2aa8e3b7721dfdeed7e76ab779a32f37af55187",
+      "blob_sha": "b7b82b1b20551a2fa7415e7b4db811604c5df8e4",
       "role": "cycle report",
       "disposition": "current",
       "reason": "Documents consumed sources, changes, evidence and next steps."
     },
     {
       "path": "swarm/dependency-map.json",
-      "blob_sha": "aa42f97b737904f172e8221e00ad08cc913617d1",
+      "blob_sha": "80c9cc12d26c4962743eb182a3b77f486e91481f",
       "role": "dependency map",
       "disposition": "current_snapshot",
       "reason": "Typed file/test relationships, not a runtime call graph."
@@ -352,14 +352,14 @@
     },
     {
       "path": "swarm/inventory.json",
-      "blob_sha": "fa22457b3a948a81fb7ae13c53b0836efc239b54",
+      "blob_sha": "7a80f69383502e67fb040787fe63e67af50c40f3",
       "role": "repository inventory",
       "disposition": "current_snapshot",
       "reason": "Dated file/blob identity snapshot."
     },
     {
       "path": "swarm/registry.json",
-      "blob_sha": "c0753576c4f3815e4b3edbfa4acc3b8f79e82a00",
+      "blob_sha": "97ac268e1984305bcd6137b3c5958455dd9334b7",
       "role": "canonical registry",
       "disposition": "current",
       "reason": "Contexts, work items, evidence and lifecycle states."
@@ -527,6 +527,18 @@
       ],
       "finding": "Cycle 0006 is the first fresh source snapshot whose normalized records are persisted and replay-tested against the pure runner.",
       "disposition": "Accepted after 62 tests pass; the successful workflow claim remains a review proposal."
+    },
+    {
+      "finding_id": "INV-005",
+      "severity": "medium",
+      "paths": [
+        "src/scs/impact.py",
+        "schemas/impact-plan.schema.json",
+        "tests/test_swarm_impact.py",
+        "swarm/dependency-map.json"
+      ],
+      "finding": "SCS-MATURE-013 is implemented on a feature branch as a pure, deterministic impact proposal engine; its current complete candidate must pass CI before merge/acceptance.",
+      "disposition": "Keep state changes uncommitted; semantic or stale dependency edges remain possible impacts; refresh this inventory after the candidate merges."
     }
   ],
   "test_evidence": [
@@ -535,6 +547,12 @@
       "commit": "d8482f02af7a7e11487491869948cad91037e1d7",
       "result": "success",
       "scope": "62 tests; persisted cycle-0006 input records match planner output and replay produces four duplicate no-ops."
+    },
+    {
+      "run_url": "https://github.com/Loofy147/Context-swarm/actions/runs/40397829928",
+      "commit": "f5cd28fe740c65a848d64cdab79169a8a9251c0e",
+      "result": "success",
+      "scope": "72 tests including the first context-impact planner/schema regression set; subsequent candidate revision adds dangling-context-reference validation and requires a new run."
     }
   ],
   "follow_up_artifacts": [
@@ -548,7 +566,7 @@
     },
     {
       "path": "swarm/dependency-map.json",
-      "status": "updated_in_enclosing_commit"
+      "status": "updated_in_candidate_change"
     },
     {
       "path": "spec/acceptance.md",
@@ -561,6 +579,26 @@
     {
       "path": "swarm/cycles/0006-fresh-github-source-ingestion.md",
       "status": "updated_in_enclosing_commit"
+    },
+    {
+      "path": "src/scs/impact.py",
+      "status": "updated_in_candidate_change"
+    },
+    {
+      "path": "schemas/impact-plan.schema.json",
+      "status": "introduced_in_candidate_change"
+    },
+    {
+      "path": "tests/test_swarm_impact.py",
+      "status": "updated_in_candidate_change"
+    },
+    {
+      "path": "spec/schema-alignment.md",
+      "status": "updated_in_candidate_change"
+    },
+    {
+      "path": "swarm/cycles/0007-context-impact-planning.md",
+      "status": "introduced_in_candidate_change"
     }
   ]
 }

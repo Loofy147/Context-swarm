@@ -171,6 +171,15 @@ class ContextImpactTests(unittest.TestCase):
         self.assertFalse(result["committed"])
         self.validate_schema(result)
 
+    def test_dangling_context_relationship_is_rejected(self):
+        registry = load_registry()
+        registry["contexts"][0]["relationships"].append({
+            "type": "depends_on",
+            "target_context_id": "ctx-does-not-exist",
+        })
+        with self.assertRaises(ImpactPlanningError):
+            plan([source()], registry=registry)
+
     def test_duplicate_stable_source_identity_is_rejected(self):
         with self.assertRaises(ImpactPlanningError):
             plan([
