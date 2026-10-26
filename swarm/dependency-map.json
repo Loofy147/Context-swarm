@@ -1,13 +1,13 @@
 {
   "schema_version": "scs.dependency-map.v1",
   "map_version": 13,
-  "reviewed_base_commit": "d1e0751851c548c4cefdaad5b90484dfa051b0f7",
+  "reviewed_base_commit": "ef73b8a1712697525d20f934083fa55a619186d6",
   "derived_from": [
     "exact tree at d8482f02af7a7e11487491869948cad91037e1d7",
     "cycle-0006 captured source snapshot and normalized input records",
     "CI run 38961446352"
   ],
-  "note": "Map v13 reconciles main at exact baseline d1e0751851c548c4cefdaad5b90484dfa051b0f7 after the impact-test helper was aligned to this map's reviewed_base_commit. The stale-map regression supplies an older base explicitly.",
+  "note": "Map v13 is grounded in verified main commit ef73b8a1712697525d20f934083fa55a619186d6. The impact regression helper now derives its base from this field by default, and the stale-map test supplies an explicit older base. Subsequent metadata-only commits do not change the source/test dependency edges.",
   "edges": [
     {
       "source_path": "tests/test_swarm_intake.py",
@@ -705,9 +705,9 @@
   ],
   "limitations": [
     "This is a repository artifact dependency map, not a runtime call graph.",
-    "Only edges with an explicit code/test/schema/workflow basis and high confidence can be direct when reviewed_base_commit exactly matches the plan base.",
+    "Only edges with an explicit code/test/schema/workflow basis and high confidence can be direct when reviewed_base_commit matches the plan's supplied baseline.",
     "Markdown/documentation edges establish traceability, not runtime execution. Semantic, planned registry links, unknown relationships, and all edges from a stale map are possible impact only.",
-    "Map v13 reviews the exact main baseline d1e0751851c548c4cefdaad5b90484dfa051b0f7. Changes after that baseline may make the map stale.",
+    "Map v13 was reconciled to the source/test baseline ef73b8a1712697525d20f934083fa55a619186d6; later metadata-only commits do not change the mapped dependency structure.",
     "The impact planner emits proposals only. It does not persist, accept, deploy, or execute external actions."
   ]
 }
