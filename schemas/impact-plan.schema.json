@@ -1,0 +1,280 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scs.invalid/schemas/impact-plan.schema.json",
+  "title": "SCS Repository-Native Impact Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "plan_id",
+    "base_commit",
+    "base_registry_version",
+    "dependency_map",
+    "plan_status",
+    "source_changes",
+    "unresolved_source_ids",
+    "direct_impacts",
+    "possible_impacts",
+    "stale_proposals",
+    "evidence_refs",
+    "blockers",
+    "external_actions",
+    "committed"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "scs.impact-plan.v1"
+    },
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_commit": {
+      "type": "string",
+      "minLength": 7
+    },
+    "base_registry_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "dependency_map": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "map_version",
+        "reviewed_base_commit",
+        "matches_base_commit"
+      ],
+      "properties": {
+        "map_version": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "reviewed_base_commit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "matches_base_commit": {
+          "type": "boolean"
+        }
+      }
+    },
+    "plan_status": {
+      "enum": [
+        "no_change",
+        "proposed",
+        "review_required",
+        "blocked"
+      ]
+    },
+    "source_changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "stable_source_id",
+          "change_kind",
+          "previous_revision",
+          "current_revision",
+          "source_paths",
+          "evidence_refs"
+        ],
+        "properties": {
+          "stable_source_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "change_kind": {
+            "enum": [
+              "added",
+              "removed",
+              "revision_changed",
+              "path_changed"
+            ]
+          },
+          "previous_revision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "current_revision": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "unresolved_source_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "direct_impacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/impact"
+      }
+    },
+    "possible_impacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/impact"
+      }
+    },
+    "stale_proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "target_type",
+          "context_id",
+          "claim_id",
+          "expected_version",
+          "proposed_version",
+          "from_status",
+          "proposed_status",
+          "reason",
+          "evidence_refs"
+        ],
+        "properties": {
+          "target_type": {
+            "enum": [
+              "context",
+              "claim"
+            ]
+          },
+          "context_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "claim_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "proposed_version": {
+            "type": "integer",
+            "minimum": 2
+          },
+          "from_status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "proposed_status": {
+            "const": "stale"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "external_actions": {
+      "type": "array",
+      "maxItems": 0
+    },
+    "committed": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target_type",
+        "target_id",
+        "changed_source_ids",
+        "evidence_refs",
+        "reasons"
+      ],
+      "properties": {
+        "target_type": {
+          "enum": [
+            "artifact",
+            "context",
+            "claim",
+            "source"
+          ]
+        },
+        "target_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "changed_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "reasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}
